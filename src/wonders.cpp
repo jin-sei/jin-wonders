@@ -106,3 +106,10 @@ phase_jeu& operator++(phase_jeu& phase){
     }
     return phase ; 
 }
+
+void displayRessources(std::list<ressource> r){
+    //std::cout << "DISPLAYING RESSOURCES" << std::endl ; 
+    for( auto iter = r.begin() ; iter != r.end() ; ++iter ){
+        std::cout << tostringRessources(*iter) << " ; " ; 
+    }
+}

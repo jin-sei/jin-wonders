@@ -28,6 +28,8 @@ std::string tostringAge(phase_jeu p);
 
 phase_jeu& operator++(phase_jeu& phase);
 
+void displayRessources(std::list<ressource> r);
+
 class GameException {
 	public:
 		GameException(const std::string& i) :info(i) {}
@@ -100,7 +102,7 @@ class Batiment : public Carte {
             std::list<ressource> cost_r={}, unsigned int cost=0, 
             unsigned int argent=0, unsigned int pt_victoire=0,
 
-            std::list<ressource> production={}, std::string chained_by=""
+            std::list<ressource> prod={}, std::string chained_by=""
             );
         
         // GETTERS

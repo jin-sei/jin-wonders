@@ -77,24 +77,26 @@ std::ostream& operator<<(std::ostream& f, Carte c){
     return f ; 
 }
 
-Batiment::Batiment(std::string nom, type_batiment type, phase_jeu age, std::list<ressource> cost_r, unsigned int cost_m, unsigned int argent, unsigned int pt_victoire, std::list<ressource> production, std::string chained_by):
+Batiment::Batiment(std::string nom, type_batiment type, phase_jeu age, std::list<ressource> cost_r, unsigned int cost_m, unsigned int argent, unsigned int pt_victoire, std::list<ressource> prod, std::string chained_by):
 Carte(nom, type, age, cost_r, cost_m, argent, pt_victoire), chained_by(chained_by){
     // vérifications liées au type : 
     if(type == type_batiment::Civil && !production.empty()){
         throw GameException("ERREUR (Batiment instancié) : un bâtiment CIVIL ne produit pas de ressources");
     }
     if(type == type_batiment::Scientifique){
-        if(!checkTypeRessources(production, getSymboleScientifique())){throw GameException("ERREUR (Batiment instancié) : un bâtiment SCIENTIFIQUE ne produit que des symboles scientifiques");}
-        if(production.size() != 1){throw GameException("ERREUR (Batiment instancié) : un bâtiment SCIENTIFIQUE ne produit qu'un seul symbole");}
+        if(!checkTypeRessources(prod, getSymboleScientifique())){throw GameException("ERREUR (Batiment instancié) : un bâtiment SCIENTIFIQUE ne produit que des symboles scientifiques");}
+        if(prod.size() != 1){throw GameException("ERREUR (Batiment instancié) : un bâtiment SCIENTIFIQUE ne produit qu'un seul symbole");}
     }
     if(type == type_batiment::Militaire){
-        if(!checkTypeRessources(production, {ressource::Bouclier})){throw GameException("ERREUR (Batiment instancié) : un bâtiment MILITAIRE ne produit que des boucliers");}
+        if(!checkTypeRessources(prod, {ressource::Bouclier})){throw GameException("ERREUR (Batiment instancié) : un bâtiment MILITAIRE ne produit que des boucliers");}
     }
     if(type == type_batiment::Manufacture){
-        if(!checkTypeRessources(production, getProduitManufacture())){throw GameException("ERREUR (Batiment instancié) : un bâtiment de ressources GRIS ne produit que des produits manufacturés");}
+        if(!checkTypeRessources(prod, getProduitManufacture())){throw GameException("ERREUR (Batiment instancié) : un bâtiment de ressources GRIS ne produit que des produits manufacturés");}
     }
     if(type == type_batiment::Premiere){
-        if(!checkTypeRessources(production, getMatierePremiere())){throw GameException("ERREUR (Batiment instancié) : un bâtiment de ressources MARRON ne produit que des matièrs premières");}
+        if(!checkTypeRessources(prod, getMatierePremiere())){throw GameException("ERREUR (Batiment instancié) : un bâtiment de ressources MARRON ne produit que des matièrs premières");}
 
     }
+
+    production = prod ; 
 }

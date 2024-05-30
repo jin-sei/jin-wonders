@@ -1,17 +1,17 @@
 #include "../include/wonders.h"
 
 std::list<ressource> Joueur::fetchRessource(std::list<ressource> r){
-    // iterates through the player's Batiments to find a ressource
+    
+    // iterates through the player's Batiments to find ressources
     std::list<ressource> production ;
+    std::list<ressource> temp  ;
 
     for(auto iter = batiments.begin() ; iter != batiments.end() ; ++iter){
+        temp = (**iter).getProduction() ; 
+        for(auto iter_res = temp.begin() ; iter_res !=  temp.end() ; ++iter_res ){
 
-        for(auto res_iter = (**iter).getProduction().begin() ; res_iter != (**iter).getProduction().end() ; ++res_iter ){
-
-            if( std::find(r.begin(), r.end(), *res_iter) != r.end() ){ 
-
-                production.push_back(*res_iter);
-
+            if( std::find(r.begin(), r.end(), *iter_res) != r.end() ){
+                production.push_back(*iter_res);
             }
 
         }

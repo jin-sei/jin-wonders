@@ -81,13 +81,17 @@ int main(){
 
     const Batiment my_batiment4 = Batiment("Montagne", type_batiment::Militaire, phase_jeu::AGE_III, {ressource::Pierre, ressource::Pierre}, 0, 0, 0, {ressource::Bouclier, ressource::Bouclier, ressource::Bouclier}, "");
     const Batiment my_batiment5 = Batiment("Chateau", type_batiment::Scientifique, phase_jeu::AGE_I, {ressource::Pierre, ressource::Pierre}, 0, 0, 0, {ressource::Roue}, "");
-    const Batiment my_batiment6 = Batiment("Caverne", type_batiment::Premiere, phase_jeu::AGE_II, {ressource::Pierre, ressource::Pierre}, 0, 0, 0, {ressource::Bois, ressource::Argile, ressource::Pierre}, "");
+    const Batiment my_batiment6 = Batiment("Caverne", type_batiment::Premiere, phase_jeu::AGE_II, {ressource::Pierre, ressource::Pierre}, 0, 0, 0, {ressource::Argile, ressource::Argile, ressource::Pierre}, "");
     
     my_box1.getJoueur(1)->addBatiment(&my_batiment4);
     my_box1.getJoueur(1)->addBatiment(&my_batiment5);
     my_box1.getJoueur(1)->addBatiment(&my_batiment6);
 
-    displayCards( my_box1.getJoueur(1)->getBatiments() );
+    //displayCards( my_box1.getJoueur(1)->getBatiments() );
+
+    //std::list<ressource> test = {ressource::Bois, ressource::Argile, ressource::Verre};
+
+    displayRessources( my_box1.getJoueur(1)->fetchRessource({ressource::Argile, ressource::Bois})) ;
 
     //displayCards(my_box1.getJoueur(1)->getBatiments());
 
