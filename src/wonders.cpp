@@ -71,6 +71,21 @@ std::string tostringType(type_batiment t){
     };
 }
 
+std::string tostringJeton(jeton_progres j){
+    switch(j){
+        case jeton_progres::Architecture : return "Architecture" ;
+        case jeton_progres::Economie : return "Economie" ; 
+        case jeton_progres::Loi : return "Loi" ;
+        case jeton_progres::Maconnerie : return "Maçonnerie" ;
+        case jeton_progres::Mathematiques : return "Mathématiques" ;
+        case jeton_progres::Philosophie : "Philosophie" ; 
+        case jeton_progres::Strategie : return "Stratégie" ; 
+        case jeton_progres::Theologie : return "Théologie" ;
+        case jeton_progres::Urbanisme : return "Urbanisme" ;
+
+    }
+}
+
 std::string tostringAge(phase_jeu p){
     switch(p){
         case phase_jeu::START : return "INIT" ; 

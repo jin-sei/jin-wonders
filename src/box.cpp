@@ -105,6 +105,7 @@ void Box::distributeCards(phase_jeu p){
 
         //std::cout << tostringAge((**iter).getAge()) << std::endl ;
         if( (**iter).getAge() == p ){ temp.push_back(*iter); }
+        // le vector cards de Layout est vide après avoir appelé Layout::SwitchAge dans Box::newAge
 
     }
 

@@ -54,8 +54,7 @@ int main(){
     phase_jeu p = phase_jeu::END ; 
     std::cout << tostringAge(++p) << std::endl << std::endl ;
 
-    std::cout << "SANDBOX END" << std::endl << "--------------" << std::endl  << std::endl ;
-
+    //std::cout << "SANDBOX END" << std::endl << "--------------" << std::endl  << std::endl ;
 
     Box my_box1 = Box();
     my_box1.allCardsCreation();
@@ -76,6 +75,10 @@ int main(){
     my_box1.getPlateau()->getLayout()->displayLayout() ;
     std::cout << my_box1.getPlateau()->getLayout()->getLayoutSize() << " : " << my_box1.getPlateau()->getLayout()->getVectorSize() << std::endl;
 
+    my_box1.newAge();
+    my_box1.getPlateau()->getLayout()->displayCards();
+    my_box1.getPlateau()->getLayout()->displayLayout() ;
+
     
     /*
     } catch(const GameException& e) {
@@ -91,27 +94,28 @@ int main(){
 // NILS TO DO : 
 
 // CURRENT :
-// setup github 
-// setup CMake file
+// implémentation du Joueur : 
+// 1. Fetch ressources
 
 // NEXT : 
-
-// ajout des cartes d'un âge dans le Layout à chaque nouvel âge
-// mélange du vector "cards" dans le Layout
+// implémenter le commerce 
+// améliorer la fonction de checkCout et d'achat ;
+// (chaingage < ressources possédées < ressources conditionelles < ressources offertes < ressources à acheter)
+// implémenter les bâtiments Commerce
+// implémenter les Guildes
 
 
 // MAIN QUESTS : 
-// implémenter le commerce et améliorer la fonction de checkCout et d'achat ;
-// (chaingage < ressources possédées < ressources conditionelles < ressources offertes < ressources à acheter)
-// implémenter les Guildes et les bâtiments Commerce
-// distribution -> rajouter les cartes Guildes
+// méthodes du Plateau (pion conflit, saccages...)
 // distribution (début de partie) -> initialiser le plateau avec 5 jetons
 // effet des Merveilles et des Jetons
 
 
 // OTHER TASKS : 
-// choisir quels cartes rentrer dans le Plateau à chaque âge
+// distribution -> rajouter les cartes Guildes
 // tours de jeu 
+// début de jeu
+// fin de jeu, compter les points, recommencer une partie
 
 
 // SIDE QUESTS : 

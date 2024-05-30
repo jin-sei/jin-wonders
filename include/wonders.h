@@ -240,7 +240,7 @@ class Plateau {
 
 class Box { 
     // responsable de toutes les Cartes, Jetons, Merveilles
-    // singleton
+    // SHOULD BE SINGLETON
 
     public:
 
