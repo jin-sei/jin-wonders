@@ -94,12 +94,12 @@ void Layout::switchAge(phase_jeu p){
     };
 }
 
-Carte* Layout::pickSlot(int i, int j){
+const Carte* Layout::pickSlot(int i, int j){
 
     if( age[i][j] != 1 ){ throw GameException("ERREUR : cette carte n'est pas accessible"); }
 
     unsigned int x = this->getBatimentFromLayout(i, j);
-    Carte* save = cards[ x ];
+    const Carte* save = cards[ x ];
     cards[ x ] = nullptr ;
     age[ i ][  j ] = 4 ; 
     //displayLayout();

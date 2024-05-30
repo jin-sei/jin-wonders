@@ -67,7 +67,7 @@ std::string tostringType(type_batiment t){
         case type_batiment::Commerce : return "Commerce" ;
         case type_batiment::Guilde : return "Guilde" ;
         case type_batiment::Merveille : return "Merveille" ;
-        default : throw GameException("Batiment inconnue") ;
+        default : throw GameException("Batiment inconnu") ;
     };
 }
 
@@ -79,10 +79,10 @@ std::string tostringJeton(jeton_progres j){
         case jeton_progres::Maconnerie : return "Maçonnerie" ;
         case jeton_progres::Mathematiques : return "Mathématiques" ;
         case jeton_progres::Philosophie : "Philosophie" ; 
-        case jeton_progres::Strategie : return "Stratégie" ; 
+        case jeton_progres::Strategie : return "Stratégie" ;
         case jeton_progres::Theologie : return "Théologie" ;
         case jeton_progres::Urbanisme : return "Urbanisme" ;
-
+        default : throw GameException("Jeton inconnu");
     }
 }
 

@@ -9,9 +9,6 @@
 #include <random>
 
 
-//enum class ressource {Papyrus, Verre, Pierre, Argile, Bois};
-//enum class symbole_scientifique {Roue, Compas, Pilon, Tablette, Lyre, Mesure, Telescope};
-
 enum class type_batiment {Militaire, Scientifique, Manufacture, Premiere, Civil, Commerce, Guilde, Merveille};
 enum class jeton_progres{Agriculture, Architecture, Economie, Loi, Maconnerie, Mathematiques,Philosophie, Strategie, Theologie, Urbanisme};
 enum class phase_jeu {START=0, AGE_I=1, AGE_II=2, AGE_III=3, END=4};
@@ -123,7 +120,7 @@ class Commerce : public Batiment {
 
 class Merveille : public Carte {
     public:
-        Merveille(std::string nom, type_batiment type=type_batiment::Merveille, phase_jeu age=phase_jeu::AGE_I, std::list<ressource> cost_r = {}, unsigned int cost_m = 0, unsigned int argent = 0, unsigned int pt_victoire = 0, bool b=false) : Carte(nom, type, age, cost_r, cost_m, argent, pt_victoire), replay(b) {
+        Merveille(std::string nom, type_batiment type=type_batiment::Merveille, phase_jeu age=phase_jeu::AGE_I, std::list<ressource> cost_r = {}, unsigned int cost_m = 0, unsigned int argent = 0, unsigned int pt_victoire = 0, bool b=false, Carte* f=nullptr) : Carte(nom, type, age, cost_r, cost_m, argent, pt_victoire), replay(b), feed(f) {
             if(type!=type_batiment::Merveille){
                 throw GameException("Merveille instanciée avec un type autre que Merveille");
             }
@@ -131,11 +128,14 @@ class Merveille : public Carte {
 
         //GETTERS
         bool getReplay() const { return replay ;}
+        const Carte* getFeed() const { return feed ;}
 
         //SETTERS
         void setReplay(bool b) { replay = b ;}
 
     private:
+
+        const Carte* feed ;
         bool replay ; 
 };
 
@@ -146,13 +146,21 @@ class Jeton {
 };
 
 class Joueur {
+    // pas responsable de la durée de vie de ses cartes
+
     public:
 
         void setAdversaire(Joueur* j){ adversaire = j ;}
 
+        // fetch ressources 
+        // fetch military
+        // fetch science
+
     private:
 
         Joueur* adversaire ;
+        std::vector<jeton_progres> jetons ;
+        std::vector<const Carte*> batiments ;
 
 };
 
@@ -173,11 +181,11 @@ class Layout {
         bool isEmpty();
         unsigned int getLayoutSize();
         unsigned int getVectorSize();
-        std::vector<Carte*> getCards() const { return cards ;}
+        std::vector<const Carte*> getCards() const { return cards ;}
         
         void switchAge(phase_jeu p);
 
-        Carte* pickSlot(int i, int j);
+        const Carte* pickSlot(int i, int j);
         // update le layout, retourne la Carte choisie et update cards
         // seulement pour les slots 1 
 
@@ -189,7 +197,7 @@ class Layout {
 
         void updateLayout();
 
-        std::vector<Carte*> cards ;
+        std::vector<const Carte*> cards ;
         std::vector<std::vector<int>> age = ageI ; 
 
         const std::vector<std::vector<int>> ageI { // AGE I
