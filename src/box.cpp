@@ -8,6 +8,7 @@ Box::Box(){
     joueur1 = new Joueur() ; joueur2 = new Joueur() ; 
     joueur1->setAdversaire(joueur2); 
     joueur2->setAdversaire(joueur1);
+    current = joueur1 ; 
     
     phase = phase_jeu::START ;
 
@@ -47,16 +48,17 @@ void Box::allCardsCreation(){
     for(size_t i = 0 ; i < 66 ; i++){
 
         if( i < 23 ){ p = phase_jeu::AGE_I ; } 
-        else if ( i < 46 ){ p = phase_jeu::AGE_II ;  } 
+        else if ( i < 46 ){ p = phase_jeu::AGE_II ;  }
         else if ( i < 66 ){ p = phase_jeu::AGE_III ; }
 
-        Batiment* new_bat = new Batiment("Bâtiment Civil "+std::to_string(i+1), type_batiment::Civil, p);
+        const Batiment* new_bat = new Batiment("Bâtiment Civil "+std::to_string(i+1), type_batiment::Civil, p);
         all_batiments.push_front(new_bat);
 
     }
 
 }
 
+/*
 void Box::displayAllCards(){
 
     for( auto iter = all_batiments.begin() ; iter != all_batiments.end() ; ++iter){
@@ -64,8 +66,8 @@ void Box::displayAllCards(){
         std::cout << **iter << std::endl ;
 
     }
-
 }
+*/
 
 void Box::newAge(){
 
@@ -99,7 +101,7 @@ void Box::distributeCards(phase_jeu p){
     // MÉLANGER
     // AJOUTER DANS LE LAYOUT
 
-    std::vector<Carte*> temp ; // stocker les cartes âge 
+    std::vector<const Carte*> temp ; // stocker les cartes âge 
 
     for( auto iter = all_batiments.begin() ; iter != all_batiments.end() ; ++iter ){
 

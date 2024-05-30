@@ -52,7 +52,7 @@ int main(){
     std::cout << my_layout1.isEmpty() << std::endl; 
 
     phase_jeu p = phase_jeu::END ; 
-    std::cout << tostringAge(++p) << std::endl << std::endl ;
+    std::cout << tostringAge(++p) << std::endl << std::endl;
 
     //std::cout << "SANDBOX END" << std::endl << "--------------" << std::endl  << std::endl ;
 
@@ -60,7 +60,7 @@ int main(){
     my_box1.allCardsCreation();
     //my_box1.displayAllCards();
     my_box1.newAge();
-    my_box1.getPlateau()->getLayout()->displayCards();
+    //my_box1.getPlateau()->getLayout()->displayCards();
     my_box1.getPlateau()->getLayout()->displayLayout() ;
     std::cout << my_box1.getPlateau()->getLayout()->getLayoutSize() << " : " << my_box1.getPlateau()->getLayout()->getVectorSize() << std::endl;
 
@@ -76,10 +76,21 @@ int main(){
     std::cout << my_box1.getPlateau()->getLayout()->getLayoutSize() << " : " << my_box1.getPlateau()->getLayout()->getVectorSize() << std::endl;
 
     my_box1.newAge();
-    my_box1.getPlateau()->getLayout()->displayCards();
-    my_box1.getPlateau()->getLayout()->displayLayout() ;
+    //my_box1.getPlateau()->getLayout()->displayCards();
+    my_box1.getPlateau()->getLayout()->displayLayout();
 
+    const Batiment my_batiment4 = Batiment("Montagne", type_batiment::Militaire, phase_jeu::AGE_III, {ressource::Pierre, ressource::Pierre}, 0, 0, 0, {ressource::Bouclier, ressource::Bouclier, ressource::Bouclier}, "");
+    const Batiment my_batiment5 = Batiment("Chateau", type_batiment::Scientifique, phase_jeu::AGE_I, {ressource::Pierre, ressource::Pierre}, 0, 0, 0, {ressource::Roue}, "");
+    const Batiment my_batiment6 = Batiment("Caverne", type_batiment::Premiere, phase_jeu::AGE_II, {ressource::Pierre, ressource::Pierre}, 0, 0, 0, {ressource::Bois, ressource::Argile, ressource::Pierre}, "");
     
+    my_box1.getJoueur(1)->addBatiment(&my_batiment4);
+    my_box1.getJoueur(1)->addBatiment(&my_batiment5);
+    my_box1.getJoueur(1)->addBatiment(&my_batiment6);
+
+    displayCards( my_box1.getJoueur(1)->getBatiments() );
+
+    //displayCards(my_box1.getJoueur(1)->getBatiments());
+
     /*
     } catch(const GameException& e) {
 

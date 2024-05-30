@@ -37,6 +37,9 @@ class GameException {
 };
 
 class Carte {
+    // une fois créée par le contrôlleur Box (qui les gère),
+    // les cartes sont immutables et toujours manipulés avec des pointeurs const
+
     public: 
 
         Carte(std::string nom, type_batiment type, phase_jeu age=phase_jeu::AGE_I, std::list<ressource> cost_r = {}, unsigned int cost_m = 0, unsigned int argent = 0, unsigned int pt_victoire = 0);
@@ -79,6 +82,14 @@ class Carte {
 };
 
 std::ostream& operator<<(std::ostream& f, Carte c);
+
+template <typename T>
+void displayCards(std::vector<const T*> c){
+    for(auto iter = c.begin() ; iter != c.end() ; ++iter){
+        std::cout << **iter << std::endl  ;
+    }
+    return;
+}
 
 class Batiment : public Carte { 
     // Civil, Scientifique, Militaire, Ressources
@@ -150,17 +161,18 @@ class Joueur {
 
     public:
 
+        std::vector<const Batiment*> getBatiments() const { return batiments; }
         void setAdversaire(Joueur* j){ adversaire = j ;}
+        void addBatiment(const Batiment* c){batiments.push_back(c);}
 
-        // fetch ressources 
-        // fetch military
-        // fetch science
+        // fetch military, fetch science
+        std::list<ressource> fetchRessource(std::list<ressource> r);
 
     private:
 
         Joueur* adversaire ;
         std::vector<jeton_progres> jetons ;
-        std::vector<const Carte*> batiments ;
+        std::vector<const Batiment*> batiments ;
 
 };
 
@@ -174,9 +186,9 @@ class Layout {
 
     public:
 
-        void inputCards(std::vector<Carte*> deck);
+        void inputCards(std::vector<const Carte*> deck);
         void displayLayout();
-        void displayCards();
+        //void displayCards();
         std::list<int> getAvailableSlots();
         bool isEmpty();
         unsigned int getLayoutSize();
@@ -256,11 +268,21 @@ class Box {
         ~Box();
 
         void allCardsCreation();
-        void displayAllCards(); 
+        //void displayAllCards(); 
         void newAge();
         void distributeCards(phase_jeu p);
 
         Plateau* getPlateau() const { return plateau ;}
+
+        Joueur* getJoueur(unsigned int x) const {
+            switch(x){
+                case 1 : return joueur1 ;
+                case 2 : return joueur2 ;
+                default : throw GameException("ERREUR : Joueur est 1 ou 2");
+            }
+        }
+
+        Joueur* getCurrentJoueur() const { return current ;}
 
     private:
 
@@ -269,11 +291,14 @@ class Box {
         Joueur* joueur1 ; 
         Joueur* joueur2 ;
 
+        Joueur* current ;
+
         phase_jeu phase ;
 
-        std::list<Jeton*> all_jetons ;
-        std::list<Carte*> all_batiments ;
-        std::list<Merveille*> all_merveilles ;
+        std::list<Jeton*> all_jetons ; // NOT USED YET
+        std::list<const Carte*> all_batiments ;
+        std::list<const Carte*> all_guildes ; // NOT USED YET
+        std::list<const Merveille*> all_merveilles ; // NOT USED YET
 
-        std::list<Batiment*> defausse ; 
+        std::list<const Carte*> defausse ; // NOT USED YET
 };

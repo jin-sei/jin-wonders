@@ -19,11 +19,13 @@ void Layout::displayLayout(){
     }
 }
 
+/*
 void Layout::displayCards(){
     for( auto iter = cards.begin() ; iter != cards.end() ; ++iter ){
         std::cout << **iter << std::endl ; 
     }
 }
+*/
 
 void Layout::updateLayout(){
     size_t rows = age.size();
@@ -185,7 +187,7 @@ unsigned int Layout::getVectorSize(){ // retourne le nombre d'éléments non nul
 }
 
 
-void Layout::inputCards(std::vector<Carte*> deck){
+void Layout::inputCards(std::vector<const Carte*> deck){
 
     // ajoute seulement des cartes 
     // pas de shuffle, c'est Box qui s'en occupe
