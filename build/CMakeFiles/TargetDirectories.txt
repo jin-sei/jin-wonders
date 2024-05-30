@@ -1,0 +1,3 @@
+/home/kamski/Documents/UTC/GI01/LO21/projet/jin-wonders/build/CMakeFiles/Game.dir
+/home/kamski/Documents/UTC/GI01/LO21/projet/jin-wonders/build/CMakeFiles/edit_cache.dir
+/home/kamski/Documents/UTC/GI01/LO21/projet/jin-wonders/build/CMakeFiles/rebuild_cache.dir
