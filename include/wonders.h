@@ -65,7 +65,8 @@ class Carte {
         void setCoutRessource(std::list<ressource> cost) ;
 
         // UTILS
-        bool achetableRessource(std::list<ressource> buy) const ; 
+        std::list<ressource> achetableRessource(std::list<ressource> buy) const ; 
+        // retourne la liste des ressources manquante pour acheter la Carte
     
     protected : 
 
@@ -163,9 +164,15 @@ class Joueur {
 
     public:
 
-        std::vector<const Batiment*> getBatiments() const { return batiments; }
         void setAdversaire(Joueur* j){ adversaire = j ;}
+
+        std::vector<const Batiment*> getBatiments() const { return batiments; }
         void addBatiment(const Batiment* c){batiments.push_back(c);}
+
+        unsigned int getTresor() const { return tresor ; }
+        void setTresor(unsigned int t){tresor = t ;}
+        void addTresor(unsigned int t){tresor += t;}
+        void subTresor(int t){ if(tresor <= t){tresor = 0 ;} else { tresor -= t ;} }
 
         // fetch military, fetch science
         std::list<ressource> fetchRessource(std::list<ressource> r);
@@ -175,6 +182,8 @@ class Joueur {
         Joueur* adversaire ;
         std::vector<jeton_progres> jetons ;
         std::vector<const Batiment*> batiments ;
+
+        unsigned int tresor = 0 ;
 
 };
 

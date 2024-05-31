@@ -35,11 +35,12 @@ void Carte::setCoutRessource(std::list<ressource> cost){
     }
 }
 
-bool Carte::achetableRessource(std::list<ressource> buy) const {
-    if(cost_r.empty()) { return true ; }
-    if(cost_r.size() > buy.size()) { return false ; }
+std::list<ressource> Carte::achetableRessource(std::list<ressource> buy) const {
+    if(cost_r.empty()) { return {} ; }
+    //if(cost_r.size() > buy.size()) { return false ; }
 
-    std::list<ressource> pop_buy = buy ;
+    std::list<ressource> pop_buy = buy ; // pas forcément nécéssaire, à vérifier (on ne veut pas altérer la liste de ressource donnée)
+    std::list<ressource> missing = {}; 
     
     for(auto iter = cost_r.begin() ; iter != cost_r.end() ; ++iter){ // parcours les ressources demandées
         std::cout << "ASKED: " << tostringRessources(*iter) << std::endl ;
@@ -48,7 +49,7 @@ bool Carte::achetableRessource(std::list<ressource> buy) const {
             
             std::cout << "FOUND: " << tostringRessources(*iter_b) << " ; ";
 
-            if(*iter_b == *iter){ // trouvé la bonne ressource
+            if(*iter_b == *iter){ // bonne ressource trouvée
 
                 std::cout << " MATCH!" << std::endl;
                 pop_buy.erase(iter_b);
@@ -57,13 +58,13 @@ bool Carte::achetableRessource(std::list<ressource> buy) const {
             } else if(next(iter_b) == pop_buy.end()){ // on atteint la fin sans trouver de ressource match : ressource manquante
 
                 std::cout << "NOT FOUND!" << std::endl;
-                return false; 
+                missing.push_back(*iter);
             }
 
         } 
         std::cout << std::endl ;
     }
-    return true ; // remove
+    return missing ;
 }
 
 std::ostream& operator<<(std::ostream& f, Carte c){

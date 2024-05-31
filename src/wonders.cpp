@@ -112,4 +112,5 @@ void displayRessources(std::list<ressource> r){
     for( auto iter = r.begin() ; iter != r.end() ; ++iter ){
         std::cout << tostringRessources(*iter) << " ; " ; 
     }
+    std::cout << std::endl ; 
 }

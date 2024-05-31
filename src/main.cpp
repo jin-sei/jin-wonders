@@ -16,7 +16,9 @@ int main(){
     Merveille my_wonder1 = Merveille("Le Mausolée", type_batiment::Merveille, phase_jeu::AGE_I, {ressource::Argile, ressource::Bois, ressource::Bois, ressource::Pierre, ressource::Papyrus}, 0, 0, 5, true);
     std::cout << my_wonder1 << std::endl;
 
-    my_wonder1.achetableRessource({{ressource::Argile, ressource::Bois, ressource::Bois, ressource::Pierre, ressource::Verre, ressource::Papyrus, ressource::Papyrus}});
+    std::cout << "display missing ressources : " << std::endl ; 
+    displayRessources( my_wonder1.achetableRessource({{ressource::Bois, ressource::Bois, ressource::Verre, ressource::Papyrus, ressource::Papyrus}})) ;
+    std::cout << std::endl ; 
 
     Batiment my_batiment1 = Batiment("Muraille", type_batiment::Militaire, phase_jeu::AGE_III, {ressource::Pierre, ressource::Pierre}, 0, 0, 0, {ressource::Bouclier, ressource::Bouclier}, "");
     std::cout << my_batiment1 << std::endl ; 
@@ -89,11 +91,8 @@ int main(){
 
     //displayCards( my_box1.getJoueur(1)->getBatiments() );
 
-    //std::list<ressource> test = {ressource::Bois, ressource::Argile, ressource::Verre};
-
     displayRessources( my_box1.getJoueur(1)->fetchRessource({ressource::Argile, ressource::Bois})) ;
-
-    //displayCards(my_box1.getJoueur(1)->getBatiments());
+    std::cout << std::endl ;
 
     /*
     } catch(const GameException& e) {
@@ -106,16 +105,16 @@ int main(){
     return 0 ;  
 }
 
-// NILS TO DO : 
+// NILS TO DO :
 
 // CURRENT :
-// implémentation du Joueur : 
-// 1. Fetch ressources
+// fonction de détermination du coût d'achat par un joueur
+// (chaingage < ressources possédées < ressources conditionelles < ressources offertes < ressources à acheter)
+// méthodes booléens pour le Joueur pour check s'il possède un certain Jeton / Merveille
+
 
 // NEXT : 
 // implémenter le commerce 
-// améliorer la fonction de checkCout et d'achat ;
-// (chaingage < ressources possédées < ressources conditionelles < ressources offertes < ressources à acheter)
 // implémenter les bâtiments Commerce
 // implémenter les Guildes
 
