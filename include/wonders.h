@@ -4,6 +4,7 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <map>
 #include <set>
 #include <algorithm>
 #include <random>
@@ -12,8 +13,7 @@
 enum class type_batiment {Militaire, Scientifique, Manufacture, Premiere, Civil, Commerce, Guilde, Merveille};
 enum class jeton_progres{Agriculture, Architecture, Economie, Loi, Maconnerie, Mathematiques,Philosophie, Strategie, Theologie, Urbanisme};
 enum class phase_jeu {START=0, AGE_I=1, AGE_II=2, AGE_III=3, END=4};
-
-enum class ressource {Bouclier, Papyrus, Verre, Pierre, Argile, Bois, Roue, Compas, Pilon, Tablette, Lyre, Mesure, Telescope};
+enum class ressource {Bouclier=0, Papyrus=1, Verre=2, Pierre=3, Argile=4, Bois=5, Roue=6, Compas=7, Pilon=8, Tablette=9, Lyre=10, Mesure=11, Telescope=12};
 // toutes les ressources génériques sont centralisées dans cet enum : 
 // Boucliers, Matières Premières, Produits Manufacturés, Symbols Scientifiques
 
@@ -100,7 +100,7 @@ class Batiment : public Carte {
 
         Batiment(
             std::string nom, type_batiment type, phase_jeu age=phase_jeu::AGE_I,
-            std::list<ressource> cost_r={}, unsigned int cost=0, 
+            std::list<ressource> cost_r={}, unsigned int cost=0,
             unsigned int argent=0, unsigned int pt_victoire=0,
 
             std::list<ressource> prod={}, std::string chained_by=""
@@ -164,6 +164,7 @@ class Joueur {
 
     public:
 
+        Joueur* getAdversaire() const { return adversaire ; }
         void setAdversaire(Joueur* j){ adversaire = j ;}
 
         std::vector<const Batiment*> getBatiments() const { return batiments; }
@@ -173,6 +174,9 @@ class Joueur {
         void setTresor(unsigned int t){tresor = t ;}
         void addTresor(unsigned int t){tresor += t;}
         void subTresor(int t){ if(tresor <= t){tresor = 0 ;} else { tresor -= t ;} }
+
+        bool possessBatiment(std::string s); // répliquer pour les Merveilles et Jetons ?
+        unsigned int wannaBuyCard(const Carte* c);
 
         // fetch military, fetch science
         std::list<ressource> fetchRessource(std::list<ressource> r);
@@ -293,16 +297,27 @@ class Box {
             }
         }
 
+        unsigned int getFixedTrade(unsigned int x, ressource r){
+            switch(x){
+                case 1 : return fixed_trade1[r];
+                case 2 : return fixed_trade2[r];
+                default : throw GameException("ERREUR : FixedTrade est 1 ou 2");
+            }
+        }
+
         Joueur* getCurrentJoueur() const { return current ;}
+        void switchCurrent() { current = current->getAdversaire(); }
 
     private:
 
         Plateau* plateau ; 
 
-        Joueur* joueur1 ; 
-        Joueur* joueur2 ;
-
+        Joueur* joueur1 ; Joueur* joueur2 ;
         Joueur* current ;
+
+        std::map<ressource, unsigned int> fixed_trade1 ;
+        std::map<ressource, unsigned int> fixed_trade2 ;
+        // prix fixé du commerce : 0 = non fixé, other than 0 = fixed price
 
         phase_jeu phase ;
 

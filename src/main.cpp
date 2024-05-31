@@ -3,11 +3,9 @@
 #include <iostream>
 #include <string>
 
-int main(){
-
-    //try {
-
-    std::cout << std::endl << "7 WONDERS DUEL" << std::endl << "--------------" << std::endl  << std::endl ;
+int tests(){
+    
+    try {
     
     Carte my_carte1 = Carte("Stables", type_batiment::Militaire, phase_jeu::AGE_I, {ressource::Argile, ressource::Argile, ressource::Bois, ressource::Bois, ressource::Bois}, 3) ;
     my_carte1.setCoutRessource({ressource::Argile, ressource::Argile, ressource::Bois});
@@ -21,7 +19,7 @@ int main(){
     std::cout << std::endl ; 
 
     Batiment my_batiment1 = Batiment("Muraille", type_batiment::Militaire, phase_jeu::AGE_III, {ressource::Pierre, ressource::Pierre}, 0, 0, 0, {ressource::Bouclier, ressource::Bouclier}, "");
-    std::cout << my_batiment1 << std::endl ; 
+    std::cout << my_batiment1 << std::endl ;
 
     Batiment my_batiment2 = Batiment("Palace", type_batiment::Civil, phase_jeu::AGE_I, {}, 0, 0, 0, {}, "Obélisque");
     Batiment my_batiment3 = Batiment("Académie", type_batiment::Scientifique, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Roue}, "");
@@ -83,24 +81,38 @@ int main(){
 
     const Batiment my_batiment4 = Batiment("Montagne", type_batiment::Militaire, phase_jeu::AGE_III, {ressource::Pierre, ressource::Pierre}, 0, 0, 0, {ressource::Bouclier, ressource::Bouclier, ressource::Bouclier}, "");
     const Batiment my_batiment5 = Batiment("Chateau", type_batiment::Scientifique, phase_jeu::AGE_I, {ressource::Pierre, ressource::Pierre}, 0, 0, 0, {ressource::Roue}, "");
-    const Batiment my_batiment6 = Batiment("Caverne", type_batiment::Premiere, phase_jeu::AGE_II, {ressource::Pierre, ressource::Pierre}, 0, 0, 0, {ressource::Argile, ressource::Argile, ressource::Pierre}, "");
+    const Batiment my_batiment6 = Batiment("Caverne", type_batiment::Premiere, phase_jeu::AGE_II, {ressource::Pierre, ressource::Pierre}, 3, 0, 0, {ressource::Argile, ressource::Argile, ressource::Pierre}, "");
     
     my_box1.getJoueur(1)->addBatiment(&my_batiment4);
     my_box1.getJoueur(1)->addBatiment(&my_batiment5);
     my_box1.getJoueur(1)->addBatiment(&my_batiment6);
 
-    //displayCards( my_box1.getJoueur(1)->getBatiments() );
+    displayCards( my_box1.getJoueur(1)->getBatiments() );
 
     displayRessources( my_box1.getJoueur(1)->fetchRessource({ressource::Argile, ressource::Bois})) ;
-    std::cout << std::endl ;
+    std::cout << my_box1.getJoueur(1)->possessBatiment("Montagne") << std::endl ;
+    std::cout << my_box1.getJoueur(1)->wannaBuyCard(&my_batiment6) << std::endl ;
 
-    /*
+    std::cout << "Fixed price p1: " << my_box1.getFixedTrade(1, ressource::Argile) << std::endl ; 
+
+    
     } catch(const GameException& e) {
 
         std::cerr << e.getInfo() << std::endl; 
 
     }
-    */
+
+    return 0 ; 
+    
+}
+
+int main(){
+
+    tests() ;
+    std::cout << std::endl << "7 WONDERS DUEL" << std::endl << "--------------" << std::endl  << std::endl ;
+    Box my_box = Box() ; 
+    my_box.allCardsCreation();
+    my_box.newAge();
 
     return 0 ;  
 }
@@ -108,9 +120,7 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// fonction de détermination du coût d'achat par un joueur
-// (chaingage < ressources possédées < ressources conditionelles < ressources offertes < ressources à acheter)
-// méthodes booléens pour le Joueur pour check s'il possède un certain Jeton / Merveille
+// rendre le main plus propre, mettre la sandbox à part et tester une partie réelle
 
 
 // NEXT : 

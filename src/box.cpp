@@ -11,6 +11,14 @@ Box::Box(){
     current = joueur1 ; 
     
     phase = phase_jeu::START ;
+ 
+    fixed_trade1[ressource::Argile] = 0;
+    fixed_trade1[ressource::Pierre] = 0;
+    fixed_trade1[ressource::Bois] = 0;
+    fixed_trade1[ressource::Papyrus] = 0;
+    fixed_trade1[ressource::Verre] = 0;
+
+    fixed_trade2 = fixed_trade1; 
 
 }
 

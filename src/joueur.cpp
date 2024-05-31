@@ -19,5 +19,35 @@ std::list<ressource> Joueur::fetchRessource(std::list<ressource> r){
     }
 
     return production ; 
+}
+
+bool Joueur::possessBatiment(std::string s){
+    for( auto iter = batiments.begin() ; iter != batiments.end() ;  ++iter){
+
+        if( (**iter).getNom() == s ){
+            return true ;
+        }
+
+    }
+    return false ; 
+}
+
+unsigned int Joueur::wannaBuyCard(const Carte* c){
+    // retourne le nombre de pièces qu'il faudra dépenser pour acheter la Carte
+
+    // check chaînage 
+    if( possessBatiment(c->getNom()) ){ return c->getCoutArgent() ;}
+
+    // check ressources possédées
+    std::list<ressource> missing = c->achetableRessource(fetchRessource( {ressource::Argile, ressource::Bois, ressource::Pierre, ressource::Papyrus, ressource::Verre} ));
+    if( missing.empty() ){ return c->getCoutArgent(); }
+
+    return c->getCoutArgent(); // temporaire, à supprimer;
+
+    // check ressources conditionelles
+    
+
+    // check ressources offertes 
+    // check prix du commerce pour acheter les ressources manquantes
 
 }
