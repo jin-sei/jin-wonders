@@ -111,3 +111,10 @@ void Batiment::affichage() const {
     std::cout << "PRODUCTION: " ;
     displayRessources( production ) ;
 }
+
+Commerce::Commerce(
+    std::string nom, type_batiment type, phase_jeu age, 
+    std::list<ressource> cost_r, unsigned int cost, 
+    unsigned int argent, unsigned int pt_victoire, std::list<ressource> prod, 
+    std::string chained_by, const Perk* perk):
+        Batiment(nom, type,age, cost_r, cost, argent, pt_victoire, prod, chained_by), perk(perk) {}

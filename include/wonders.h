@@ -38,6 +38,9 @@ class GameException {
 		std::string info;
 };
 
+class Perk ;
+class Perk_CoinPerCard ;
+
 class Carte {
     // une fois créée par le contrôlleur Box (qui les gère),
     // les cartes sont immutables et toujours manipulés avec des pointeurs const
@@ -124,16 +127,24 @@ class Batiment : public Carte {
         std::string chained_by ; 
 };
 
+class Commerce : public Batiment {
+    // RESPONSABLE DE SA PERK !!!
+    public:
+
+        Commerce(std::string nom, type_batiment type, phase_jeu age=phase_jeu::AGE_I, std::list<ressource> cost_r={}, unsigned int cost=0, unsigned int argent=0, unsigned int pt_victoire=0, std::list<ressource> prod={}, std::string chained_by="", const Perk* perk=nullptr);
+        
+        const Perk* getPerk() const { return perk; }
+
+    private:
+
+        const Perk* perk ;
+};
+
 class Guilde : public Carte {
     public:
     private:
         type_batiment affectation ; 
         bool usurier ; 
-};
-
-class Commerce : public Batiment { // onBuild method
-    public:
-    private:
 };
 
 class Merveille : public Carte {
@@ -195,6 +206,10 @@ class Joueur {
         // fetch military, fetch science
         std::list<ressource> fetchRessource(std::list<ressource> r);
 
+        // utils pour les guildes et cartes commerces
+        unsigned int getNumberBatiment(type_batiment t);
+        unsigned int getNumberActiveWonders();
+
         // méthodes pour Trade
         unsigned int getFixedTrade(ressource r);
         void setFixedTrade(ressource r, unsigned int price);
@@ -205,6 +220,7 @@ class Joueur {
         Joueur* adversaire ;
         std::vector<jeton_progres> jetons ;
         std::vector<const Batiment*> batiments ;
+        std::vector<const Merveille*> merveilles ; 
 
         std::map<ressource, unsigned int> fixed_trade ; 
         // prix fixé du commerce : 0 = non fixé, other than 0 = fixed price
@@ -213,6 +229,51 @@ class Joueur {
 
         unsigned int id ;
 
+};
+
+class Perk { // ABSTRACT
+
+    public: // PERK: ON CALL
+    
+        virtual void onCall(Joueur* j) const = 0 ; // PURE VIRTUAL
+        // on prend en paramètre le joueur qui a construit la carte
+        ~Perk(){}
+
+    private:
+
+};
+
+class Perk_CoinPerCard : public Perk {
+
+    public: 
+        Perk_CoinPerCard(unsigned int coin, type_batiment card):coin(coin), card(card){}
+        ~Perk_CoinPerCard(){};
+
+        void gainCoinPerCard(Joueur* j) const ;
+        void onCall(Joueur* j) const override ;
+
+    private: 
+        unsigned int coin ; 
+        type_batiment card ; 
+
+}; 
+
+class Perk_PolyRessource : public Perk {
+
+};
+
+class Perk_Destruction : public Perk {
+
+};
+
+class Perk_FixTrade : public Perk {
+
+};
+
+class Perk_Classic : public Perk { // PERKS W/O SETTINGS
+// PICK JETONS
+// FREE CONSTRUCTION FROM DEFAUSSE
+// SACCAGE
 };
 
 class Layout {

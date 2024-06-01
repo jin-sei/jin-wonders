@@ -96,7 +96,31 @@ int tests(){
     std::cout << "Fixed price p2: " << my_box1.getJoueur(2)->getFixedTrade(ressource::Argile) << std::endl ; 
     //my_box1.getJoueur(2)->setFixedTrade(ressource::Argile, 1);
     //std::cout << "Fixed price p2: " << my_box1.getJoueur(2)->getFixedTrade(ressource::Argile) << std::endl ;
-    std::cout << "Trade price for p2: " << my_box1.getJoueur(2)->getTradePrice(ressource::Argile); 
+    std::cout << "Trade price for p2: " << my_box1.getJoueur(2)->getTradePrice(ressource::Argile) << std::endl << std::endl ; 
+
+    const Batiment mock_bat_1 = Batiment("Mock 1", type_batiment::Premiere);
+    const Batiment mock_bat_2 = Batiment("Mock 2", type_batiment::Premiere);
+    const Batiment mock_bat_3 = Batiment("Mock 3", type_batiment::Premiere);
+    const Batiment mock_bat_4 = Batiment("Mock 4", type_batiment::Premiere);
+    const Batiment mock_bat_5 = Batiment("Mock 5", type_batiment::Premiere);
+    const Batiment mock_bat_6 = Batiment("Mock 6", type_batiment::Manufacture);
+    my_box1.getJoueur(2)->addBatiment(&mock_bat_1);
+    my_box1.getJoueur(2)->addBatiment(&mock_bat_2);
+    my_box1.getJoueur(2)->addBatiment(&mock_bat_3);
+    my_box1.getJoueur(2)->addBatiment(&mock_bat_4);
+    my_box1.getJoueur(2)->addBatiment(&mock_bat_5);
+    my_box1.getJoueur(2)->addBatiment(&mock_bat_6);
+
+    std::cout << "batiment de p2 : " << std::endl ; 
+    displayCards( my_box1.getJoueur(2)->getBatiments() );
+
+    const Perk* perk_1 = new Perk_CoinPerCard(2, type_batiment::Premiere);
+    Commerce commerce_1 = Commerce("Commerce I", type_batiment::Commerce, phase_jeu::AGE_I, {}, 0, 0, 0, {}, "", perk_1);
+    std::cout << "trésor p2 before perk : " << my_box1.getJoueur(2)->getTresor() << std::endl;
+    commerce_1.getPerk()->onCall(my_box1.getJoueur(2));
+    std::cout << "trésor p2 after perk : " << my_box1.getJoueur(2)->getTresor() << std::endl;
+
+    delete perk_1 ;
 
     
     } catch(const GameException& e) {
@@ -113,9 +137,9 @@ int main(){
 
     tests() ;
     std::cout << std::endl << "7 WONDERS DUEL" << std::endl << "--------------" << std::endl  << std::endl ;
-    Box my_box = Box() ; 
-    my_box.allCardsCreation();
-    my_box.newAge();
+    //Box my_box = Box() ; 
+    //my_box.allCardsCreation();
+    //my_box.newAge();
     //displayCards( my_box.getAllBatiments() );
 
     return 0 ;
@@ -124,6 +148,7 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
+// systèmes des perks
 // implémenter les bâtiments Commerce
 // fix trade
 // ressources conditionelles

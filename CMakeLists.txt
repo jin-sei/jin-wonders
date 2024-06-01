@@ -12,7 +12,7 @@ include_directories(include)
 #file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 # Liens vers les fichiers source C++
-add_executable(Game src/main.cpp src/box.cpp src/plateau.cpp src/layout.cpp src/carte.cpp src/wonders.cpp src/joueur.cpp src/instance.cpp)
+add_executable(Game src/main.cpp src/box.cpp src/plateau.cpp src/layout.cpp src/carte.cpp src/perk.cpp src/wonders.cpp src/joueur.cpp src/instance.cpp)
 
 # Link libraries (if any)
 # target_link_libraries(MyExecutable PRIVATE some_library)

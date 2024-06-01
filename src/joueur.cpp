@@ -88,3 +88,23 @@ unsigned int Joueur::getTradePrice(ressource r){
         return this->getFixedTrade(r);
     }
 }
+
+unsigned int Joueur::getNumberBatiment(type_batiment t){
+    unsigned int nb = 0;  
+    for( auto iter =  batiments.begin() ; iter != batiments.end() ; ++iter ){
+        if( (**iter).getType() == t ){
+            nb ++ ; 
+        }
+    }
+    return nb;
+}
+
+unsigned int Joueur::getNumberActiveWonders(){
+    unsigned int nb = 0;  
+    for( auto iter =  merveilles.begin() ; iter != merveilles.end() ; ++iter ){
+        if( (**iter).getFeed() != nullptr ){
+            nb ++ ; 
+        }
+    }
+    return nb;
+}
