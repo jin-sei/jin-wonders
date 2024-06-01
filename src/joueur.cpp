@@ -3,6 +3,7 @@
 std::list<ressource> Joueur::fetchRessource(std::list<ressource> r){
     
     // iterates through the player's Batiments to find ressources
+    // does not include conditional ressources such as Wonders / Commerce buildings
     std::list<ressource> production ;
     std::list<ressource> temp  ;
 

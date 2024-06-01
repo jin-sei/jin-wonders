@@ -67,6 +67,8 @@ class Carte {
         // UTILS
         std::list<ressource> achetableRessource(std::list<ressource> buy) const ; 
         // retourne la liste des ressources manquante pour acheter la Carte
+
+        virtual void affichage() const ;
     
     protected : 
 
@@ -84,7 +86,7 @@ class Carte {
         unsigned int pt_victoire ;
 };
 
-std::ostream& operator<<(std::ostream& f, Carte c);
+std::ostream& operator<<(std::ostream& f, const Carte& c);
 
 template <typename T>
 void displayCards(std::vector<const T*> c){
@@ -113,6 +115,8 @@ class Batiment : public Carte {
         // SETTERS
         void setChainage(std::string new_chain) { chained_by = new_chain;}
         void setProduction(std::list<ressource> new_prod) { production = new_prod ;}
+
+        void affichage() const override ;
 
 
     private:

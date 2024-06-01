@@ -67,14 +67,8 @@ std::list<ressource> Carte::achetableRessource(std::list<ressource> buy) const {
     return missing ;
 }
 
-std::ostream& operator<<(std::ostream& f, Carte c){
-    f << c.getNom() << ", " << tostringType(c.getType()) << ", " << tostringAge(c.getAge()) << std::endl ; 
-    f << "COUT ARGENT: " << c.getCoutArgent() << std::endl ; 
-    f << "COUT RESSOURCES: " ;
-    std::list<ressource> res(c.getCoutRessource());
-    for(auto iter = res.begin() ; iter != res.end() ; ++iter) { f << tostringRessources(*iter) << " ; " ; }
-    f << std::endl ;
-    f << "REWARDS: " << c.getRewardArgent() << " pièces ; " << c.getPointVictoire() << " points victoire" << std::endl ;
+std::ostream& operator<<(std::ostream& f, const Carte& c){
+    c.affichage();
     return f ; 
 }
 
@@ -100,4 +94,20 @@ Carte(nom, type, age, cost_r, cost_m, argent, pt_victoire), chained_by(chained_b
     }
 
     production = prod ; 
+}
+
+void Carte::affichage() const {
+    std::cout << nom << ", " << tostringType(type) << ", " << tostringAge(c_age) << std::endl ; 
+    std::cout << "COUT ARGENT: " << cost_m << std::endl ;
+    std::cout << "COUT RESSOURCES: " ;
+    std::list<ressource> res(getCoutRessource());
+    for(auto iter = res.begin() ; iter != res.end() ; ++iter) { std::cout << tostringRessources(*iter) << " ; " ; }
+    std::cout << std::endl ;
+    std::cout << "REWARDS: " << argent << " pièces ; " << pt_victoire << " points victoire" << std::endl ;
+}
+
+void Batiment::affichage() const {
+    Carte::affichage();
+    std::cout << "PRODUCTION: " ;
+    displayRessources( production ) ;
 }

@@ -111,7 +111,7 @@ int tests(){
 
 int main(){
 
-    //tests() ;
+    tests() ;
     std::cout << std::endl << "7 WONDERS DUEL" << std::endl << "--------------" << std::endl  << std::endl ;
     Box my_box = Box() ; 
     my_box.allCardsCreation();
@@ -124,11 +124,13 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// faire une méthode virtuelle afficher pour Carte et Bâtiment à utiliser dans operator<<
+// implémenter les bâtiments Commerce
+// fix trade
+// ressources conditionelles
+// pièces par type de bâtiment
 
 
 // NEXT : 
-// implémenter les bâtiments Commerce
 // implémenter les Guildes
 
 
