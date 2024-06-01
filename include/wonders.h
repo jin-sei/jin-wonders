@@ -132,6 +132,7 @@ class Commerce : public Batiment {
     public:
 
         Commerce(std::string nom, type_batiment type, phase_jeu age=phase_jeu::AGE_I, std::list<ressource> cost_r={}, unsigned int cost=0, unsigned int argent=0, unsigned int pt_victoire=0, std::list<ressource> prod={}, std::string chained_by="", const Perk* perk=nullptr);
+        //~Commerce() { if(perk!=nullptr){delete perk ;} }
         
         const Perk* getPerk() const { return perk; }
 
@@ -237,7 +238,7 @@ class Perk { // ABSTRACT
     
         virtual void onCall(Joueur* j) const = 0 ; // PURE VIRTUAL
         // on prend en paramètre le joueur qui a construit la carte
-        ~Perk(){}
+        //~Perk(){} // vtable error paranoia ???
 
     private:
 
@@ -247,14 +248,14 @@ class Perk_CoinPerCard : public Perk {
 
     public: 
         Perk_CoinPerCard(unsigned int coin, type_batiment card):coin(coin), card(card){}
-        ~Perk_CoinPerCard(){};
+        //~Perk_CoinPerCard(){};
 
         void gainCoinPerCard(Joueur* j) const ;
         void onCall(Joueur* j) const override ;
 
-    private: 
-        unsigned int coin ; 
-        type_batiment card ; 
+    private: // perk settings
+        unsigned int coin ; // nombre de pièces que l'on gagne par carte
+        type_batiment card ; // type de carte sur laquelle le calcul se base
 
 }; 
 
@@ -262,11 +263,20 @@ class Perk_PolyRessource : public Perk {
 
 };
 
-class Perk_Destruction : public Perk {
+class Perk_Destruction : public Perk { // requires player interaction
 
 };
 
-class Perk_FixTrade : public Perk {
+class Perk_FixedTrade : public Perk {
+
+    public:
+        Perk_FixedTrade(ressource res, unsigned int coin): res(res), coin(coin){}
+
+        void setFixedTrade(Joueur* j) const ;
+        void onCall(Joueur* j) const override ; 
+    private: // perk settings
+        ressource res ; // ressource pour laquelle le prix de trade est fixé
+        unsigned int coin ; // prix fixé
 
 };
 

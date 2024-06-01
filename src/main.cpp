@@ -120,6 +120,13 @@ int tests(){
     commerce_1.getPerk()->onCall(my_box1.getJoueur(2));
     std::cout << "trésor p2 after perk : " << my_box1.getJoueur(2)->getTresor() << std::endl;
 
+    const Perk* perk_2 = new Perk_FixedTrade(ressource::Argile, 1);
+    Commerce commerce_2 = Commerce("Commerce II", type_batiment::Commerce, phase_jeu::AGE_I, {}, 0, 0, 0, {}, "", perk_2);
+    std::cout << "Trade price for p2 before perk : " << my_box1.getJoueur(2)->getTradePrice(ressource::Argile) << std::endl ; 
+    commerce_2.getPerk()->onCall(my_box1.getJoueur(2));
+    std::cout << "Trade price for p2 after perk : " << my_box1.getJoueur(2)->getTradePrice(ressource::Argile) << std::endl << std::endl ; 
+
+    delete perk_2 ; 
     delete perk_1 ;
 
     
@@ -149,11 +156,9 @@ int main(){
 
 // CURRENT :
 // systèmes des perks
-// implémenter les bâtiments Commerce
-// fix trade
-// ressources conditionelles
-// pièces par type de bâtiment
-
+// implémenter les bâtiments Commerce // fixed trade // ressources conditionelles
+// régler le problème du destructeur de Commerce qui génère un warning
+// constructeur de commerce pour checker le type de bat
 
 // NEXT : 
 // implémenter les Guildes
