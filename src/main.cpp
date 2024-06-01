@@ -126,8 +126,8 @@ int tests(){
     commerce_2.getPerk()->onCall(my_box1.getJoueur(2));
     std::cout << "Trade price for p2 after perk : " << my_box1.getJoueur(2)->getTradePrice(ressource::Argile) << std::endl << std::endl ; 
 
-    delete perk_2 ; 
-    delete perk_1 ;
+    //delete perk_2 ; 
+    //delete perk_1 ;
 
     
     } catch(const GameException& e) {
@@ -156,9 +156,7 @@ int main(){
 
 // CURRENT :
 // systèmes des perks
-// implémenter les bâtiments Commerce // fixed trade // ressources conditionelles
-// régler le problème du destructeur de Commerce qui génère un warning
-// constructeur de commerce pour checker le type de bat
+// implémenter les bâtiments Commerce // ressources conditionelles
 
 // NEXT : 
 // implémenter les Guildes
@@ -167,12 +165,13 @@ int main(){
 // MAIN QUESTS : 
 // méthodes du Plateau (pion conflit, saccages...)
 // distribution (début de partie) -> initialiser le plateau avec 5 jetons
-// effet des Merveilles et des Jetons
+// effet des Jetons
 
 
 // OTHER TASKS : 
 // distribution -> rajouter les cartes Guildes
 // instanciations -> rajouter les cartes Commerce et supprimer les doublons
+// implémenter un système pour communiquer simplement avec le joueur (choix...) : prendre en compte l'IA
 // tours de jeu 
 // début de jeu
 // fin de jeu, compter les points, recommencer une partie

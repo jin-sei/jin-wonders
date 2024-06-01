@@ -132,7 +132,7 @@ class Commerce : public Batiment {
     public:
 
         Commerce(std::string nom, type_batiment type, phase_jeu age=phase_jeu::AGE_I, std::list<ressource> cost_r={}, unsigned int cost=0, unsigned int argent=0, unsigned int pt_victoire=0, std::list<ressource> prod={}, std::string chained_by="", const Perk* perk=nullptr);
-        //~Commerce() { if(perk!=nullptr){delete perk ;} }
+        ~Commerce();
         
         const Perk* getPerk() const { return perk; }
 

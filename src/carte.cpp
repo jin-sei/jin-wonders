@@ -117,4 +117,10 @@ Commerce::Commerce(
     std::list<ressource> cost_r, unsigned int cost, 
     unsigned int argent, unsigned int pt_victoire, std::list<ressource> prod, 
     std::string chained_by, const Perk* perk):
-        Batiment(nom, type,age, cost_r, cost, argent, pt_victoire, prod, chained_by), perk(perk) {}
+        Batiment(nom, type,age, cost_r, cost, argent, pt_victoire, prod, chained_by), perk(perk) {
+
+            if( type != type_batiment::Commerce ){ throw GameException("ERREUR : instanciation d'un bâtiment non Commerce avec la classe Commerce");}
+
+}
+
+Commerce::~Commerce() { if(perk!=nullptr){delete perk ;} }
