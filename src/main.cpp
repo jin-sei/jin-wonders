@@ -11,7 +11,7 @@ int tests(){
     my_carte1.setCoutRessource({ressource::Argile, ressource::Argile, ressource::Bois});
     std::cout << my_carte1 << std::endl ; 
 
-    Merveille my_wonder1 = Merveille("Le Mausolée", type_batiment::Merveille, phase_jeu::AGE_I, {ressource::Argile, ressource::Bois, ressource::Bois, ressource::Pierre, ressource::Papyrus}, 0, 0, 5, true);
+    Merveille my_wonder1 = Merveille("Le Mausolée", type_batiment::Merveille, phase_jeu::AGE_I, {ressource::Argile, ressource::Bois, ressource::Bois, ressource::Pierre, ressource::Papyrus}, 0, 0, 5);
     std::cout << my_wonder1 << std::endl;
 
     std::cout << "display missing ressources : " << std::endl ; 
@@ -126,6 +126,11 @@ int tests(){
     commerce_2.getPerk()->onCall(my_box1.getJoueur(2));
     std::cout << "Trade price for p2 after perk : " << my_box1.getJoueur(2)->getTradePrice(ressource::Argile) << std::endl << std::endl ; 
 
+    
+    //Perk* perk_3 = new Perk_PolyRessource({ressource::Argile, ressource::Pierre, ressource::Bois});
+    //std::cout << "PERK 3 IS POLY RES ? " << perk_3->isPolyRes() << std::endl;
+    //delete perk_3 ; 
+
     //delete perk_2 ; 
     //delete perk_1 ;
 
@@ -155,8 +160,8 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// systèmes des perks
-// implémenter les bâtiments Commerce // ressources conditionelles
+// finir ystèmes des perks
+// ajouter les ressources Conditionelles à la méthode wannaBuyCard
 
 // NEXT : 
 // implémenter les Guildes
@@ -178,6 +183,7 @@ int main(){
 
 
 // SIDE QUESTS : 
+// écrire une documentation et expliquer les choix de développement
 // rendre Box singleton
 // rendre Carte abstraite (non instanciable)
 // rendre Joueur doubleton

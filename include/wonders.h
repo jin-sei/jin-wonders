@@ -38,8 +38,9 @@ class GameException {
 		std::string info;
 };
 
+// FORWARD DECLARATION
 class Perk ;
-class Perk_CoinPerCard ;
+class Perk_PolyRessource ; 
 
 class Carte {
     // une fois créée par le contrôlleur Box (qui les gère),
@@ -148,17 +149,22 @@ class Guilde : public Carte {
         bool usurier ; 
 };
 
-class Merveille : public Carte {
+class Merveille : public Commerce {
     public:
-        Merveille(std::string nom, type_batiment type=type_batiment::Merveille, phase_jeu age=phase_jeu::AGE_I, std::list<ressource> cost_r = {}, unsigned int cost_m = 0, unsigned int argent = 0, unsigned int pt_victoire = 0, bool b=false, Carte* f=nullptr) : Carte(nom, type, age, cost_r, cost_m, argent, pt_victoire), replay(b), feed(f) {
+        Merveille(std::string nom, type_batiment type=type_batiment::Merveille, phase_jeu age=phase_jeu::AGE_I, std::list<ressource> cost_r = {}, unsigned int cost_m = 0, unsigned int argent = 0, unsigned int pt_victoire = 0, std::list<ressource> prod={}, std::string chained_by="", const Perk* perk=nullptr, bool b=false, Carte* f=nullptr) : 
+        Commerce(nom, type, age, cost_r, cost_m, argent, pt_victoire, prod, chained_by, perk), replay(b), feed(f) {
             if(type!=type_batiment::Merveille){
-                throw GameException("Merveille instanciée avec un type autre que Merveille");
+                throw GameException("ERREUR: Merveille instanciée avec un type autre que Merveille");
+            }
+            if(chained_by != ""){
+                throw GameException("ERREUR: une Merveille ne peut pas être chaîneée");
             }
         }; 
 
         //GETTERS
         bool getReplay() const { return replay ;}
         const Carte* getFeed() const { return feed ;}
+        bool isFed() const { return feed != nullptr; }
 
         //SETTERS
         void setReplay(bool b) { replay = b ;}
@@ -239,6 +245,7 @@ class Perk { // ABSTRACT
         virtual void onCall(Joueur* j) const = 0 ; // PURE VIRTUAL
         // on prend en paramètre le joueur qui a construit la carte
         //~Perk(){} // vtable error paranoia ???
+        bool isPolyRes(); 
 
     private:
 
@@ -259,9 +266,22 @@ class Perk_CoinPerCard : public Perk {
 
 }; 
 
-class Perk_PolyRessource : public Perk {
+/* 
 
+// La Perk PolyRessource est abandonnée
+// On considère à la place que si un bâtiment de Commerce ou une Merveille produit des ressources,
+// il s'agit d'une poly ressource
+
+class Perk_PolyRessource : public Perk {
+    public:
+        Perk_PolyRessource(std::list<ressource> res):res(res){}
+
+        std::list<ressource> getPolyRessources() const ;
+        void onCall(Joueur* j) const override ; 
+    private:
+        std::list<ressource> res;
 };
+*/
 
 class Perk_Destruction : public Perk { // requires player interaction
 

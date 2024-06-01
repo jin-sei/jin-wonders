@@ -119,7 +119,9 @@ Commerce::Commerce(
     std::string chained_by, const Perk* perk):
         Batiment(nom, type,age, cost_r, cost, argent, pt_victoire, prod, chained_by), perk(perk) {
 
-            if( type != type_batiment::Commerce ){ throw GameException("ERREUR : instanciation d'un bâtiment non Commerce avec la classe Commerce");}
+            if( type != type_batiment::Commerce && type != type_batiment::Merveille ){ throw GameException("ERREUR : instanciation d'un bâtiment non Commerce avec la classe Commerce");}
+            // comme le constructeur de Commerce est appelé pour construire Merveille
+            // we need to allow the Commerce constructor to create Merveille types
 
 }
 
