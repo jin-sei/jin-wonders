@@ -60,3 +60,30 @@ unsigned int Joueur::wannaBuyCard(const Carte* c){
     return price ; 
 
 }
+
+
+unsigned int Joueur::getFixedTrade(ressource r){
+    if( static_cast<int>(r) > 5 || static_cast<int>(r) < 1 ){
+        throw GameException("ERREUR : FixedTrade ne s'applique que aux ressources de production");
+    }
+    return fixed_trade[r];
+
+}
+
+void Joueur::setFixedTrade(ressource r, unsigned int price){
+    if( static_cast<int>(r) > 5 || static_cast<int>(r) < 1 ){
+        throw GameException("ERREUR : FixedTrade ne s'applique que aux ressources de production");
+    }
+    fixed_trade[r] = price ; 
+}
+
+unsigned int Joueur::getTradePrice(ressource r){
+    if( static_cast<int>(r) > 5 || static_cast<int>(r) < 1 ){
+        throw GameException("ERREUR : le prix de Trade ne s'obtient que pour les ressources de production");
+    }
+    if( this->getFixedTrade(r) == 0){
+        return this->getAdversaire()->fetchRessource({r}).size() + 2 ;
+    } else {
+        return this->getFixedTrade(r);
+    }
+}

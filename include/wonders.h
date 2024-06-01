@@ -164,7 +164,13 @@ class Joueur {
 
     public:
 
-        Joueur(unsigned int id) : id(id){}
+        Joueur(unsigned int id) : id(id){
+            fixed_trade[ressource::Argile] = 0;
+            fixed_trade[ressource::Pierre] = 0;
+            fixed_trade[ressource::Bois] = 0;
+            fixed_trade[ressource::Papyrus] = 0;
+            fixed_trade[ressource::Verre] = 0;
+        }
 
         unsigned int getId() const { return id ;}
 
@@ -185,11 +191,19 @@ class Joueur {
         // fetch military, fetch science
         std::list<ressource> fetchRessource(std::list<ressource> r);
 
+        // méthodes pour Trade
+        unsigned int getFixedTrade(ressource r);
+        void setFixedTrade(ressource r, unsigned int price);
+        unsigned int getTradePrice(ressource r);
+
     private:
 
         Joueur* adversaire ;
         std::vector<jeton_progres> jetons ;
         std::vector<const Batiment*> batiments ;
+
+        std::map<ressource, unsigned int> fixed_trade ; 
+        // prix fixé du commerce : 0 = non fixé, other than 0 = fixed price
 
         unsigned int tresor = 0 ;
 
@@ -303,12 +317,10 @@ class Box {
             }
         }
 
-        unsigned int getFixedTrade(Joueur* j, ressource r);
-        void setFixedTrade(Joueur* j, ressource r, unsigned int price);
-        unsigned int getTradePrice(Joueur* j, ressource r);
-
         Joueur* getCurrentJoueur() const { return current ;}
         void switchCurrent() { current = current->getAdversaire(); }
+
+        std::vector<const Carte*> getAllBatiments() const { return all_batiments; }
 
     private:
 
@@ -317,16 +329,12 @@ class Box {
         Joueur* joueur1 ; Joueur* joueur2 ;
         Joueur* current ;
 
-        std::map<ressource, unsigned int> fixed_trade1 ;
-        std::map<ressource, unsigned int> fixed_trade2 ;
-        // prix fixé du commerce : 0 = non fixé, other than 0 = fixed price
-
         phase_jeu phase ;
 
-        std::list<Jeton*> all_jetons ; // NOT USED YET
-        std::list<const Carte*> all_batiments ;
-        std::list<const Carte*> all_guildes ; // NOT USED YET
-        std::list<const Merveille*> all_merveilles ; // NOT USED YET
+        std::vector<Jeton*> all_jetons ; // NOT USED YET
+        std::vector<const Carte*> all_batiments ;
+        std::vector<const Carte*> all_guildes ; // NOT USED YET
+        std::vector<const Merveille*> all_merveilles ; // NOT USED YET
 
-        std::list<const Carte*> defausse ; // NOT USED YET
+        std::vector<const Carte*> defausse ; // NOT USED YET
 };

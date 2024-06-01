@@ -8,7 +8,7 @@ void Box::allCardsCreation(){
     // 7 cartes Guilde
     // 12 cartes Merveille
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Chantier", 
             type_batiment::Premiere, 
             phase_jeu::AGE_I,
@@ -20,7 +20,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment( // DUPLICATE
+    all_batiments.push_back( new Batiment( // DUPLICATE
             "Chantier", 
             type_batiment::Premiere, 
             phase_jeu::AGE_I,
@@ -32,7 +32,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Exploitation", 
             type_batiment::Premiere, 
             phase_jeu::AGE_I,
@@ -44,7 +44,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment( // DUPLICATE
+    all_batiments.push_back( new Batiment( // DUPLICATE
             "Exploitation", 
             type_batiment::Premiere, 
             phase_jeu::AGE_I,
@@ -56,7 +56,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Bassin argileux", 
             type_batiment::Premiere, 
             phase_jeu::AGE_I, 
@@ -68,7 +68,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment( // DUPLICATE
+    all_batiments.push_back( new Batiment( // DUPLICATE
             "Bassin argileux", 
             type_batiment::Premiere, 
             phase_jeu::AGE_I, 
@@ -80,7 +80,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Cavite", 
             type_batiment::Premiere, 
             phase_jeu::AGE_I, 
@@ -92,7 +92,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment( // DUPLICATE
+    all_batiments.push_back( new Batiment( // DUPLICATE
             "Cavite", 
             type_batiment::Premiere, 
             phase_jeu::AGE_I, 
@@ -104,7 +104,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Gisement", 
             type_batiment::Premiere, 
             phase_jeu::AGE_I, 
@@ -116,7 +116,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Mine", 
             type_batiment::Premiere, 
             phase_jeu::AGE_I, 
@@ -128,7 +128,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Verrerie", 
             type_batiment::Manufacture, 
             phase_jeu::AGE_I, 
@@ -140,7 +140,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Presse", 
             type_batiment::Manufacture, 
             phase_jeu::AGE_I, 
@@ -152,7 +152,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Tour de garde", 
             type_batiment::Militaire, 
             phase_jeu::AGE_I, 
@@ -164,7 +164,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Atelier", 
             type_batiment::Scientifique, 
             phase_jeu::AGE_I, 
@@ -176,7 +176,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "apothicaire", 
             type_batiment::Scientifique, 
             phase_jeu::AGE_I, 
@@ -191,7 +191,7 @@ void Box::allCardsCreation(){
 
 
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Ecuries", 
             type_batiment::Militaire, 
             phase_jeu::AGE_I, 
@@ -203,7 +203,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Caserne", 
             type_batiment::Militaire, 
             phase_jeu::AGE_I, 
@@ -215,7 +215,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Palissade", 
             type_batiment::Militaire, 
             phase_jeu::AGE_I, 
@@ -227,7 +227,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Scriptorium", 
             type_batiment::Scientifique, 
             phase_jeu::AGE_I, 
@@ -239,7 +239,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Officine", 
             type_batiment::Scientifique, 
             phase_jeu::AGE_I, 
@@ -251,7 +251,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Theatre", 
             type_batiment::Civil, 
             phase_jeu::AGE_I, 
@@ -263,7 +263,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Autel", 
             type_batiment::Civil, 
             phase_jeu::AGE_I, 
@@ -276,7 +276,7 @@ void Box::allCardsCreation(){
     ));
 
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Bains", 
             type_batiment::Civil, 
             phase_jeu::AGE_I, 
@@ -288,7 +288,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Scierie", 
             type_batiment::Premiere, 
             phase_jeu::AGE_II, 
@@ -300,7 +300,19 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment( // DUPLICATE
+            "Scierie", 
+            type_batiment::Premiere, 
+            phase_jeu::AGE_II, 
+            {}, // Liste des ressource nécéssaires
+            2, // Coût en argent
+            0, // Récompense en argent
+            0, // Points de victoire
+            {ressource::Bois,ressource::Bois}, // Liste des ressource produites par le bâtiment
+            "" // Bâtiment chaîné
+    ));
+
+    all_batiments.push_back( new Batiment(
             "Briqueterie", 
             type_batiment::Premiere, 
             phase_jeu::AGE_II, 
@@ -312,7 +324,19 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment( // DUPLICATE
+            "Briqueterie", 
+            type_batiment::Premiere, 
+            phase_jeu::AGE_II, 
+            {}, // Liste des ressource nécéssaires
+            2, // Coût en argent
+            0, // Récompense en argent
+            0, // Points de victoire
+            {ressource::Argile,ressource::Argile}, // Liste des ressource produites par le bâtiment
+            "" // Bâtiment chaîné
+    ));
+
+    all_batiments.push_back( new Batiment(
             "Carriere", 
             type_batiment::Premiere, 
             phase_jeu::AGE_II, 
@@ -324,7 +348,19 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment( // DUPLICATE
+            "Carriere", 
+            type_batiment::Premiere, 
+            phase_jeu::AGE_II, 
+            {}, // Liste des ressource nécéssaires
+            2, // Coût en argent
+            0, // Récompense en argent
+            0, // Points de victoire
+            {ressource::Pierre,ressource::Pierre}, // Liste des ressource produites par le bâtiment
+            "" // Bâtiment chaîné
+    ));
+
+    all_batiments.push_back( new Batiment(
             "Soufflerie", 
             type_batiment::Manufacture, 
             phase_jeu::AGE_II, 
@@ -336,7 +372,19 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment( // DUPLICATE
+            "Soufflerie", 
+            type_batiment::Manufacture, 
+            phase_jeu::AGE_II, 
+            {}, // Liste des ressource nécéssaires
+            0, // Coût en argent
+            0, // Récompense en argent
+            0, // Points de victoire
+            {ressource::Verre}, // Liste des ressource produites par le bâtiment
+            "" // Bâtiment chaîné
+    ));
+
+    all_batiments.push_back( new Batiment(
             "Sechoir", 
             type_batiment::Manufacture, 
             phase_jeu::AGE_II, 
@@ -348,7 +396,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Muraille", 
             type_batiment::Militaire, 
             phase_jeu::AGE_II, 
@@ -360,7 +408,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Tribunal", 
             type_batiment::Civil, 
             phase_jeu::AGE_II, 
@@ -372,7 +420,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Haras", 
             type_batiment::Militaire, 
             phase_jeu::AGE_II, 
@@ -384,7 +432,7 @@ void Box::allCardsCreation(){
             "Ecuries" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Baraquements", 
             type_batiment::Militaire, 
             phase_jeu::AGE_II, 
@@ -396,7 +444,7 @@ void Box::allCardsCreation(){
             "Caserne" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Champ de tir", 
             type_batiment::Militaire, 
             phase_jeu::AGE_II, 
@@ -408,7 +456,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Place d'arme", 
             type_batiment::Militaire, 
             phase_jeu::AGE_II, 
@@ -420,7 +468,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Bibliotheque", 
             type_batiment::Scientifique, 
             phase_jeu::AGE_II, 
@@ -432,7 +480,7 @@ void Box::allCardsCreation(){
             "Scriptorium" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Dispensaire", 
             type_batiment::Scientifique, 
             phase_jeu::AGE_II, 
@@ -444,7 +492,7 @@ void Box::allCardsCreation(){
             "Officine" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Ecole", 
             type_batiment::Scientifique, 
             phase_jeu::AGE_II, 
@@ -456,7 +504,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Laboratoire", 
             type_batiment::Scientifique, 
             phase_jeu::AGE_II, 
@@ -468,7 +516,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Statue", 
             type_batiment::Civil, 
             phase_jeu::AGE_II, 
@@ -480,7 +528,7 @@ void Box::allCardsCreation(){
             "Theatre" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Temple", 
             type_batiment::Civil, 
             phase_jeu::AGE_II, 
@@ -492,7 +540,7 @@ void Box::allCardsCreation(){
             "Autel" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Aqueduc", 
             type_batiment::Civil, 
             phase_jeu::AGE_II, 
@@ -504,7 +552,7 @@ void Box::allCardsCreation(){
             "Bains" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Rostres", 
             type_batiment::Civil, 
             phase_jeu::AGE_II, 
@@ -516,7 +564,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Arsenal", 
             type_batiment::Militaire, 
             phase_jeu::AGE_III, 
@@ -528,7 +576,67 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment( // DUPLICATE
+            "Arsenal", 
+            type_batiment::Militaire, 
+            phase_jeu::AGE_III, 
+            {ressource::Argile, ressource::Argile, ressource::Argile, ressource::Bois, ressource::Bois}, // Liste des ressource nécéssaires
+            0, // Coût en argent
+            0, // Récompense en argent
+            0, // Points de victoire
+            {ressource::Bouclier, ressource::Bouclier, ressource::Bouclier}, // Liste des ressource produites par le bâtiment
+            "" // Bâtiment chaîné
+    ));
+
+    all_batiments.push_back( new Batiment( // DUPLICATE
+            "Arsenal", 
+            type_batiment::Militaire, 
+            phase_jeu::AGE_III, 
+            {ressource::Argile, ressource::Argile, ressource::Argile, ressource::Bois, ressource::Bois}, // Liste des ressource nécéssaires
+            0, // Coût en argent
+            0, // Récompense en argent
+            0, // Points de victoire
+            {ressource::Bouclier, ressource::Bouclier, ressource::Bouclier}, // Liste des ressource produites par le bâtiment
+            "" // Bâtiment chaîné
+    ));
+
+    all_batiments.push_back( new Batiment( // DUPLICATE
+            "Arsenal", 
+            type_batiment::Militaire, 
+            phase_jeu::AGE_III, 
+            {ressource::Argile, ressource::Argile, ressource::Argile, ressource::Bois, ressource::Bois}, // Liste des ressource nécéssaires
+            0, // Coût en argent
+            0, // Récompense en argent
+            0, // Points de victoire
+            {ressource::Bouclier, ressource::Bouclier, ressource::Bouclier}, // Liste des ressource produites par le bâtiment
+            "" // Bâtiment chaîné
+    ));
+
+    all_batiments.push_back( new Batiment( // DUPLICATE
+            "Arsenal", 
+            type_batiment::Militaire, 
+            phase_jeu::AGE_III, 
+            {ressource::Argile, ressource::Argile, ressource::Argile, ressource::Bois, ressource::Bois}, // Liste des ressource nécéssaires
+            0, // Coût en argent
+            0, // Récompense en argent
+            0, // Points de victoire
+            {ressource::Bouclier, ressource::Bouclier, ressource::Bouclier}, // Liste des ressource produites par le bâtiment
+            "" // Bâtiment chaîné
+    ));
+
+    all_batiments.push_back( new Batiment( // DUPLICATE
+            "Arsenal", 
+            type_batiment::Militaire, 
+            phase_jeu::AGE_III, 
+            {ressource::Argile, ressource::Argile, ressource::Argile, ressource::Bois, ressource::Bois}, // Liste des ressource nécéssaires
+            0, // Coût en argent
+            0, // Récompense en argent
+            0, // Points de victoire
+            {ressource::Bouclier, ressource::Bouclier, ressource::Bouclier}, // Liste des ressource produites par le bâtiment
+            "" // Bâtiment chaîné
+    ));
+
+    all_batiments.push_back( new Batiment(
             "Pretoire", 
             type_batiment::Militaire, 
             phase_jeu::AGE_III, 
@@ -540,7 +648,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Academie", 
             type_batiment::Scientifique, 
             phase_jeu::AGE_III, 
@@ -552,7 +660,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Etude", 
             type_batiment::Scientifique, 
             phase_jeu::AGE_III, 
@@ -564,7 +672,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Palace", 
             type_batiment::Civil, 
             phase_jeu::AGE_III, 
@@ -576,7 +684,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Hotel de ville", 
             type_batiment::Civil, 
             phase_jeu::AGE_III, 
@@ -588,7 +696,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Obelisque", 
             type_batiment::Civil, 
             phase_jeu::AGE_III, 
@@ -600,7 +708,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Fortifications", 
             type_batiment::Militaire, 
             phase_jeu::AGE_III, 
@@ -612,7 +720,7 @@ void Box::allCardsCreation(){
             "Palissade" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Atelier de siege", 
             type_batiment::Militaire, 
             phase_jeu::AGE_III, 
@@ -624,7 +732,7 @@ void Box::allCardsCreation(){
             "Champ de tir" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Cirque", 
             type_batiment::Militaire, 
             phase_jeu::AGE_III, 
@@ -636,7 +744,7 @@ void Box::allCardsCreation(){
             "Place d'arme" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Universite", 
             type_batiment::Scientifique, 
             phase_jeu::AGE_III, 
@@ -648,7 +756,7 @@ void Box::allCardsCreation(){
             "Ecole" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Observatoire", 
             type_batiment::Scientifique, 
             phase_jeu::AGE_III, 
@@ -660,7 +768,7 @@ void Box::allCardsCreation(){
             "Laboratoire" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Jardins", 
             type_batiment::Civil, 
             phase_jeu::AGE_III, 
@@ -672,7 +780,7 @@ void Box::allCardsCreation(){
             "Statue" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Pantheon", 
             type_batiment::Civil, 
             phase_jeu::AGE_III, 
@@ -684,7 +792,7 @@ void Box::allCardsCreation(){
             "Temple" // Bâtiment chaîné
     ));
 
-    all_batiments.push_front( new Batiment(
+    all_batiments.push_back( new Batiment(
             "Senat", 
             type_batiment::Civil, 
             phase_jeu::AGE_III, 
@@ -707,7 +815,7 @@ void Box::allCardsCreation(){
         else if ( i < 66 ){ p = phase_jeu::AGE_III ; }
 
         //const Batiment* new_bat = new new Batiment(...)
-        all_batiments.push_front(  new new Batiment("Bâtiment Civil "+std::to_string(i+1), type_batiment::Civil, p) ));
+        all_batiments.push_back(  new new Batiment("Bâtiment Civil "+std::to_string(i+1), type_batiment::Civil, p) ));
 
     }
     */

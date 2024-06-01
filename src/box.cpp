@@ -11,14 +11,6 @@ Box::Box(){
     current = joueur1 ; 
     
     phase = phase_jeu::START ;
- 
-    fixed_trade1[ressource::Argile] = 0;
-    fixed_trade1[ressource::Pierre] = 0;
-    fixed_trade1[ressource::Bois] = 0;
-    fixed_trade1[ressource::Papyrus] = 0;
-    fixed_trade1[ressource::Verre] = 0;
-
-    fixed_trade2 = fixed_trade1; 
 
 }
 
@@ -119,38 +111,4 @@ void Box::distributeCards(phase_jeu p){
 
     return ; 
 
-}
-
-unsigned int Box::getFixedTrade(Joueur* j, ressource r){
-    if( static_cast<int>(r) > 5 || static_cast<int>(r) < 1 ){
-        throw GameException("ERREUR : FixedTrade ne s'applique que aux ressources de production");
-    }
-    switch(j->getId()){
-        case 1 : return fixed_trade1[r];
-        case 2 : return fixed_trade2[r];
-        default : throw GameException("ERREUR : FixedTrade est 1 ou 2");
-    }
-
-}
-
-void Box::setFixedTrade(Joueur* j, ressource r, unsigned int price){
-    if( static_cast<int>(r) > 5 || static_cast<int>(r) < 1 ){
-        throw GameException("ERREUR : FixedTrade ne s'applique que aux ressources de production");
-    }
-    switch(j->getId()){
-        case 1 : fixed_trade1[r] = price ; break ; 
-        case 2 : fixed_trade2[r] = price ; break ; 
-        default : throw GameException("ERREUR : FixedTrade est 1 ou 2");
-    }
-}
-
-unsigned int Box::getTradePrice(Joueur* j, ressource r){
-    if( static_cast<int>(r) > 5 || static_cast<int>(r) < 1 ){
-        throw GameException("ERREUR : le prix de Trade ne s'obtient que pour les ressources de production");
-    }
-    if( this->getFixedTrade(j, r) == 0){
-        return j->getAdversaire()->fetchRessource({r}).size() + 2 ;
-    } else {
-        return this->getFixedTrade(j, r);
-    }
 }

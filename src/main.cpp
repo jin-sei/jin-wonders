@@ -93,10 +93,10 @@ int tests(){
     std::cout << my_box1.getJoueur(1)->possessBatiment("Montagne") << std::endl ;
     std::cout << my_box1.getJoueur(1)->wannaBuyCard(&my_batiment6) << std::endl ;
 
-    std::cout << "Fixed price p2: " << my_box1.getFixedTrade(my_box1.getJoueur(2), ressource::Argile) << std::endl ; 
-    //my_box1.setFixedTrade(my_box1.getJoueur(2), ressource::Argile, 1);
-    //std::cout << "Fixed price p2: " << my_box1.getFixedTrade(my_box1.getJoueur(2), ressource::Argile) << std::endl ;
-    std::cout << "Trade price for p2: " << my_box1.getTradePrice(my_box1.getJoueur(2), ressource::Argile); 
+    std::cout << "Fixed price p2: " << my_box1.getJoueur(2)->getFixedTrade(ressource::Argile) << std::endl ; 
+    //my_box1.getJoueur(2)->setFixedTrade(ressource::Argile, 1);
+    //std::cout << "Fixed price p2: " << my_box1.getJoueur(2)->getFixedTrade(ressource::Argile) << std::endl ;
+    std::cout << "Trade price for p2: " << my_box1.getJoueur(2)->getTradePrice(ressource::Argile); 
 
     
     } catch(const GameException& e) {
@@ -116,16 +116,15 @@ int main(){
     Box my_box = Box() ; 
     my_box.allCardsCreation();
     my_box.newAge();
+    //displayCards( my_box.getAllBatiments() );
 
-    return 0 ;  
+    return 0 ;
 }
 
 // NILS TO DO :
 
 // CURRENT :
-// rendre le main plus propre, mettre la sandbox à part et tester une partie réelle
-// finir d'implémenter le commerce et déplacer les méthodes Trade dans Joueur
-// utiliser les instanciations de Ziad
+// faire une méthode virtuelle afficher pour Carte et Bâtiment à utiliser dans operator<<
 
 
 // NEXT : 
@@ -141,6 +140,7 @@ int main(){
 
 // OTHER TASKS : 
 // distribution -> rajouter les cartes Guildes
+// instanciations -> rajouter les cartes Commerce et supprimer les doublons
 // tours de jeu 
 // début de jeu
 // fin de jeu, compter les points, recommencer une partie
