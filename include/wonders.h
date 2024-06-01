@@ -13,7 +13,7 @@
 enum class type_batiment {Militaire, Scientifique, Manufacture, Premiere, Civil, Commerce, Guilde, Merveille};
 enum class jeton_progres{Agriculture, Architecture, Economie, Loi, Maconnerie, Mathematiques,Philosophie, Strategie, Theologie, Urbanisme};
 enum class phase_jeu {START=0, AGE_I=1, AGE_II=2, AGE_III=3, END=4};
-enum class ressource {Bouclier=0, Papyrus=1, Verre=2, Pierre=3, Argile=4, Bois=5, Roue=6, Compas=7, Pilon=8, Tablette=9, Lyre=10, Mesure=11, Telescope=12};
+enum class ressource {Bouclier=0, Papyrus=1, Verre=2, Pierre=3, Argile=4, Bois=5, Telescope=6, Roue=7, Cadran=8, Pilon=9, Compas=10, Plume=11, Balance=12};
 // toutes les ressources génériques sont centralisées dans cet enum : 
 // Boucliers, Matières Premières, Produits Manufacturés, Symbols Scientifiques
 
@@ -127,7 +127,7 @@ class Guilde : public Carte {
         bool usurier ; 
 };
 
-class Commerce : public Batiment {
+class Commerce : public Batiment { // onBuild method
     public:
     private:
 };
@@ -164,6 +164,10 @@ class Joueur {
 
     public:
 
+        Joueur(unsigned int id) : id(id){}
+
+        unsigned int getId() const { return id ;}
+
         Joueur* getAdversaire() const { return adversaire ; }
         void setAdversaire(Joueur* j){ adversaire = j ;}
 
@@ -188,6 +192,8 @@ class Joueur {
         std::vector<const Batiment*> batiments ;
 
         unsigned int tresor = 0 ;
+
+        unsigned int id ;
 
 };
 
@@ -282,7 +288,7 @@ class Box {
         Box();
         ~Box();
 
-        void allCardsCreation();
+        void allCardsCreation(); // dans instance.cpp
         //void displayAllCards(); 
         void newAge();
         void distributeCards(phase_jeu p);
@@ -297,13 +303,9 @@ class Box {
             }
         }
 
-        unsigned int getFixedTrade(unsigned int x, ressource r){
-            switch(x){
-                case 1 : return fixed_trade1[r];
-                case 2 : return fixed_trade2[r];
-                default : throw GameException("ERREUR : FixedTrade est 1 ou 2");
-            }
-        }
+        unsigned int getFixedTrade(Joueur* j, ressource r);
+        void setFixedTrade(Joueur* j, ressource r, unsigned int price);
+        unsigned int getTradePrice(Joueur* j, ressource r);
 
         Joueur* getCurrentJoueur() const { return current ;}
         void switchCurrent() { current = current->getAdversaire(); }

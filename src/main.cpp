@@ -93,7 +93,10 @@ int tests(){
     std::cout << my_box1.getJoueur(1)->possessBatiment("Montagne") << std::endl ;
     std::cout << my_box1.getJoueur(1)->wannaBuyCard(&my_batiment6) << std::endl ;
 
-    std::cout << "Fixed price p1: " << my_box1.getFixedTrade(1, ressource::Argile) << std::endl ; 
+    std::cout << "Fixed price p2: " << my_box1.getFixedTrade(my_box1.getJoueur(2), ressource::Argile) << std::endl ; 
+    //my_box1.setFixedTrade(my_box1.getJoueur(2), ressource::Argile, 1);
+    //std::cout << "Fixed price p2: " << my_box1.getFixedTrade(my_box1.getJoueur(2), ressource::Argile) << std::endl ;
+    std::cout << "Trade price for p2: " << my_box1.getTradePrice(my_box1.getJoueur(2), ressource::Argile); 
 
     
     } catch(const GameException& e) {
@@ -108,7 +111,7 @@ int tests(){
 
 int main(){
 
-    tests() ;
+    //tests() ;
     std::cout << std::endl << "7 WONDERS DUEL" << std::endl << "--------------" << std::endl  << std::endl ;
     Box my_box = Box() ; 
     my_box.allCardsCreation();
@@ -121,10 +124,11 @@ int main(){
 
 // CURRENT :
 // rendre le main plus propre, mettre la sandbox à part et tester une partie réelle
+// finir d'implémenter le commerce et déplacer les méthodes Trade dans Joueur
+// utiliser les instanciations de Ziad
 
 
 // NEXT : 
-// implémenter le commerce 
 // implémenter les bâtiments Commerce
 // implémenter les Guildes
 

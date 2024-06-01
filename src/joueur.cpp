@@ -36,7 +36,7 @@ unsigned int Joueur::wannaBuyCard(const Carte* c){
     // retourne le nombre de pièces qu'il faudra dépenser pour acheter la Carte
 
     // check chaînage 
-    if( possessBatiment(c->getNom()) ){ return c->getCoutArgent() ;}
+    if( possessBatiment(c->getNom()) ){ return 0 ;}
 
     // check ressources possédées
     std::list<ressource> missing = c->achetableRessource(fetchRessource( {ressource::Argile, ressource::Bois, ressource::Pierre, ressource::Papyrus, ressource::Verre} ));
@@ -44,10 +44,19 @@ unsigned int Joueur::wannaBuyCard(const Carte* c){
 
     return c->getCoutArgent(); // temporaire, à supprimer;
 
-    // check ressources conditionelles
-    
+    // check ressources conditionelles (check Merveilles et Commerce)
 
-    // check ressources offertes 
+    // check ressources offertes
+    
     // check prix du commerce pour acheter les ressources manquantes
+    unsigned int price = c->getCoutArgent() ;
+
+    if( !missing.empty() ){ // on vérifie que les étapes précédentes n'ont pas permis de trouver toutes les ressources manquantes
+        for( auto iter = missing.begin() ; iter != missing.end() ; ++iter ){
+            // price += getTradePrice // mais la fonction est dans Box il faut la déplacer dans Joueur 
+        }
+    }
+
+    return price ; 
 
 }

@@ -5,7 +5,7 @@ Box::Box(){
 
     plateau = new Plateau();
 
-    joueur1 = new Joueur() ; joueur2 = new Joueur() ; 
+    joueur1 = new Joueur(1) ; joueur2 = new Joueur(2) ; 
     joueur1->setAdversaire(joueur2); 
     joueur2->setAdversaire(joueur1);
     current = joueur1 ; 
@@ -38,30 +38,6 @@ Box::~Box(){
 
     for( auto iter=all_jetons.begin() ; iter != all_jetons.end() ; ++iter ){
         delete *iter ; 
-    }
-
-}
-
-void Box::allCardsCreation(){
-
-    // 23 cartes Âge I
-    // 23 cartes Âge II
-    // 20 cartes Âge III
-    // 7 cartes Guilde
-    // 12 cartes Merveille
-
-    // MOCK CARDS TO TEST THE GAME : TO BE REMOVED 
-    phase_jeu p = phase_jeu::AGE_I ;
-
-    for(size_t i = 0 ; i < 66 ; i++){
-
-        if( i < 23 ){ p = phase_jeu::AGE_I ; } 
-        else if ( i < 46 ){ p = phase_jeu::AGE_II ;  }
-        else if ( i < 66 ){ p = phase_jeu::AGE_III ; }
-
-        const Batiment* new_bat = new Batiment("Bâtiment Civil "+std::to_string(i+1), type_batiment::Civil, p);
-        all_batiments.push_front(new_bat);
-
     }
 
 }
@@ -143,4 +119,38 @@ void Box::distributeCards(phase_jeu p){
 
     return ; 
 
+}
+
+unsigned int Box::getFixedTrade(Joueur* j, ressource r){
+    if( static_cast<int>(r) > 5 || static_cast<int>(r) < 1 ){
+        throw GameException("ERREUR : FixedTrade ne s'applique que aux ressources de production");
+    }
+    switch(j->getId()){
+        case 1 : return fixed_trade1[r];
+        case 2 : return fixed_trade2[r];
+        default : throw GameException("ERREUR : FixedTrade est 1 ou 2");
+    }
+
+}
+
+void Box::setFixedTrade(Joueur* j, ressource r, unsigned int price){
+    if( static_cast<int>(r) > 5 || static_cast<int>(r) < 1 ){
+        throw GameException("ERREUR : FixedTrade ne s'applique que aux ressources de production");
+    }
+    switch(j->getId()){
+        case 1 : fixed_trade1[r] = price ; break ; 
+        case 2 : fixed_trade2[r] = price ; break ; 
+        default : throw GameException("ERREUR : FixedTrade est 1 ou 2");
+    }
+}
+
+unsigned int Box::getTradePrice(Joueur* j, ressource r){
+    if( static_cast<int>(r) > 5 || static_cast<int>(r) < 1 ){
+        throw GameException("ERREUR : le prix de Trade ne s'obtient que pour les ressources de production");
+    }
+    if( this->getFixedTrade(j, r) == 0){
+        return j->getAdversaire()->fetchRessource({r}).size() + 2 ;
+    } else {
+        return this->getFixedTrade(j, r);
+    }
 }
