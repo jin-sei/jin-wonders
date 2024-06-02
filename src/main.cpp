@@ -15,7 +15,7 @@ int tests(){
     std::cout << my_wonder1 << std::endl;
 
     std::cout << "display missing ressources : " << std::endl ; 
-    displayRessources( my_wonder1.achetableRessource({{ressource::Bois, ressource::Bois, ressource::Verre, ressource::Papyrus, ressource::Papyrus}})) ;
+    //displayRessources( my_wonder1.achetableRessource({{ressource::Bois, ressource::Bois, ressource::Verre, ressource::Papyrus, ressource::Papyrus}})) ;
     std::cout << std::endl ; 
 
     Batiment my_batiment1 = Batiment("Muraille", type_batiment::Militaire, phase_jeu::AGE_III, {ressource::Pierre, ressource::Pierre}, 0, 0, 0, {ressource::Bouclier, ressource::Bouclier}, "");
@@ -91,31 +91,36 @@ int tests(){
 
     displayRessources( my_box1.getJoueur(1)->fetchRessource({ressource::Argile, ressource::Bois})) ;
     std::cout << my_box1.getJoueur(1)->possessBatiment("Montagne") << std::endl ;
-    std::cout << my_box1.getJoueur(1)->wannaBuyCard(&my_batiment6) << std::endl ;
+    std::cout << my_box1.getJoueur(1)->achetableJoueur(my_batiment6.getCoutRessource()) << std::endl ;
 
     std::cout << "Fixed price p2: " << my_box1.getJoueur(2)->getFixedTrade(ressource::Argile) << std::endl ; 
     //my_box1.getJoueur(2)->setFixedTrade(ressource::Argile, 1);
     //std::cout << "Fixed price p2: " << my_box1.getJoueur(2)->getFixedTrade(ressource::Argile) << std::endl ;
     std::cout << "Trade price for p2: " << my_box1.getJoueur(2)->getTradePrice(ressource::Argile) << std::endl << std::endl ; 
 
-    const Batiment mock_bat_1 = Batiment("Mock 1", type_batiment::Premiere);
-    const Batiment mock_bat_2 = Batiment("Mock 2", type_batiment::Premiere);
-    const Batiment mock_bat_3 = Batiment("Mock 3", type_batiment::Premiere);
-    const Batiment mock_bat_4 = Batiment("Mock 4", type_batiment::Premiere);
-    const Batiment mock_bat_5 = Batiment("Mock 5", type_batiment::Premiere);
-    const Batiment mock_bat_6 = Batiment("Mock 6", type_batiment::Manufacture);
+    const Batiment mock_bat_1 = Batiment("Mock 1", type_batiment::Premiere, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Argile});
+    const Batiment mock_bat_2 = Batiment("Mock 2", type_batiment::Premiere, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Argile});
+    const Batiment mock_bat_3 = Batiment("Mock 3", type_batiment::Premiere, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Bois});
+    const Batiment mock_bat_4 = Batiment("Mock 4", type_batiment::Premiere, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Bois});
+    const Batiment mock_bat_5 = Batiment("Mock 5", type_batiment::Premiere, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Bois});
+    //const Batiment mock_bat_6 = Batiment("Mock 6", type_batiment::Premiere, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Pierre});
     my_box1.getJoueur(2)->addBatiment(&mock_bat_1);
     my_box1.getJoueur(2)->addBatiment(&mock_bat_2);
     my_box1.getJoueur(2)->addBatiment(&mock_bat_3);
     my_box1.getJoueur(2)->addBatiment(&mock_bat_4);
     my_box1.getJoueur(2)->addBatiment(&mock_bat_5);
-    my_box1.getJoueur(2)->addBatiment(&mock_bat_6);
+    //my_box1.getJoueur(2)->addBatiment(&mock_bat_6);
 
     std::cout << "batiment de p2 : " << std::endl ; 
     displayCards( my_box1.getJoueur(2)->getBatiments() );
 
     const Perk* perk_1 = new Perk_CoinPerCard(2, type_batiment::Premiere);
-    Commerce commerce_1 = Commerce("Commerce I", type_batiment::Commerce, phase_jeu::AGE_I, {}, 0, 0, 0, {}, "", perk_1);
+    Commerce commerce_1 = Commerce("Commerce I", type_batiment::Commerce, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Argile, ressource::Pierre, ressource::Bois}, "", perk_1);
+    my_box1.getJoueur(2)->addBatiment(&commerce_1);
+    std::cout << "argile fetch de p2: " ;
+    displayRessources( my_box1.getJoueur(2)->fetchRessource({ressource::Argile}) ) ; 
+    std::cout << std::endl ;
+
     std::cout << "trésor p2 before perk : " << my_box1.getJoueur(2)->getTresor() << std::endl;
     commerce_1.getPerk()->onCall(my_box1.getJoueur(2));
     std::cout << "trésor p2 after perk : " << my_box1.getJoueur(2)->getTresor() << std::endl;
@@ -126,6 +131,10 @@ int tests(){
     commerce_2.getPerk()->onCall(my_box1.getJoueur(2));
     std::cout << "Trade price for p2 after perk : " << my_box1.getJoueur(2)->getTradePrice(ressource::Argile) << std::endl << std::endl ; 
 
+    const Batiment mock_bat_7 = Batiment("Mock 7", type_batiment::Premiere, phase_jeu::AGE_I, {ressource::Argile, ressource::Bois, ressource::Pierre, ressource::Verre, ressource::Papyrus}, 0, 0, 0, {ressource::Pierre});
+    Commerce commerce_3 = Commerce("Commerce III", type_batiment::Commerce, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Argile, ressource::Bois, ressource::Pierre});
+    my_box1.getJoueur(2)->addBatiment(&commerce_3);
+    my_box1.getJoueur(2)->achetableJoueur(mock_bat_7.getCoutRessource());
     
     //Perk* perk_3 = new Perk_PolyRessource({ressource::Argile, ressource::Pierre, ressource::Bois});
     //std::cout << "PERK 3 IS POLY RES ? " << perk_3->isPolyRes() << std::endl;
@@ -160,8 +169,7 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// finir ystèmes des perks
-// ajouter les ressources Conditionelles à la méthode wannaBuyCard
+// finir systèmes des perks
 
 // NEXT : 
 // implémenter les Guildes

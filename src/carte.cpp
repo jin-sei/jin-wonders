@@ -35,38 +35,6 @@ void Carte::setCoutRessource(std::list<ressource> cost){
     }
 }
 
-std::list<ressource> Carte::achetableRessource(std::list<ressource> buy) const {
-    if(cost_r.empty()) { return {} ; }
-    //if(cost_r.size() > buy.size()) { return false ; }
-
-    std::list<ressource> pop_buy = buy ; // pas forcément nécéssaire, à vérifier (on ne veut pas altérer la liste de ressource donnée)
-    std::list<ressource> missing = {}; 
-    
-    for(auto iter = cost_r.begin() ; iter != cost_r.end() ; ++iter){ // parcours les ressources demandées
-        std::cout << "ASKED: " << tostringRessources(*iter) << std::endl ;
-        
-        for(auto iter_b = pop_buy.begin() ; iter_b != pop_buy.end() ; ++iter_b){ // parcours les ressources disponibles
-            
-            std::cout << "FOUND: " << tostringRessources(*iter_b) << " ; ";
-
-            if(*iter_b == *iter){ // bonne ressource trouvée
-
-                std::cout << " MATCH!" << std::endl;
-                pop_buy.erase(iter_b);
-                break;
-
-            } else if(next(iter_b) == pop_buy.end()){ // on atteint la fin sans trouver de ressource match : ressource manquante
-
-                std::cout << "NOT FOUND!" << std::endl;
-                missing.push_back(*iter);
-            }
-
-        } 
-        std::cout << std::endl ;
-    }
-    return missing ;
-}
-
 std::ostream& operator<<(std::ostream& f, const Carte& c){
     c.affichage();
     return f ; 

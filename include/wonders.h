@@ -40,7 +40,7 @@ class GameException {
 
 // FORWARD DECLARATION
 class Perk ;
-class Perk_PolyRessource ; 
+//class Perk_PolyRessource ; 
 
 class Carte {
     // une fois créée par le contrôlleur Box (qui les gère),
@@ -200,6 +200,7 @@ class Joueur {
         void setAdversaire(Joueur* j){ adversaire = j ;}
 
         std::vector<const Batiment*> getBatiments() const { return batiments; }
+        std::vector<const Batiment*> getBatimentsPerType(type_batiment t) const ; 
         void addBatiment(const Batiment* c){batiments.push_back(c);}
 
         unsigned int getTresor() const { return tresor ; }
@@ -208,10 +209,13 @@ class Joueur {
         void subTresor(int t){ if(tresor <= t){tresor = 0 ;} else { tresor -= t ;} }
 
         bool possessBatiment(std::string s); // répliquer pour les Merveilles et Jetons ?
-        unsigned int wannaBuyCard(const Carte* c);
+
+        // achat
+        std::list<ressource> achetableRessource(std::list<ressource> cost) const;
+        unsigned int achetableJoueur(std::list<ressource> r);
 
         // fetch military, fetch science
-        std::list<ressource> fetchRessource(std::list<ressource> r);
+        std::list<ressource> fetchRessource(std::list<ressource> r) const ;
 
         // utils pour les guildes et cartes commerces
         unsigned int getNumberBatiment(type_batiment t);
