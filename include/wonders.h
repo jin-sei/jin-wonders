@@ -249,7 +249,7 @@ class Perk { // ABSTRACT
         virtual void onCall(Joueur* j) const = 0 ; // PURE VIRTUAL
         // on prend en paramètre le joueur qui a construit la carte
         //~Perk(){} // vtable error paranoia ???
-        bool isPolyRes(); 
+        //bool isPolyRes(); 
 
     private:
 
@@ -294,12 +294,12 @@ class Perk_Destruction : public Perk { // requires player interaction
 class Perk_FixedTrade : public Perk {
 
     public:
-        Perk_FixedTrade(ressource res, unsigned int coin): res(res), coin(coin){}
+        Perk_FixedTrade(std::list<ressource> res, unsigned int coin): res(res), coin(coin){}
 
         void setFixedTrade(Joueur* j) const ;
         void onCall(Joueur* j) const override ; 
     private: // perk settings
-        ressource res ; // ressource pour laquelle le prix de trade est fixé
+        std::list<ressource> res ; // ressource pour laquelle le prix de trade est fixé
         unsigned int coin ; // prix fixé
 
 };

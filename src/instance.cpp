@@ -20,31 +20,59 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_back( new Batiment( // DUPLICATE
-            "Chantier", 
-            type_batiment::Premiere, 
-            phase_jeu::AGE_I,
-            {}, // Liste des ressource nécéssaires
-            0, // Coût en argent
-            0, // Récompense en argent
-            0, // Points de victoire
-            {ressource::Bois}, // Liste des ressource produites par le bâtiment
-            "" // Bâtiment chaîné
+    all_batiments.push_back( new Commerce(
+        "Depot d'Argile", 
+        type_batiment::Commerce,
+        phase_jeu::AGE_I,
+        {}, // coût en ressources
+        3, // coût en argent
+        0, // récompense en argent
+        0, // points de victoire
+        {}, // production
+        "", // chaînage
+        new Perk_FixedTrade({ressource::Argile}, 1) // perk
+    ));
+
+    all_batiments.push_back( new Commerce(
+        "Depot de Pierre", 
+        type_batiment::Commerce,
+        phase_jeu::AGE_I,
+        {}, // coût en ressources
+        3, // coût en argent
+        0, // récompense en argent
+        0, // points de victoire
+        {}, // production
+        "", // chaînage
+        new Perk_FixedTrade({ressource::Pierre}, 1) // perk
+    ));
+
+    all_batiments.push_back( new Commerce(
+        "Depot de Bois", 
+        type_batiment::Commerce,
+        phase_jeu::AGE_I,
+        {}, // coût en ressources
+        3, // coût en argent
+        0, // récompense en argent
+        0, // points de victoire
+        {}, // production
+        "", // chaînage
+        new Perk_FixedTrade({ressource::Bois}, 1) // perk
+    ));
+
+    all_batiments.push_back( new Commerce(
+        "Taverne", 
+        type_batiment::Commerce,
+        phase_jeu::AGE_I,
+        {}, // coût en ressources
+        0, // coût en argent
+        4, // récompense en argent
+        0, // points de victoire
+        {}, // production
+        "", // chaînage
+        nullptr // perk
     ));
 
     all_batiments.push_back( new Batiment(
-            "Exploitation", 
-            type_batiment::Premiere, 
-            phase_jeu::AGE_I,
-            {}, // Liste des ressource nécéssaires
-            1, // Coût en argent
-            0, // Récompense en argent
-            0, // Points de victoire
-            {ressource::Bois}, // Liste des ressource produites par le bâtiment
-            "" // Bâtiment chaîné
-    ));
-
-    all_batiments.push_back( new Batiment( // DUPLICATE
             "Exploitation", 
             type_batiment::Premiere, 
             phase_jeu::AGE_I,
@@ -68,31 +96,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_back( new Batiment( // DUPLICATE
-            "Bassin argileux", 
-            type_batiment::Premiere, 
-            phase_jeu::AGE_I, 
-            {}, // Liste des ressource nécéssaires
-            0, // Coût en argent
-            0, // Récompense en argent
-            0, // Points de victoire
-            {ressource::Argile}, // Liste des ressource produites par le bâtiment
-            "" // Bâtiment chaîné
-    ));
-
     all_batiments.push_back( new Batiment(
-            "Cavite", 
-            type_batiment::Premiere, 
-            phase_jeu::AGE_I, 
-            {}, // Liste des ressource nécéssaires
-            1, // Coût en argent
-            0, // Récompense en argent
-            0, // Points de victoire
-            {ressource::Argile}, // Liste des ressource produites par le bâtiment
-            "" // Bâtiment chaîné
-    ));
-
-    all_batiments.push_back( new Batiment( // DUPLICATE
             "Cavite", 
             type_batiment::Premiere, 
             phase_jeu::AGE_I, 
@@ -288,19 +292,59 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_back( new Batiment(
-            "Scierie", 
-            type_batiment::Premiere, 
-            phase_jeu::AGE_II, 
-            {}, // Liste des ressource nécéssaires
-            2, // Coût en argent
-            0, // Récompense en argent
-            0, // Points de victoire
-            {ressource::Bois,ressource::Bois}, // Liste des ressource produites par le bâtiment
-            "" // Bâtiment chaîné
+    all_batiments.push_back( new Commerce(
+        "Brasserie", 
+        type_batiment::Commerce,
+        phase_jeu::AGE_II,
+        {}, // coût en ressources
+        6, // coût en argent
+        0, // récompense en argent
+        0, // points de victoire
+        {}, // production
+        "", // chaînage
+        nullptr // perk
     ));
 
-    all_batiments.push_back( new Batiment( // DUPLICATE
+    all_batiments.push_back( new Commerce(
+        "Forum", 
+        type_batiment::Commerce,
+        phase_jeu::AGE_II,
+        {ressource::Argile}, // coût en ressources
+        3, // coût en argent
+        0, // récompense en argent
+        0, // points de victoire
+        {ressource::Papyrus, ressource::Verre}, // production
+        "", // chaînage
+        nullptr // perk
+    ));
+
+    all_batiments.push_back( new Commerce(
+        "Caravanserail", 
+        type_batiment::Commerce,
+        phase_jeu::AGE_II,
+        {ressource::Verre, ressource::Papyrus}, // coût en ressources
+        2, // coût en argent
+        0, // récompense en argent
+        0, // points de victoire
+        {ressource::Argile, ressource::Bois, ressource::Pierre}, // production
+        "", // chaînage
+        nullptr // perk
+    ));
+
+    all_batiments.push_back( new Commerce(
+        "Douanes", 
+        type_batiment::Commerce,
+        phase_jeu::AGE_II,
+        {}, // coût en ressources
+        4, // coût en argent
+        0, // récompense en argent
+        0, // points de victoire
+        {}, // production
+        "", // chaînage
+        new Perk_FixedTrade({ressource::Papyrus, ressource::Verre}, 1) // perk
+    ));
+
+    all_batiments.push_back( new Batiment(
             "Scierie", 
             type_batiment::Premiere, 
             phase_jeu::AGE_II, 
@@ -324,18 +368,6 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_back( new Batiment( // DUPLICATE
-            "Briqueterie", 
-            type_batiment::Premiere, 
-            phase_jeu::AGE_II, 
-            {}, // Liste des ressource nécéssaires
-            2, // Coût en argent
-            0, // Récompense en argent
-            0, // Points de victoire
-            {ressource::Argile,ressource::Argile}, // Liste des ressource produites par le bâtiment
-            "" // Bâtiment chaîné
-    ));
-
     all_batiments.push_back( new Batiment(
             "Carriere", 
             type_batiment::Premiere, 
@@ -348,31 +380,7 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
-    all_batiments.push_back( new Batiment( // DUPLICATE
-            "Carriere", 
-            type_batiment::Premiere, 
-            phase_jeu::AGE_II, 
-            {}, // Liste des ressource nécéssaires
-            2, // Coût en argent
-            0, // Récompense en argent
-            0, // Points de victoire
-            {ressource::Pierre,ressource::Pierre}, // Liste des ressource produites par le bâtiment
-            "" // Bâtiment chaîné
-    ));
-
     all_batiments.push_back( new Batiment(
-            "Soufflerie", 
-            type_batiment::Manufacture, 
-            phase_jeu::AGE_II, 
-            {}, // Liste des ressource nécéssaires
-            0, // Coût en argent
-            0, // Récompense en argent
-            0, // Points de victoire
-            {ressource::Verre}, // Liste des ressource produites par le bâtiment
-            "" // Bâtiment chaîné
-    ));
-
-    all_batiments.push_back( new Batiment( // DUPLICATE
             "Soufflerie", 
             type_batiment::Manufacture, 
             phase_jeu::AGE_II, 
@@ -564,67 +572,72 @@ void Box::allCardsCreation(){
             "" // Bâtiment chaîné
     ));
 
+    all_batiments.push_back( new Commerce(
+        "Chambre de Commerce", 
+        type_batiment::Commerce,
+        phase_jeu::AGE_III,
+        {ressource::Papyrus, ressource::Papyrus}, // coût en ressources
+        0, // coût en argent
+        0, // récompense en argent
+        3, // points de victoire
+        {}, // production
+        "", // chaînage
+        new Perk_CoinPerCard(3, type_batiment::Manufacture) // perk
+    ));
+
+    all_batiments.push_back( new Commerce(
+        "Port", 
+        type_batiment::Commerce,
+        phase_jeu::AGE_III,
+        {ressource::Bois, ressource::Verre, ressource::Papyrus}, // coût en ressources
+        0, // coût en argent
+        0, // récompense en argent
+        3, // points de victoire
+        {}, // production
+        "", // chaînage
+        new Perk_CoinPerCard(2, type_batiment::Premiere) // perk
+    ));
+
+    all_batiments.push_back( new Commerce(
+        "Armurerie", 
+        type_batiment::Commerce,
+        phase_jeu::AGE_III,
+        {ressource::Pierre, ressource::Pierre, ressource::Verre}, // coût en ressources
+        0, // coût en argent
+        0, // récompense en argent
+        3, // points de victoire
+        {}, // production
+        "", // chaînage
+        new Perk_CoinPerCard(1, type_batiment::Militaire) // perk
+    ));
+
+    all_batiments.push_back( new Commerce(
+        "Phare", 
+        type_batiment::Commerce,
+        phase_jeu::AGE_III,
+        {ressource::Argile, ressource::Argile, ressource::Verre}, // coût en ressources
+        0, // coût en argent
+        0, // récompense en argent
+        3, // points de victoire
+        {}, // production
+        "Taverne", // chaînage
+        new Perk_CoinPerCard(1, type_batiment::Commerce) // perk
+    ));
+
+    all_batiments.push_back( new Commerce(
+        "Arène", 
+        type_batiment::Commerce,
+        phase_jeu::AGE_III,
+        {ressource::Argile, ressource::Pierre, ressource::Bois}, // coût en ressources
+        0, // coût en argent
+        0, // récompense en argent
+        3, // points de victoire
+        {}, // production
+        "Brasserie", // chaînage
+        new Perk_CoinPerCard(2, type_batiment::Merveille) // perk
+    ));
+
     all_batiments.push_back( new Batiment(
-            "Arsenal", 
-            type_batiment::Militaire, 
-            phase_jeu::AGE_III, 
-            {ressource::Argile, ressource::Argile, ressource::Argile, ressource::Bois, ressource::Bois}, // Liste des ressource nécéssaires
-            0, // Coût en argent
-            0, // Récompense en argent
-            0, // Points de victoire
-            {ressource::Bouclier, ressource::Bouclier, ressource::Bouclier}, // Liste des ressource produites par le bâtiment
-            "" // Bâtiment chaîné
-    ));
-
-    all_batiments.push_back( new Batiment( // DUPLICATE
-            "Arsenal", 
-            type_batiment::Militaire, 
-            phase_jeu::AGE_III, 
-            {ressource::Argile, ressource::Argile, ressource::Argile, ressource::Bois, ressource::Bois}, // Liste des ressource nécéssaires
-            0, // Coût en argent
-            0, // Récompense en argent
-            0, // Points de victoire
-            {ressource::Bouclier, ressource::Bouclier, ressource::Bouclier}, // Liste des ressource produites par le bâtiment
-            "" // Bâtiment chaîné
-    ));
-
-    all_batiments.push_back( new Batiment( // DUPLICATE
-            "Arsenal", 
-            type_batiment::Militaire, 
-            phase_jeu::AGE_III, 
-            {ressource::Argile, ressource::Argile, ressource::Argile, ressource::Bois, ressource::Bois}, // Liste des ressource nécéssaires
-            0, // Coût en argent
-            0, // Récompense en argent
-            0, // Points de victoire
-            {ressource::Bouclier, ressource::Bouclier, ressource::Bouclier}, // Liste des ressource produites par le bâtiment
-            "" // Bâtiment chaîné
-    ));
-
-    all_batiments.push_back( new Batiment( // DUPLICATE
-            "Arsenal", 
-            type_batiment::Militaire, 
-            phase_jeu::AGE_III, 
-            {ressource::Argile, ressource::Argile, ressource::Argile, ressource::Bois, ressource::Bois}, // Liste des ressource nécéssaires
-            0, // Coût en argent
-            0, // Récompense en argent
-            0, // Points de victoire
-            {ressource::Bouclier, ressource::Bouclier, ressource::Bouclier}, // Liste des ressource produites par le bâtiment
-            "" // Bâtiment chaîné
-    ));
-
-    all_batiments.push_back( new Batiment( // DUPLICATE
-            "Arsenal", 
-            type_batiment::Militaire, 
-            phase_jeu::AGE_III, 
-            {ressource::Argile, ressource::Argile, ressource::Argile, ressource::Bois, ressource::Bois}, // Liste des ressource nécéssaires
-            0, // Coût en argent
-            0, // Récompense en argent
-            0, // Points de victoire
-            {ressource::Bouclier, ressource::Bouclier, ressource::Bouclier}, // Liste des ressource produites par le bâtiment
-            "" // Bâtiment chaîné
-    ));
-
-    all_batiments.push_back( new Batiment( // DUPLICATE
             "Arsenal", 
             type_batiment::Militaire, 
             phase_jeu::AGE_III, 

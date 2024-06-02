@@ -21,7 +21,9 @@ void Perk_CoinPerCard::onCall(Joueur* j) const {
 }
 
 void Perk_FixedTrade::setFixedTrade(Joueur* j) const {
-    j->setFixedTrade(res, coin);
+    for(auto iter = res.begin() ; iter != res.end() ; ++iter){
+        j->setFixedTrade(*iter, coin);
+    }
 }
 
 void Perk_FixedTrade::onCall(Joueur* j) const {
