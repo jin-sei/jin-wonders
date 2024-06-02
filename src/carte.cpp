@@ -80,6 +80,11 @@ void Batiment::affichage() const {
     displayRessources( production ) ;
 }
 
+void Batiment::onBuild(Joueur* j) const {
+    std::cout << "CALLING ONBUILD BATIMENT" << std::endl ;
+    return ; 
+}
+
 Commerce::Commerce(
     std::string nom, type_batiment type, phase_jeu age, 
     std::list<ressource> cost_r, unsigned int cost, 
@@ -103,6 +108,11 @@ Guilde::Guilde(
     std::list<type_batiment> affectation, bool usurier):
     Carte(nom, type, age,cost_r, cost, argent, pt_victoire),affectation(affectation), usurier(usurier){
         if( type != type_batiment::Guilde ){ throw GameException("ERREUR: Utilisation du constructeur de Guilde avec un type_batiment invalide");}
+}
+
+void Commerce::onBuild(Joueur* j) const {
+    std::cout << "CALLING ONBUILD COMMERCE" << std::endl ;
+    perk->onCall(j); 
 }
 
 unsigned int Guilde::ptVictoireFinJeu(Joueur* j) const {
@@ -134,4 +144,9 @@ void Guilde::rewardArgent(Joueur* j) const {
     }
 
     j->addTresor( std::max(p[0], p[1]) );
+}
+
+void Guilde::onBuild(Joueur* j) const {
+    std::cout << "CALLING ONBUILD GUILDE" << std::endl ;
+    rewardArgent(j);
 }

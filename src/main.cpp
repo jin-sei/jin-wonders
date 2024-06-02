@@ -7,9 +7,9 @@ int tests(){
     
     try {
     
-    Carte my_carte1 = Carte("Stables", type_batiment::Militaire, phase_jeu::AGE_I, {ressource::Argile, ressource::Argile, ressource::Bois, ressource::Bois, ressource::Bois}, 3) ;
-    my_carte1.setCoutRessource({ressource::Argile, ressource::Argile, ressource::Bois});
-    std::cout << my_carte1 << std::endl ; 
+    //Carte my_carte1 = Carte("Stables", type_batiment::Militaire, phase_jeu::AGE_I, {ressource::Argile, ressource::Argile, ressource::Bois, ressource::Bois, ressource::Bois}, 3) ;
+    //my_carte1.setCoutRessource({ressource::Argile, ressource::Argile, ressource::Bois});
+    //std::cout << my_carte1 << std::endl ; 
 
     Merveille my_wonder1 = Merveille("Le Mausolée", type_batiment::Merveille, phase_jeu::AGE_I, {ressource::Argile, ressource::Bois, ressource::Bois, ressource::Pierre, ressource::Papyrus}, 0, 0, 5);
     std::cout << my_wonder1 << std::endl;
@@ -128,7 +128,7 @@ int tests(){
     const Perk* perk_2 = new Perk_FixedTrade({ressource::Argile}, 1);
     Commerce commerce_2 = Commerce("Commerce II", type_batiment::Commerce, phase_jeu::AGE_I, {}, 0, 0, 0, {}, "", perk_2);
     std::cout << "Trade price for p2 before perk : " << my_box1.getJoueur(2)->getTradePrice(ressource::Argile) << std::endl ; 
-    commerce_2.getPerk()->onCall(my_box1.getJoueur(2));
+    commerce_2.onBuild(my_box1.getJoueur(2));
     std::cout << "Trade price for p2 after perk : " << my_box1.getJoueur(2)->getTradePrice(ressource::Argile) << std::endl << std::endl ; 
 
     const Batiment mock_bat_7 = Batiment("Mock 7", type_batiment::Premiere, phase_jeu::AGE_I, {ressource::Argile, ressource::Bois, ressource::Pierre, ressource::Verre, ressource::Papyrus}, 0, 0, 0, {ressource::Pierre});
@@ -138,7 +138,7 @@ int tests(){
 
     std::cout << "trésor p2 before guild : " << my_box1.getJoueur(2)->getTresor() << std::endl;
     const Guilde guilde_1 = Guilde("Guilde I", type_batiment::Guilde, phase_jeu::AGE_III, {}, 0, 1, 0, {type_batiment::Premiere}, false);
-    guilde_1.rewardArgent(my_box1.getJoueur(2));
+    guilde_1.onBuild(my_box1.getJoueur(2));
     std::cout << "trésor p2 after guild : " << my_box1.getJoueur(2)->getTresor() << std::endl;
     std::cout << "points de victoire granted by guild: " << guilde_1.ptVictoireFinJeu(my_box1.getJoueur(2)) << std::endl;
     
@@ -189,7 +189,8 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// finir systèmes des perks
+// méthodes du Plateau (pion conflit, saccages...)
+// distribution (début de partie) -> initialiser le plateau avec 5 jetons
 
 
 // NEXT : 
@@ -197,14 +198,12 @@ int main(){
 
 
 // MAIN QUESTS : 
-// méthodes du Plateau (pion conflit, saccages...)
-// distribution (début de partie) -> initialiser le plateau avec 5 jetons
 // effet des Jetons
 
 
 // OTHER TASKS : 
-// onBuild virtual method ?
 // implémenter un système pour communiquer simplement avec le joueur (choix...) : prendre en compte l'IA
+// interactions avec le joueur (perks notamment)
 // tours de jeu 
 // début de jeu
 // fin de jeu, compter les points, recommencer une partie
@@ -213,5 +212,4 @@ int main(){
 // SIDE QUESTS : 
 // écrire une documentation et expliquer les choix de développement
 // rendre Box singleton
-// rendre Carte abstraite (non instanciable)
 // rendre Joueur doubleton

@@ -41,9 +41,10 @@ class GameException {
 // FORWARD DECLARATION
 class Perk ;
 class Joueur ;
-//class Perk_PolyRessource ; 
+class Box ; 
 
-class Carte {
+class Carte { // ABSTRACT 
+
     // une fois créée par le contrôlleur Box (qui les gère),
     // les cartes sont immutables et toujours manipulés avec des pointeurs const
 
@@ -74,6 +75,7 @@ class Carte {
         // retourne la liste des ressources manquante pour acheter la Carte
 
         virtual void affichage() const ;
+        virtual void onBuild(Joueur* j) const = 0; // Joueur qui a construit la carte
     
     protected : 
 
@@ -101,7 +103,7 @@ void displayCards(std::vector<const T*> c){
     return;
 }
 
-class Batiment : public Carte { 
+class Batiment : public Carte {
     // Civil, Scientifique, Militaire, Ressources
     public:
 
@@ -122,6 +124,7 @@ class Batiment : public Carte {
         void setProduction(std::list<ressource> new_prod) { production = new_prod ;}
 
         void affichage() const override ;
+        void onBuild(Joueur* j) const override ; 
 
 
     private:
@@ -137,6 +140,8 @@ class Commerce : public Batiment {
         ~Commerce();
         
         const Perk* getPerk() const { return perk; }
+
+        void onBuild(Joueur* j) const override ;
 
     private:
 
@@ -155,6 +160,8 @@ class Guilde : public Carte {
 
         unsigned int ptVictoireFinJeu(Joueur* j) const ;
         void rewardArgent(Joueur* j) const ;
+
+        void onBuild(Joueur* j) const override ;
 
     private:
         std::list<type_batiment> affectation ; 
@@ -284,7 +291,13 @@ class Perk_CoinPerCard : public Perk {
 }; 
 
 class Perk_Destruction : public Perk { // requires player interaction
+    public:
+        Perk_Destruction(type_batiment c);
 
+        void destruction(Joueur* j) const ; 
+        void onCall(Joueur* j) const override; 
+    private:
+        type_batiment card ; // type de Bâtiment autorisé à la destruction
 };
 
 class Perk_FixedTrade : public Perk {
@@ -305,14 +318,15 @@ class Perk_Classic : public Perk { // PERKS W/O SETTINGS
 // FREE CONSTRUCTION FROM DEFAUSSE
 // SACCAGE
     public: 
-        Perk_Classic(unsigned int id);
+        Perk_Classic(unsigned int id, const Box* box);
 
         void saccage(Joueur* j) const ;
         void freeConstructionFromDefausse(Joueur* j) const;
         void pickJeton(Joueur* j) const;
         void onCall(Joueur* j) const override;
     private:
-        unsigned int id ; 
+        unsigned int id ;
+        const Box* box ; 
 };
 
 /* 
