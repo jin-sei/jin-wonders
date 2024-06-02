@@ -8,6 +8,7 @@
 #include <set>
 #include <algorithm>
 #include <random>
+#include <cstdlib> // For abs()
 
 
 enum class type_batiment {Militaire, Scientifique, Manufacture, Premiere, Civil, Commerce, Guilde, Merveille};
@@ -416,16 +417,22 @@ class Plateau {
     public:
         // le plateau est responsable du layout qu'il gère
 
-        Plateau();
+        Plateau(Box* box);
         ~Plateau();
         Layout* getLayout() const { return layout; }
+
+        void movePion(bool id, unsigned int avance);
+        bool victoireMilitaire() const { return (pion_militaire == -9 || pion_militaire == 9); }
 
     private:
 
         Layout* layout ;
+        Box* box ; 
 
         int pion_militaire = 0 ; // between -9 and +9
+        // se déplace vers le positif pour le joueur1, vers le négatif pour le joueur 0
         unsigned int saccages[4] = {5, 2, 2, 5};
+        // 0 | 1 ; 2 | 3 ; 4 ; 5 | 6 ; 7 ; 8 | 9 
 
         std::list<Jeton> jeton ;
         

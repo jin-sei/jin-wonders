@@ -191,12 +191,14 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
+// working on movePion
 // méthodes du Plateau (pion conflit, saccages...)
 // distribution (début de partie) -> initialiser le plateau avec 5 jetons
 
 
 // NEXT : 
 // instancier les Merveilles (ziad)
+// créer une nouvelle branche sur le github de groupe
 
 
 // MAIN QUESTS : 
@@ -213,5 +215,6 @@ int main(){
 
 // SIDE QUESTS : 
 // écrire une documentation et expliquer les choix de développement
+// enhanced console display
 // rendre Box singleton
 // rendre Joueur doubleton

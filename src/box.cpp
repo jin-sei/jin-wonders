@@ -3,7 +3,7 @@
 
 Box::Box(){
 
-    plateau = new Plateau();
+    plateau = new Plateau(this);
 
     joueur1 = new Joueur(0) ; joueur2 = new Joueur(1) ; 
     joueur1->setAdversaire(joueur2); 
