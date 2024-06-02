@@ -94,3 +94,44 @@ Commerce::Commerce(
 }
 
 Commerce::~Commerce() { if(perk!=nullptr){delete perk ;} }
+
+Guilde::Guilde(
+    std::string nom, type_batiment type, phase_jeu age,
+    std::list<ressource> cost_r, unsigned int cost,
+    unsigned int argent, unsigned int pt_victoire,
+
+    std::list<type_batiment> affectation, bool usurier):
+    Carte(nom, type, age,cost_r, cost, argent, pt_victoire),affectation(affectation), usurier(usurier){
+        if( type != type_batiment::Guilde ){ throw GameException("ERREUR: Utilisation du constructeur de Guilde avec un type_batiment invalide");}
+}
+
+unsigned int Guilde::ptVictoireFinJeu(Joueur* j) const {
+
+    if( usurier ){ return std::max(j->getTresor()/3, j->getAdversaire()->getTresor()/3) ;}
+
+    unsigned int p[2] = {0, 0} ;
+    Joueur* jp[2] = {j, j->getAdversaire()};
+
+    for(size_t i = 0 ; i < 1 ; i++){
+        for( auto iter = affectation.begin() ; iter != affectation.end() ; ++iter ){
+            p[i] += jp[i]->getNumberBatiment(*iter);
+        }
+    }
+
+    return std::max(p[0], p[1]) ;
+
+}
+
+void Guilde::rewardArgent(Joueur* j) const {
+
+    unsigned int p[2] = {0, 0} ;
+    Joueur* jp[2] = {j, j->getAdversaire()};
+
+    for(size_t i = 0 ; i < 1 ; i++){
+        for( auto iter = affectation.begin() ; iter != affectation.end() ; ++iter ){
+            p[i] += jp[i]->getNumberBatiment(*iter) * getRewardArgent() ;
+        }
+    }
+
+    j->addTresor( std::max(p[0], p[1]) );
+}

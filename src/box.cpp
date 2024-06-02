@@ -97,8 +97,11 @@ void Box::distributeCards(phase_jeu p){
     temp.pop_back() ;
 
      if( p == phase_jeu::AGE_III ){
-        // ajouter les guildes
-        // shuffle again (?)
+        std::shuffle(all_guildes.begin(), all_guildes.end(), gen);
+        temp.push_back( all_guildes[0] );
+        temp.push_back( all_guildes[1] );
+        temp.push_back( all_guildes[2] );
+        std::shuffle(temp.begin(), temp.end(), gen);
     }
 
     this->plateau->getLayout()->inputCards( temp ) ;

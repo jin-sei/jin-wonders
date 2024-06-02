@@ -43,9 +43,9 @@ std::string tostringRessources(ressource r){
         case ressource::Roue : return "Roue" ; 
         case ressource::Compas : return "Compas" ; 
         case ressource::Pilon : return "Pilon" ; 
-        case ressource::Cadran : return "Tablette" ; 
-        case ressource::Plume : return "Lyre" ; 
-        case ressource::Balance : return "Mesure" ; 
+        case ressource::Cadran : return "Cadran" ; 
+        case ressource::Plume : return "Plume" ; 
+        case ressource::Balance : return "Balance" ; 
         case ressource::Telescope : return "Telescope" ; 
         case ressource::Bouclier : return "Bouclier" ; 
         case ressource::Papyrus : return "Papyrus" ; 
@@ -78,7 +78,7 @@ std::string tostringJeton(jeton_progres j){
         case jeton_progres::Loi : return "Loi" ;
         case jeton_progres::Maconnerie : return "Maçonnerie" ;
         case jeton_progres::Mathematiques : return "Mathématiques" ;
-        case jeton_progres::Philosophie : "Philosophie" ; 
+        case jeton_progres::Philosophie : return "Philosophie" ; 
         case jeton_progres::Strategie : return "Stratégie" ;
         case jeton_progres::Theologie : return "Théologie" ;
         case jeton_progres::Urbanisme : return "Urbanisme" ;

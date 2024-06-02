@@ -174,20 +174,22 @@ unsigned int Joueur::getTradePrice(ressource r){
     }
 }
 
-unsigned int Joueur::getNumberBatiment(type_batiment t){
+unsigned int Joueur::getNumberActiveWonders() const {
     unsigned int nb = 0;  
-    for( auto iter =  batiments.begin() ; iter != batiments.end() ; ++iter ){
-        if( (**iter).getType() == t ){
+    for( auto iter =  merveilles.begin() ; iter != merveilles.end() ; ++iter ){
+        if( (**iter).getFeed() != nullptr ){
             nb ++ ; 
         }
     }
     return nb;
 }
 
-unsigned int Joueur::getNumberActiveWonders(){
-    unsigned int nb = 0;  
-    for( auto iter =  merveilles.begin() ; iter != merveilles.end() ; ++iter ){
-        if( (**iter).getFeed() != nullptr ){
+unsigned int Joueur::getNumberBatiment(type_batiment t) const {
+    if(t == type_batiment::Merveille){ return getNumberActiveWonders(); }
+
+    unsigned int nb = 0;
+    for( auto iter =  batiments.begin() ; iter != batiments.end() ; ++iter ){
+        if( (**iter).getType() == t ){
             nb ++ ; 
         }
     }

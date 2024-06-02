@@ -40,6 +40,7 @@ class GameException {
 
 // FORWARD DECLARATION
 class Perk ;
+class Joueur ;
 //class Perk_PolyRessource ; 
 
 class Carte {
@@ -144,8 +145,19 @@ class Commerce : public Batiment {
 
 class Guilde : public Carte {
     public:
+        Guilde(
+            std::string nom, type_batiment type, phase_jeu age=phase_jeu::AGE_I,
+            std::list<ressource> cost_r={}, unsigned int cost=0,
+            unsigned int argent=0, unsigned int pt_victoire=0,
+
+            std::list<type_batiment> affectation={}, bool usurier=false
+            );
+
+        unsigned int ptVictoireFinJeu(Joueur* j) const ;
+        void rewardArgent(Joueur* j) const ;
+
     private:
-        type_batiment affectation ; 
+        std::list<type_batiment> affectation ; 
         bool usurier ; 
 };
 
@@ -206,7 +218,7 @@ class Joueur {
         unsigned int getTresor() const { return tresor ; }
         void setTresor(unsigned int t){tresor = t ;}
         void addTresor(unsigned int t){tresor += t;}
-        void subTresor(int t){ if(tresor <= t){tresor = 0 ;} else { tresor -= t ;} }
+        void subTresor(unsigned int t){ if(tresor <= t){tresor = 0 ;} else { tresor -= t ;} }
 
         bool possessBatiment(std::string s); // répliquer pour les Merveilles et Jetons ?
 
@@ -218,8 +230,8 @@ class Joueur {
         std::list<ressource> fetchRessource(std::list<ressource> r) const ;
 
         // utils pour les guildes et cartes commerces
-        unsigned int getNumberBatiment(type_batiment t);
-        unsigned int getNumberActiveWonders();
+        unsigned int getNumberActiveWonders() const ;
+        unsigned int getNumberBatiment(type_batiment t) const ;
 
         // méthodes pour Trade
         unsigned int getFixedTrade(ressource r);
@@ -231,7 +243,7 @@ class Joueur {
         Joueur* adversaire ;
         std::vector<jeton_progres> jetons ;
         std::vector<const Batiment*> batiments ;
-        std::vector<const Merveille*> merveilles ; 
+        std::vector<const Merveille*> merveilles ;
 
         std::map<ressource, unsigned int> fixed_trade ; 
         // prix fixé du commerce : 0 = non fixé, other than 0 = fixed price
@@ -248,6 +260,7 @@ class Perk { // ABSTRACT
     
         virtual void onCall(Joueur* j) const = 0 ; // PURE VIRTUAL
         // on prend en paramètre le joueur qui a construit la carte
+
         //~Perk(){} // vtable error paranoia ???
         //bool isPolyRes(); 
 
@@ -270,23 +283,6 @@ class Perk_CoinPerCard : public Perk {
 
 }; 
 
-/* 
-
-// La Perk PolyRessource est abandonnée
-// On considère à la place que si un bâtiment de Commerce ou une Merveille produit des ressources,
-// il s'agit d'une poly ressource
-
-class Perk_PolyRessource : public Perk {
-    public:
-        Perk_PolyRessource(std::list<ressource> res):res(res){}
-
-        std::list<ressource> getPolyRessources() const ;
-        void onCall(Joueur* j) const override ; 
-    private:
-        std::list<ressource> res;
-};
-*/
-
 class Perk_Destruction : public Perk { // requires player interaction
 
 };
@@ -308,7 +304,33 @@ class Perk_Classic : public Perk { // PERKS W/O SETTINGS
 // PICK JETONS
 // FREE CONSTRUCTION FROM DEFAUSSE
 // SACCAGE
+    public: 
+        Perk_Classic(unsigned int id);
+
+        void saccage(Joueur* j) const ;
+        void freeConstructionFromDefausse(Joueur* j) const;
+        void pickJeton(Joueur* j) const;
+        void onCall(Joueur* j) const override;
+    private:
+        unsigned int id ; 
 };
+
+/* 
+
+// La Perk PolyRessource est abandonnée
+// On considère à la place que si un bâtiment de Commerce ou une Merveille produit des ressources,
+// il s'agit d'une poly ressource
+
+class Perk_PolyRessource : public Perk {
+    public:
+        Perk_PolyRessource(std::list<ressource> res):res(res){}
+
+        std::list<ressource> getPolyRessources() const ;
+        void onCall(Joueur* j) const override ; 
+    private:
+        std::list<ressource> res;
+};
+*/
 
 class Layout {
 
@@ -432,7 +454,7 @@ class Box {
 
         std::vector<Jeton*> all_jetons ; // NOT USED YET
         std::vector<const Carte*> all_batiments ;
-        std::vector<const Carte*> all_guildes ; // NOT USED YET
+        std::vector<const Carte*> all_guildes ;
         std::vector<const Merveille*> all_merveilles ; // NOT USED YET
 
         std::vector<const Carte*> defausse ; // NOT USED YET

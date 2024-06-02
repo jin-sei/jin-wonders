@@ -817,6 +817,90 @@ void Box::allCardsCreation(){
             "Rostres" // Bâtiment chaîné
     ));
 
+    all_guildes.push_back( new Guilde(
+            "Guilde des Commercants", 
+            type_batiment::Guilde, 
+            phase_jeu::AGE_III, 
+            {ressource::Argile, ressource::Bois, ressource::Verre, ressource::Papyrus}, // Liste des ressource nécéssaires
+            0, // Coût en argent
+            1, // Récompense en argent
+            1, // Points de victoire
+            {type_batiment::Commerce}, // affectation
+            false
+    ));
+
+    all_guildes.push_back( new Guilde(
+            "Guilde des Armateurs", 
+            type_batiment::Guilde, 
+            phase_jeu::AGE_III, 
+            {ressource::Argile, ressource::Pierre, ressource::Verre, ressource::Papyrus}, // Liste des ressource nécéssaires
+            0, // Coût en argent
+            1,  // Récompense en argent
+            1, // Points de victoire
+            {type_batiment::Premiere, type_batiment::Manufacture}, // affectation
+            false
+    ));
+
+    all_guildes.push_back( new Guilde(
+            "Guilde des Batisseurs", 
+            type_batiment::Guilde, 
+            phase_jeu::AGE_III, 
+            {ressource::Pierre, ressource::Pierre, ressource::Argile, ressource::Bois, ressource::Verre}, // Liste des ressource nécéssaires
+            0, // Coût en argent
+            0,  // Récompense en argent
+            2, // Points de victoire
+            {type_batiment::Merveille}, // affectation
+            false
+    ));
+
+    all_guildes.push_back( new Guilde(
+            "Guilde des Magistrats", 
+            type_batiment::Guilde, 
+            phase_jeu::AGE_III, 
+            {ressource::Bois, ressource::Bois, ressource::Argile, ressource::Papyrus}, // Liste des ressource nécéssaires
+            0, // Coût en argent
+            1,  // Récompense en argent
+            1, // Points de victoire
+            {type_batiment::Civil}, // affectation
+            false
+    ));
+
+    all_guildes.push_back( new Guilde(
+            "Guilde des Scientifiques", 
+            type_batiment::Guilde, 
+            phase_jeu::AGE_III, 
+            {ressource::Bois, ressource::Bois, ressource::Argile, ressource::Argile}, // Liste des ressource nécéssaires
+            0, // Coût en argent
+            1,  // Récompense en argent
+            1, // Points de victoire
+            {type_batiment::Scientifique}, // affectation
+            false
+    ));
+
+    all_guildes.push_back( new Guilde(
+            "Guilde des Tacticiens", 
+            type_batiment::Guilde, 
+            phase_jeu::AGE_III, 
+            {ressource::Pierre, ressource::Pierre, ressource::Argile, ressource::Papyrus}, // Liste des ressource nécéssaires
+            0, // Coût en argent
+            1,  // Récompense en argent
+            1, // Points de victoire
+            {type_batiment::Militaire}, // affectation
+            false
+    ));
+
+    all_guildes.push_back( new Guilde(
+            "Guilde des Usuriers", 
+            type_batiment::Guilde, 
+            phase_jeu::AGE_III, 
+            {ressource::Bois, ressource::Bois, ressource::Pierre, ressource::Pierre}, // Liste des ressource nécéssaires
+            0, // Coût en argent
+            1,  // Récompense en argent
+            1, // Points de victoire
+            {}, // affectation
+            true
+    ));
+
     // MOCK CARDS TO TEST THE GAME : TO BE REMOVED
     /*
     phase_jeu p = phase_jeu::AGE_I ;

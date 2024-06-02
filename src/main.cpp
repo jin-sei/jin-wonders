@@ -14,7 +14,7 @@ int tests(){
     Merveille my_wonder1 = Merveille("Le Mausolée", type_batiment::Merveille, phase_jeu::AGE_I, {ressource::Argile, ressource::Bois, ressource::Bois, ressource::Pierre, ressource::Papyrus}, 0, 0, 5);
     std::cout << my_wonder1 << std::endl;
 
-    std::cout << "display missing ressources : " << std::endl ; 
+    std::cout << "display missing ressources : " << std::endl;
     //displayRessources( my_wonder1.achetableRessource({{ressource::Bois, ressource::Bois, ressource::Verre, ressource::Papyrus, ressource::Papyrus}})) ;
     std::cout << std::endl ; 
 
@@ -135,6 +135,12 @@ int tests(){
     Commerce commerce_3 = Commerce("Commerce III", type_batiment::Commerce, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Argile, ressource::Bois, ressource::Pierre});
     my_box1.getJoueur(2)->addBatiment(&commerce_3);
     my_box1.getJoueur(2)->achetableJoueur(mock_bat_7.getCoutRessource());
+
+    std::cout << "trésor p2 before guild : " << my_box1.getJoueur(2)->getTresor() << std::endl;
+    const Guilde guilde_1 = Guilde("Guilde I", type_batiment::Guilde, phase_jeu::AGE_III, {}, 0, 1, 0, {type_batiment::Premiere}, false);
+    guilde_1.rewardArgent(my_box1.getJoueur(2));
+    std::cout << "trésor p2 after guild : " << my_box1.getJoueur(2)->getTresor() << std::endl;
+    std::cout << "points de victoire granted by guild: " << guilde_1.ptVictoireFinJeu(my_box1.getJoueur(2)) << std::endl;
     
     //Perk* perk_3 = new Perk_PolyRessource({ressource::Argile, ressource::Pierre, ressource::Bois});
     //std::cout << "PERK 3 IS POLY RES ? " << perk_3->isPolyRes() << std::endl;
@@ -158,9 +164,23 @@ int main(){
 
     tests() ;
     std::cout << std::endl << "7 WONDERS DUEL" << std::endl << "--------------" << std::endl  << std::endl ;
-    //Box my_box = Box() ; 
-    //my_box.allCardsCreation();
-    //my_box.newAge();
+    Box my_box = Box() ; 
+    my_box.allCardsCreation();
+    my_box.newAge();
+
+    my_box.getPlateau()->getLayout()->displayLayout();
+    displayCards( my_box.getPlateau()->getLayout()->getCards() ); 
+
+    my_box.newAge();
+
+    my_box.getPlateau()->getLayout()->displayLayout();
+    displayCards( my_box.getPlateau()->getLayout()->getCards() ); 
+
+    my_box.newAge();
+
+    my_box.getPlateau()->getLayout()->displayLayout();
+    displayCards( my_box.getPlateau()->getLayout()->getCards() ); 
+
     //displayCards( my_box.getAllBatiments() );
 
     return 0 ;
@@ -169,11 +189,11 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// instancier les Batiments de Commerce
+// finir systèmes des perks
+
 
 // NEXT : 
-// implémenter les Guildes
-// finir systèmes des perks
+// instancier les Merveilles (ziad)
 
 
 // MAIN QUESTS : 
@@ -183,8 +203,7 @@ int main(){
 
 
 // OTHER TASKS : 
-// distribution -> rajouter les cartes Guildes
-// instanciations -> rajouter les cartes Commerce et supprimer les doublons
+// onBuild virtual method ?
 // implémenter un système pour communiquer simplement avec le joueur (choix...) : prendre en compte l'IA
 // tours de jeu 
 // début de jeu
