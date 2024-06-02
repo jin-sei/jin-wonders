@@ -149,6 +149,8 @@ int tests(){
     //delete perk_2 ; 
     //delete perk_1 ;
 
+    my_wonder1.onBuild(my_box1.getJoueur(2)); 
+
     
     } catch(const GameException& e) {
 

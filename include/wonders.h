@@ -143,29 +143,9 @@ class Commerce : public Batiment {
 
         void onBuild(Joueur* j) const override ;
 
-    private:
+    protected:
 
         const Perk* perk ;
-};
-
-class Guilde : public Carte {
-    public:
-        Guilde(
-            std::string nom, type_batiment type, phase_jeu age=phase_jeu::AGE_I,
-            std::list<ressource> cost_r={}, unsigned int cost=0,
-            unsigned int argent=0, unsigned int pt_victoire=0,
-
-            std::list<type_batiment> affectation={}, bool usurier=false
-            );
-
-        unsigned int ptVictoireFinJeu(Joueur* j) const ;
-        void rewardArgent(Joueur* j) const ;
-
-        void onBuild(Joueur* j) const override ;
-
-    private:
-        std::list<type_batiment> affectation ; 
-        bool usurier ; 
 };
 
 class Merveille : public Commerce {
@@ -188,10 +168,32 @@ class Merveille : public Commerce {
         //SETTERS
         void setReplay(bool b) { replay = b ;}
 
+        //void onBuild(Joueur* j) const override ; // Calls onBuild commerce
+
     private:
 
         const Carte* feed ;
-        bool replay ; 
+        bool replay ;
+};
+
+class Guilde : public Carte {
+    public:
+        Guilde(
+            std::string nom, type_batiment type, phase_jeu age=phase_jeu::AGE_I,
+            std::list<ressource> cost_r={}, unsigned int cost=0,
+            unsigned int argent=0, unsigned int pt_victoire=0,
+
+            std::list<type_batiment> affectation={}, bool usurier=false
+            );
+
+        unsigned int ptVictoireFinJeu(Joueur* j) const ;
+        void rewardArgent(Joueur* j) const ;
+
+        void onBuild(Joueur* j) const override ;
+
+    private:
+        std::list<type_batiment> affectation ; 
+        bool usurier ; 
 };
 
 class Jeton {

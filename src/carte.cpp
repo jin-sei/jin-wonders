@@ -100,6 +100,19 @@ Commerce::Commerce(
 
 Commerce::~Commerce() { if(perk!=nullptr){delete perk ;} }
 
+void Commerce::onBuild(Joueur* j) const {
+    std::cout << "CALLING ONBUILD COMMERCE" << std::endl ;
+    if(perk!=nullptr){
+        perk->onCall(j); 
+    }
+}
+
+/*
+void Merveille::onBuild(Joueur* j) const {
+
+}
+*/
+
 Guilde::Guilde(
     std::string nom, type_batiment type, phase_jeu age,
     std::list<ressource> cost_r, unsigned int cost,
@@ -108,11 +121,6 @@ Guilde::Guilde(
     std::list<type_batiment> affectation, bool usurier):
     Carte(nom, type, age,cost_r, cost, argent, pt_victoire),affectation(affectation), usurier(usurier){
         if( type != type_batiment::Guilde ){ throw GameException("ERREUR: Utilisation du constructeur de Guilde avec un type_batiment invalide");}
-}
-
-void Commerce::onBuild(Joueur* j) const {
-    std::cout << "CALLING ONBUILD COMMERCE" << std::endl ;
-    perk->onCall(j); 
 }
 
 unsigned int Guilde::ptVictoireFinJeu(Joueur* j) const {
