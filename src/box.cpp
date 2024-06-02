@@ -5,7 +5,7 @@ Box::Box(){
 
     plateau = new Plateau();
 
-    joueur1 = new Joueur(1) ; joueur2 = new Joueur(2) ; 
+    joueur1 = new Joueur(0) ; joueur2 = new Joueur(1) ; 
     joueur1->setAdversaire(joueur2); 
     joueur2->setAdversaire(joueur1);
     current = joueur1 ; 

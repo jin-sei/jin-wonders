@@ -207,7 +207,8 @@ class Joueur {
 
     public:
 
-        Joueur(unsigned int id) : id(id){
+        Joueur(bool id) : id(id){
+
             fixed_trade[ressource::Argile] = 0;
             fixed_trade[ressource::Pierre] = 0;
             fixed_trade[ressource::Bois] = 0;
@@ -259,7 +260,7 @@ class Joueur {
 
         unsigned int tresor = 0 ;
 
-        unsigned int id ;
+        bool id ; // 0 or 1
 
 };
 
@@ -446,13 +447,7 @@ class Box {
 
         Plateau* getPlateau() const { return plateau ;}
 
-        Joueur* getJoueur(unsigned int x) const {
-            switch(x){
-                case 1 : return joueur1 ;
-                case 2 : return joueur2 ;
-                default : throw GameException("ERREUR : Joueur est 1 ou 2");
-            }
-        }
+        Joueur* getJoueur(bool x) const { return x ? joueur2 : joueur1 ;}
 
         Joueur* getCurrentJoueur() const { return current ;}
         void switchCurrent() { current = current->getAdversaire(); }
