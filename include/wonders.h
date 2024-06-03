@@ -209,6 +209,8 @@ class Jeton {
         const jeton_progres id ; 
 };
 
+std::ostream& operator<<(std::ostream& f, const Jeton& c);
+
 class Joueur {
     // pas responsable de la durée de vie de ses cartes
 
@@ -226,6 +228,7 @@ class Joueur {
 
         std::vector<const Batiment*> getBatiments() const { return batiments; }
         std::vector<const Batiment*> getBatimentsPerType(type_batiment t) const ; 
+        std::vector<const Jeton*> getJetons() const { return jetons; }
 
         void addBatiment(const Batiment* c){batiments.push_back(c);}
         void addJeton(const Jeton* j){jetons.push_back(j);}
@@ -482,7 +485,7 @@ class Plateau {
         // GETTERS
         Layout* getLayout() const { return layout; }
         int getPionMilitaire() const { return pion_militaire; }
-        std::vector<const Jeton*> getJeton() const { return jetons; }
+        std::vector<const Jeton*> getJetons() const { return jetons; }
         void addJeton(const Jeton* j) { jetons.push_back(j); }
 
         const Jeton* takeJeton(jeton_progres id);

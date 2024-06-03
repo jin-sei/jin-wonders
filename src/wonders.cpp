@@ -73,6 +73,7 @@ std::string tostringType(type_batiment t){
 
 std::string tostringJeton(jeton_progres j){
     switch(j){
+        case jeton_progres::Agriculture : return "Agriculture" ;
         case jeton_progres::Architecture : return "Architecture" ;
         case jeton_progres::Economie : return "Economie" ; 
         case jeton_progres::Loi : return "Loi" ;
@@ -105,6 +106,11 @@ phase_jeu& operator++(phase_jeu& phase){
         phase = static_cast<phase_jeu>(static_cast<int>(0));
     }
     return phase ; 
+}
+
+std::ostream& operator<<(std::ostream& f, const Jeton& j){
+    f << tostringJeton(j.getId()) ;
+    return f ;
 }
 
 void displayRessources(std::list<ressource> r){

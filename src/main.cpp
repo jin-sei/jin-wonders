@@ -163,6 +163,23 @@ int tests(){
     std::cout << "trésor p0 : " << my_box1.getJoueur(0)->getTresor() << " ; trésor p1 " << my_box1.getJoueur(1)->getTresor() << std::endl;
     std::cout << "points de victoire: " << my_box1.getPlateau()->pointsVictoire() << std::endl; 
 
+    const Jeton j = Jeton(jeton_progres::Philosophie);
+    my_box1.getJoueur(0)->addJeton(&j);
+    //std::cout << j ;
+    std::cout << "J1 has philosophie ? " << my_box1.getJoueur(0)->possessJeton(jeton_progres::Philosophie) << std::endl;
+
+    std::cout << "-----------------------------------before taking jeton" << std::endl ; 
+    std::cout << "------------------joueur" << std::endl ; 
+    displayCards( my_box1.getJoueur(0)->getJetons() ) ;
+    std::cout << "------------------plateau" << std::endl ; 
+    displayCards( my_box1.getPlateau()->getJetons() ) ;
+    my_box1.getJoueur(0)->addJeton( my_box1.getPlateau()->takeJeton(my_box1.getPlateau()->getJetons()[0]->getId()));
+    std::cout << "----------------------------------after taking jeton" << std::endl ; 
+    std::cout << "-------------------joueur" << std::endl ; 
+    displayCards( my_box1.getJoueur(0)->getJetons() ) ;
+    std::cout << "------------------plateau" << std::endl ; 
+    displayCards( my_box1.getPlateau()->getJetons() ) ;
+
     
     } catch(const GameException& e) {
 
@@ -179,6 +196,7 @@ int main(){
     tests() ;
     std::cout << std::endl << "7 WONDERS DUEL" << std::endl << "--------------" << std::endl  << std::endl ;
     
+    /*
     Box my_box = Box() ; 
     //my_box.allCardsCreation();
     my_box.newAge();
@@ -196,6 +214,7 @@ int main(){
 
     my_box.getPlateau()->getLayout()->displayLayout();
     displayCards( my_box.getPlateau()->getLayout()->getCards() ); 
+    */
     
 
     //displayCards( my_box.getAllBatiments() );
