@@ -7,6 +7,198 @@ void Box::allCardsCreation(){
     // 20 cartes Âge III
     // 7 cartes Guilde
     // 12 cartes Merveille
+    // 10 jetons Progrès
+
+        all_jetons.push_back( new Jeton(jeton_progres::Agriculture) );
+        all_jetons.push_back( new Jeton(jeton_progres::Architecture) );
+        all_jetons.push_back( new Jeton(jeton_progres::Economie) );
+        all_jetons.push_back( new Jeton(jeton_progres::Loi) );
+        all_jetons.push_back( new Jeton(jeton_progres::Maconnerie) );
+        all_jetons.push_back( new Jeton(jeton_progres::Mathematiques) );
+        all_jetons.push_back( new Jeton(jeton_progres::Philosophie) );
+        all_jetons.push_back( new Jeton(jeton_progres::Strategie) );
+        all_jetons.push_back( new Jeton(jeton_progres::Theologie) );
+        all_jetons.push_back( new Jeton(jeton_progres::Urbanisme) );
+
+        all_merveilles.push_back( new Merveille(
+                "Le Circus Maximus", // Nom du bâtiment
+                type_batiment::Merveille, // Type du bâtiment
+                phase_jeu::AGE_I, // âge de la carte
+                {ressource::Pierre, ressource::Bois, ressource::Verre, ressource::Verre}, // Liste des ressource nécessaires
+                0, // Coût en argent
+                0, // Récompense en argent
+                3, // Points de victoire
+                {ressource::Bouclier}, // Liste des ressource produites par le bâtiment
+                "", // Bâtiment chaîné (si applicable)
+                new Perk_Destruction(type_batiment::Manufacture), // perk
+                false, // indique si la carte est rejouée
+                nullptr// feed
+        ));
+
+        all_merveilles.push_back( new Merveille(
+                "Le Colosse", // Nom du bâtiment
+                type_batiment::Merveille, // Type du bâtiment
+                phase_jeu::AGE_I, // âge de la carte
+                {ressource::Argile, ressource::Argile, ressource::Argile, ressource::Verre}, // Liste des ressource nécessaires
+                0, // Coût en argent
+                0, // Récompense en argent
+                3, // Points de victoire
+                {ressource::Bouclier, ressource::Bouclier}, // Liste des ressource produites par le bâtiment
+                "", // Bâtiment chaîné (si applicable)
+                nullptr, // perk
+                false, // indique si la carte est rejouée
+                nullptr// feed
+        ));
+
+        all_merveilles.push_back( new Merveille(
+                "Le Grand Phare", // Nom du bâtiment
+                type_batiment::Merveille, // Type du bâtiment
+                phase_jeu::AGE_I, // âge de la carte
+                {ressource::Pierre, ressource::Bois, ressource::Papyrus, ressource::Papyrus}, // Liste des ressource nécessaires
+                0, // Coût en argent
+                0, // Récompense en argent
+                4, // Points de victoire
+                {ressource::Bois, ressource::Pierre, ressource::Argile}, // Liste des ressource produites par le bâtiment
+                "", // Bâtiment chaîné (si applicable)
+                nullptr, // perk
+                false, // indique si la carte est rejouée
+                nullptr// feed
+        ));
+
+        all_merveilles.push_back( new Merveille(
+                "Les Jardins Suspendus", // Nom du bâtiment
+                type_batiment::Merveille, // Type du bâtiment
+                phase_jeu::AGE_I, // âge de la carte
+                {ressource::Bois, ressource::Bois, ressource::Verre, ressource::Papyrus}, // Liste des ressource nécessaires
+                0, // Coût en argent
+                6, // Récompense en argent
+                3, // Points de victoire
+                {}, // Liste des ressource produites par le bâtiment
+                "", // Bâtiment chaîné (si applicable)
+                nullptr, // perk
+                true, // indique si la carte est rejouée
+                nullptr// feed
+        ));
+
+        all_merveilles.push_back( new Merveille(
+                "Le Grande Bibliotheque", // Nom du bâtiment
+                type_batiment::Merveille, // Type du bâtiment
+                phase_jeu::AGE_I, // âge de la carte
+                {}, // Liste des ressource nécessaires
+                0, // Coût en argent
+                0, // Récompense en argent
+                4, // Points de victoire
+                {}, // Liste des ressource produites par le bâtiment
+                "", // Bâtiment chaîné (si applicable)
+                new Perk_Classic(1, this), // perk
+                false, // indique si la carte est rejouée
+                nullptr// feed
+        ));
+
+        all_merveilles.push_back( new Merveille(
+                "Le Mausolée", // Nom du bâtiment
+                type_batiment::Merveille, // Type du bâtiment
+                phase_jeu::AGE_I, // âge de la carte
+                {ressource::Bois, ressource::Bois, ressource::Bois, ressource::Papyrus, ressource::Verre}, // Liste des ressource nécessaires
+                0, // Coût en argent
+                0, // Récompense en argent
+                2, // Points de victoire
+                {}, // Liste des ressource produites par le bâtiment
+                "", // Bâtiment chaîné (si applicable)
+                new Perk_Classic(2, this), // perk
+                false, // indique si la carte est rejouée
+                nullptr// feed
+        ));
+
+        all_merveilles.push_back( new Merveille(
+                "Le Piree", // Nom du bâtiment
+                type_batiment::Merveille, // Type du bâtiment
+                phase_jeu::AGE_I, // âge de la carte
+                {ressource::Pierre, ressource::Bois, ressource::Bois, ressource::Argile}, // Liste des ressource nécessaires
+                0, // Coût en argent
+                0, // Récompense en argent
+                2, // Points de victoire
+                {ressource::Papyrus, ressource::Verre}, // Liste des ressource produites par le bâtiment
+                "", // Bâtiment chaîné (si applicable)
+                nullptr, // perk
+                true, // indique si la carte est rejouée
+                nullptr// feed
+        ));
+
+        all_merveilles.push_back( new Merveille(
+                "Les Pyramides", // Nom du bâtiment
+                type_batiment::Merveille, // Type du bâtiment
+                phase_jeu::AGE_I, // âge de la carte
+                {ressource::Pierre, ressource::Pierre, ressource::Pierre, ressource::Papyrus}, // Liste des ressource nécessaires
+                0, // Coût en argent
+                0, // Récompense en argent
+                9, // Points de victoire
+                {}, // Liste des ressource produites par le bâtiment
+                "", // Bâtiment chaîné (si applicable)
+                nullptr, // perk
+                false, // indique si la carte est rejouée
+                nullptr// feed
+        ));
+
+        all_merveilles.push_back( new Merveille(
+                "Le Sphinx", // Nom du bâtiment
+                type_batiment::Merveille, // Type du bâtiment
+                phase_jeu::AGE_I, // âge de la carte
+                {ressource::Pierre, ressource::Argile, ressource::Verre, ressource::Verre}, // Liste des ressource nécessaires
+                0, // Coût en argent
+                0, // Récompense en argent
+                6, // Points de victoire
+                {}, // Liste des ressource produites par le bâtiment
+                "", // Bâtiment chaîné (si applicable)
+                nullptr, // perk
+                true, // indique si la carte est rejouée
+                nullptr// feed
+        ));
+
+        all_merveilles.push_back( new Merveille(
+                "La Statue de Zeus", // Nom du bâtiment
+                type_batiment::Merveille, // Type du bâtiment
+                phase_jeu::AGE_I, // âge de la carte
+                {ressource::Pierre, ressource::Bois, ressource::Argile, ressource::Papyrus, ressource::Papyrus}, // Liste des ressource nécessaires
+                0, // Coût en argent
+                0, // Récompense en argent
+                3, // Points de victoire
+                {ressource::Bouclier}, // Liste des ressource produites par le bâtiment
+                "", // Bâtiment chaîné (si applicable)
+                new Perk_Destruction(type_batiment::Premiere), // perk
+                false, // indique si la carte est rejouée
+                nullptr// feed
+        ));
+
+        all_merveilles.push_back( new Merveille(
+                "Le Temple d'Artemis", // Nom du bâtiment
+                type_batiment::Merveille, // Type du bâtiment
+                phase_jeu::AGE_I, // âge de la carte
+                {ressource::Pierre, ressource::Bois, ressource::Verre, ressource::Papyrus}, // Liste des ressource nécessaires
+                0, // Coût en argent
+                12, // Récompense en argent
+                0, // Points de victoire
+                {}, // Liste des ressource produites par le bâtiment
+                "", // Bâtiment chaîné (si applicable)
+                nullptr, // perk
+                true, // indique si la carte est rejouée
+                nullptr// feed
+        ));
+
+        all_merveilles.push_back( new Merveille(
+                "La Vie Appia", // Nom du bâtiment
+                type_batiment::Merveille, // Type du bâtiment
+                phase_jeu::AGE_I, // âge de la carte
+                {ressource::Pierre, ressource::Pierre, ressource::Argile, ressource::Argile, ressource::Papyrus}, // Liste des ressource nécessaires
+                0, // Coût en argent
+                3, // Récompense en argent
+                3, // Points de victoire
+                {}, // Liste des ressource produites par le bâtiment
+                "", // Bâtiment chaîné (si applicable)
+                new Perk_Classic(0, this), // perk
+                true, // indique si la carte est rejouée
+                nullptr// feed
+        ));
 
     all_batiments.push_back( new Batiment(
             "Chantier", 

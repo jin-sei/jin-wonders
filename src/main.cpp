@@ -149,7 +149,7 @@ int tests(){
     //delete perk_2 ; 
     //delete perk_1 ;
 
-    my_wonder1.onBuild(my_box1.getJoueur(1)); 
+    my_wonder1.onBuild(my_box1.getJoueur(1));
 
     std::cout << std::endl ; 
     my_box1.getJoueur(0)->addTresor(10); my_box1.getJoueur(1)->addTresor(10);
@@ -204,11 +204,9 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// instancier les Merveilles (ziad)
 
 
 // NEXT : 
-// créer une nouvelle branche sur le github de groupe
 
 
 // MAIN QUESTS : 
@@ -227,5 +225,7 @@ int main(){
 // SIDE QUESTS : 
 // écrire une documentation et expliquer les choix de développement
 // enhanced console display (Layout, Plateau)
+
 // rendre Box singleton
 // rendre Joueur doubleton
+// méthode static pour track les instances Jeton

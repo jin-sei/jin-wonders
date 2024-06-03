@@ -57,7 +57,7 @@ void Perk_Classic::onCall(Joueur* j) const {
 }
 
 Perk_Destruction::Perk_Destruction(type_batiment c):card(c){
-    if(c != type_batiment::Premiere || c != type_batiment::Manufacture){
+    if(c != type_batiment::Premiere && c != type_batiment::Manufacture){
         throw GameException("ERREUR: La destruction par Perk Destruction n'est permise que sur Batiment Premiere ou Manufacture");
     }
 }

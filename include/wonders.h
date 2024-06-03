@@ -198,10 +198,15 @@ class Guilde : public Carte {
         bool usurier ; 
 };
 
+
 class Jeton {
+    // classe inutile pour le moment mais on pourra faire une méthode static
+    // pour vérifier que chaque jeton n'est instancié qu'une seule fois
     public:
+        Jeton(jeton_progres id):id(id){}
+        const jeton_progres getId() const { return id; }
     private:
-        jeton_progres id ; 
+        const jeton_progres id ; 
 };
 
 class Joueur {
@@ -253,7 +258,7 @@ class Joueur {
     private:
 
         Joueur* adversaire ;
-        std::vector<jeton_progres> jetons ;
+        std::vector<const Jeton*> jetons ;
         std::vector<const Batiment*> batiments ;
         std::vector<const Merveille*> merveilles ;
 
@@ -325,9 +330,10 @@ class Perk_Classic : public Perk { // PERKS W/O SETTINGS
     public: 
         Perk_Classic(unsigned int id, const Box* box);
 
-        void saccage(Joueur* j) const ;
-        void freeConstructionFromDefausse(Joueur* j) const;
-        void pickJeton(Joueur* j) const;
+        void saccage(Joueur* j) const ; // 0
+        void freeConstructionFromDefausse(Joueur* j) const; // 2
+        void pickJeton(Joueur* j) const; // 1
+
         void onCall(Joueur* j) const override;
     private:
         unsigned int id ;
@@ -446,7 +452,7 @@ class Box {
 
         phase_jeu phase ;
 
-        std::vector<Jeton*> all_jetons ; // NOT USED YET
+        std::vector<const Jeton*> all_jetons ; // NOT USED YET
         std::vector<const Carte*> all_batiments ;
         std::vector<const Carte*> all_guildes ;
         std::vector<const Merveille*> all_merveilles ; // NOT USED YET
@@ -479,6 +485,6 @@ class Plateau {
         unsigned int saccage[4] = {2, 5, 2, 5};
         // 0 | 1 ; 2 | 3 ; 4 ; 5 | 6 ; 7 ; 8 | 9 
 
-        std::list<Jeton> jeton ;
+        std::vector<const Jeton*> jeton ;
         
 };
