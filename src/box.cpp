@@ -54,13 +54,13 @@ void Box::newAge(){
         ++phase ;
         plateau->getLayout()->switchAge(phase); // SWITCH AGE CLEAR LES CARTES DE LAYOUT
         distributeCards(phase);
+        // commencer les tours de jeu
         return ;
 
     } else if( phase == phase_jeu::AGE_III ){
 
         ++phase;
-        // fin de jeu ; 
-        // comptage des points, détermination du gagant
+        // fin de jeu ; comptage des points, détermination du gagant
         return ; 
 
     } else if ( phase == phase_jeu::END ){
@@ -131,7 +131,7 @@ void Box::reinitAll(){
 }
 
 void Box::choixMerveilles(){
-
+    // requires player interaction
 }
 
 void Box::setupJetons(){

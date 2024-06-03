@@ -123,12 +123,12 @@ Guilde::Guilde(
         if( type != type_batiment::Guilde ){ throw GameException("ERREUR: Utilisation du constructeur de Guilde avec un type_batiment invalide");}
 }
 
-unsigned int Guilde::ptVictoireFinJeu(Joueur* j) const {
+unsigned int Guilde::ptVictoireFinJeu(const Joueur* j) const {
 
     if( usurier ){ return std::max(j->getTresor()/3, j->getAdversaire()->getTresor()/3) ;}
 
     unsigned int p[2] = {0, 0} ;
-    Joueur* jp[2] = {j, j->getAdversaire()};
+    const Joueur* jp[2] = {j, j->getAdversaire()};
 
     for(size_t i = 0 ; i < 1 ; i++){
         for( auto iter = affectation.begin() ; iter != affectation.end() ; ++iter ){

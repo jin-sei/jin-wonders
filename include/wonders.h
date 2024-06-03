@@ -188,7 +188,7 @@ class Guilde : public Carte {
             std::list<type_batiment> affectation={}, bool usurier=false
             );
 
-        unsigned int ptVictoireFinJeu(Joueur* j) const ;
+        unsigned int ptVictoireFinJeu(const Joueur* j) const ;
         void rewardArgent(Joueur* j) const ;
 
         void onBuild(Joueur* j) const override ;
@@ -238,8 +238,8 @@ class Joueur {
         void addTresor(unsigned int t){tresor += t;}
         void subTresor(unsigned int t){ if(tresor <= t){tresor = 0 ;} else { tresor -= t ;} }
 
-        bool possessBatiment(std::string s);
-        bool possessJeton(jeton_progres id);
+        bool possessBatiment(std::string s) const;
+        bool possessJeton(jeton_progres id) const;
 
         // achat
         std::list<ressource> achetableRessource(std::list<ressource> cost) const;
@@ -247,6 +247,7 @@ class Joueur {
 
         // fetch military, fetch science
         std::list<ressource> fetchRessource(std::list<ressource> r) const ;
+        unsigned int fetchPtVictoire(bool tiebreaker) const ;
 
         // utils pour les guildes et cartes commerces
         unsigned int getNumberActiveWonders() const ;
@@ -264,7 +265,8 @@ class Joueur {
 
         Joueur* adversaire ;
         std::vector<const Jeton*> jetons ;
-        std::vector<const Batiment*> batiments ; // remplacer par Carte* ? ou ajouter vecteur pour Guildes
+        std::vector<const Batiment*> batiments ;
+        std::vector<const Guilde*> guildes ; 
         std::vector<const Merveille*> merveilles ;
 
         std::map<ressource, unsigned int> fixed_trade ;
@@ -439,7 +441,7 @@ class Box {
         // GETTERS
         Plateau* getPlateau() const { return plateau ;}
         Joueur* getJoueur(bool x) const { return x ? joueur2 : joueur1 ;}
-        std::vector<const Carte*> getAllBatiments() const { return all_batiments; }
+        std::vector<const Batiment*> getAllBatiments() const { return all_batiments; }
 
         // GESTION DU JEU
         void newAge();
@@ -467,8 +469,8 @@ class Box {
         phase_jeu phase ;
 
         std::vector<const Jeton*> all_jetons ;
-        std::vector<const Carte*> all_batiments ;
-        std::vector<const Carte*> all_guildes ;
+        std::vector<const Batiment*> all_batiments ;
+        std::vector<const Guilde*> all_guildes ;
         std::vector<const Merveille*> all_merveilles ;
 
         std::vector<const Carte*> defausse ; // NOT USED YET

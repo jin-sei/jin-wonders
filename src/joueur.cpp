@@ -25,7 +25,43 @@ std::list<ressource> Joueur::fetchRessource(std::list<ressource> r) const {
     return production ; 
 }
 
-bool Joueur::possessBatiment(std::string s){
+unsigned int Joueur::fetchPtVictoire(bool tiebreaker) const {
+
+    unsigned int points = 0 ; 
+
+    // BATIMENTS
+    for(auto iter = batiments.begin() ; iter != batiments.end() ; ++iter){
+
+        if( tiebreaker && (**iter).getType() != type_batiment::Civil ){
+            continue ; 
+        } else {
+            points += (**iter).getPointVictoire();
+        }
+
+    }
+
+    if( tiebreaker ) { return points ; }
+
+    // MERVEILLES
+    for(auto iter = merveilles.begin() ; iter != merveilles.end() ; ++iter){
+        points += (**iter).getPointVictoire();
+    }
+
+    // GUILDES
+    for(auto iter = guildes.begin() ; iter != guildes.end() ; ++iter){
+        points += (**iter).ptVictoireFinJeu(this);
+    }
+
+    // JETONS PROGRÈS
+    if( possessJeton(jeton_progres::Mathematiques) ){ points += jetons.size()*3; }
+    if( possessJeton(jeton_progres::Philosophie) ){ points += 7 ;}
+    if( possessJeton(jeton_progres::Agriculture) ){ points += 4; }
+
+    return points ; 
+    
+}
+
+bool Joueur::possessBatiment(std::string s) const{
     for( auto iter = batiments.begin() ; iter != batiments.end() ;  ++iter){
 
         if( (**iter).getNom() == s ){
@@ -36,7 +72,7 @@ bool Joueur::possessBatiment(std::string s){
     return false ; 
 }
 
-bool Joueur::possessJeton(jeton_progres id){
+bool Joueur::possessJeton(jeton_progres id) const{
     auto it = std::find_if(jetons.begin(), jetons.end(), [id](const Jeton* j){
         return j->getId() == id;  
     });

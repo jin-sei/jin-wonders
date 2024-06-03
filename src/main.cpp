@@ -196,7 +196,7 @@ int main(){
     tests() ;
     std::cout << std::endl << "7 WONDERS DUEL" << std::endl << "--------------" << std::endl  << std::endl ;
     
-    /*
+    
     Box my_box = Box() ; 
     //my_box.allCardsCreation();
     my_box.newAge();
@@ -214,7 +214,6 @@ int main(){
 
     my_box.getPlateau()->getLayout()->displayLayout();
     displayCards( my_box.getPlateau()->getLayout()->getCards() ); 
-    */
     
 
     //displayCards( my_box.getAllBatiments() );
@@ -225,25 +224,24 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-
-
-// début de jeu : working on setupAll 
-//      choix des Merveilles
-//      Jetons sur le Plateau
-
-// NEXT : 
+// implémenter la fin de jeu dans newAge()
 // fin de jeu: 
 //      déterminer le gagnant
 //      compter les points
 //      recommencer une partie
+// déterminer victoire scientifique
+
+
+// NEXT : 
 // tours de jeu: 
 //      construire une Carte / Merveille ; appeler les Effets
 //      défausser
+//      doublons de jetons scientifiques 
+//      choisir un jeton
 
 
 // MAIN QUESTS : 
 // effet des Jetons
-// distribution (début de partie) -> initialiser le plateau avec 5 jetons
 
 
 // OTHER TASKS : 
@@ -251,7 +249,9 @@ int main(){
 //      prendre en compte l'IA
 //      programmation générique
 // interactions avec le joueur:
-//      perks
+//      perks (destruction, pickJeton)
+//      choix des Merveilles en début de partie
+//      choisir une carte à construire / action pendant le tour de jeu
 
 
 
