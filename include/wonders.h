@@ -463,7 +463,7 @@ class Box {
 
         Plateau* plateau ; 
 
-        Joueur* joueur1 ; Joueur* joueur2 ;
+        Joueur* joueur0 ; Joueur* joueur1 ;
         Joueur* current ;
 
         phase_jeu phase ;
@@ -499,7 +499,7 @@ class Plateau {
         bool victoireMilitaire() const { return (pion_militaire == -9 || pion_militaire == 9); }
         // check victoire Militaire
         
-        Joueur* joueurDominant() const { return box->getJoueur( pion_militaire > 0 ) ; }
+        bool joueurDominant() const { return box->getJoueur( pion_militaire > 0 )->getId() ; }
         // joueur qui a avancé le plus le pion vers la capitale ennemie
         
         unsigned int pointsVictoire() const ; 

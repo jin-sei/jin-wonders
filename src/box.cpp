@@ -5,10 +5,10 @@ Box::Box(){
 
     plateau = new Plateau(this);
 
-    joueur1 = new Joueur(0) ; joueur2 = new Joueur(1) ; 
-    joueur1->setAdversaire(joueur2); 
-    joueur2->setAdversaire(joueur1);
-    current = joueur1 ; 
+    joueur0 = new Joueur(0) ; joueur1 = new Joueur(1) ; 
+    joueur0->setAdversaire(joueur1); 
+    joueur1->setAdversaire(joueur0);
+    current = joueur0 ; 
     
     phase = phase_jeu::END ;
 
@@ -19,8 +19,8 @@ Box::Box(){
 Box::~Box(){
 
     delete plateau ; 
+    delete joueur0 ; 
     delete joueur1 ; 
-    delete joueur2 ; 
 
     for( auto iter=all_batiments.begin() ; iter != all_batiments.end() ; ++iter ){
         delete *iter ; 
@@ -58,9 +58,30 @@ void Box::newAge(){
         return ;
 
     } else if( phase == phase_jeu::AGE_III ){
-
-        ++phase;
         // fin de jeu ; comptage des points, détermination du gagant
+        ++phase;
+        
+        // CHECK VICTOIRE MILITAIRE
+        
+        // CHECK VICTOIRE SCIENTIFIQUE
+
+        // COMPTAGE DE POINTS
+        unsigned int pt_j0 = joueur0->fetchPtVictoire(false) + plateau->pointsVictoire() * static_cast<int>(plateau->joueurDominant() == 0), 
+        pt_j1 = joueur1->fetchPtVictoire(false) + plateau->pointsVictoire() * static_cast<int>(plateau->joueurDominant() == 1) ;
+        
+        if( pt_j0 == pt_j1 ){
+            
+            pt_j0 = joueur0->fetchPtVictoire(true) ; pt_j1 = joueur1->fetchPtVictoire(true); 
+            
+            if( pt_j0 == pt_j1 ){
+                std::cout << "ÉGALITÉ ABSOLUE" << std::endl ; 
+            } else {
+                std::cout << "LE JOUEUR " << static_cast<int>(pt_j0 < pt_j1) << " EST VICTORIEUX" << std::endl;
+            }
+        } else {
+            std::cout << "LE JOUEUR " << static_cast<int>(pt_j0 < pt_j1) << " EST VICTORIEUX" << std::endl; 
+        }
+
         return ; 
 
     } else if ( phase == phase_jeu::END ){
@@ -124,8 +145,8 @@ void Box::distributeCards(phase_jeu p){
 void Box::reinitAll(){
     phase = phase_jeu::START ; 
     plateau->reinit();
+    joueur0->reinit();
     joueur1->reinit();
-    joueur2->reinit();
     unused_jetons.clear();
     defausse.clear();
 }

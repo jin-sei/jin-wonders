@@ -54,7 +54,7 @@ unsigned int Joueur::fetchPtVictoire(bool tiebreaker) const {
 
     // JETONS PROGRÈS
     if( possessJeton(jeton_progres::Mathematiques) ){ points += jetons.size()*3; }
-    if( possessJeton(jeton_progres::Philosophie) ){ points += 7 ;}
+    if( possessJeton(jeton_progres::Philosophie) ){ points += 7; }
     if( possessJeton(jeton_progres::Agriculture) ){ points += 4; }
 
     return points ; 
