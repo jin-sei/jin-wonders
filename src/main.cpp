@@ -163,10 +163,11 @@ int tests(){
     std::cout << "trésor p0 : " << my_box1.getJoueur(0)->getTresor() << " ; trésor p1 " << my_box1.getJoueur(1)->getTresor() << std::endl;
     std::cout << "points de victoire: " << my_box1.getPlateau()->pointsVictoire() << std::endl; 
 
-    const Jeton j = Jeton(jeton_progres::Philosophie);
+    const Jeton j = Jeton(jeton_progres::Loi);
     my_box1.getJoueur(0)->addJeton(&j);
+    my_box1.getJoueur(1)->addJeton(&j);
     //std::cout << j ;
-    std::cout << "J1 has philosophie ? " << my_box1.getJoueur(0)->possessJeton(jeton_progres::Philosophie) << std::endl;
+    std::cout << "J1 has loi ? " << static_cast<int>(my_box1.getJoueur(0)->possessJeton(jeton_progres::Loi)) << std::endl;
 
     std::cout << "-----------------------------------before taking jeton" << std::endl ; 
     std::cout << "------------------joueur" << std::endl ; 
@@ -182,9 +183,9 @@ int tests(){
 
 
     const Batiment science_bat_1 = Batiment("Scientifique 1", type_batiment::Scientifique, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Roue} );
-    const Batiment science_bat_2 = Batiment("Scientifique 2", type_batiment::Scientifique, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Roue} );
+    const Batiment science_bat_2 = Batiment("Scientifique 2", type_batiment::Scientifique, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Compas} );
     const Batiment science_bat_3 = Batiment("Scientifique 3", type_batiment::Scientifique, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Plume} );
-    const Batiment science_bat_4 = Batiment("Scientifique 4", type_batiment::Scientifique, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Plume} );
+    const Batiment science_bat_4 = Batiment("Scientifique 4", type_batiment::Scientifique, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Pilon} );
     const Batiment science_bat_5 = Batiment("Scientifique 5", type_batiment::Scientifique, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Balance} );
 
     my_box1.getJoueur(1)->addBatiment(&science_bat_1);
@@ -193,6 +194,7 @@ int tests(){
     my_box1.getJoueur(1)->addBatiment(&science_bat_4);
     my_box1.getJoueur(1)->addBatiment(&science_bat_5);
 
+    std::cout << my_box1.getJoueur(1)->getNumberUniqueSymbols() + static_cast<int>(my_box1.getJoueur(1)->possessJeton(jeton_progres::Loi)) << std::endl ; 
     std::cout << "science stuff: " << my_box1.getJoueur(1)->getNumberUniqueSymbols() << " : " << my_box1.getJoueur(1)->getNumberPairs() << " : " << my_box1.getJoueur(1)->allowJetonPick() << " : " << my_box1.getJoueur(1)->victoireScientifique() << std::endl ; 
 
     
@@ -251,7 +253,17 @@ int main(){
 
 
 // MAIN QUESTS : 
-// effet des Jetons
+// effet des Jetons:
+//      Agriculture
+//      Architecture
+//      Economie
+//      Loi
+//      Maconnerie
+//      Mathematiques
+//      Philosophie
+//      Strategie
+//      Theologie
+//      Urbanisme
 
 
 // OTHER TASKS : 

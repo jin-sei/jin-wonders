@@ -257,7 +257,9 @@ class Joueur {
         unsigned int getNumberUniqueSymbols() const ;
         unsigned int getNumberPairs() const ;
         bool allowJetonPick() const { return getNumberPairs() > jetons.size() ;}
-        bool victoireScientifique() const { return getNumberUniqueSymbols() >= 6 ; }
+        bool victoireScientifique() const { 
+            return ((getNumberUniqueSymbols() + static_cast<int>(possessJeton(jeton_progres::Loi))) >= 6) ; 
+        }
 
         // méthodes pour Trade
         unsigned int getFixedTrade(ressource r);
