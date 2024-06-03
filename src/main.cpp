@@ -151,6 +151,17 @@ int tests(){
 
     my_wonder1.onBuild(my_box1.getJoueur(1)); 
 
+    std::cout << std::endl ; 
+    my_box1.getJoueur(0)->addTresor(10); my_box1.getJoueur(1)->addTresor(10);
+    std::cout << "trésor p0 : " << my_box1.getJoueur(0)->getTresor() << " ; trésor p1 " << my_box1.getJoueur(1)->getTresor() << std::endl;
+    my_box1.getPlateau()->movePion(0, 3);
+    std::cout << "trésor p0 : " << my_box1.getJoueur(0)->getTresor() << " ; trésor p1 " << my_box1.getJoueur(1)->getTresor() << std::endl;
+    my_box1.getPlateau()->movePion(1, 6);
+    std::cout << "trésor p0 : " << my_box1.getJoueur(0)->getTresor() << " ; trésor p1 " << my_box1.getJoueur(1)->getTresor() << std::endl;
+    my_box1.getPlateau()->movePion(0, 9);
+    std::cout << "trésor p0 : " << my_box1.getJoueur(0)->getTresor() << " ; trésor p1 " << my_box1.getJoueur(1)->getTresor() << std::endl;
+    std::cout << "points de victoire: " << my_box1.getPlateau()->pointsVictoire() << std::endl; 
+
     
     } catch(const GameException& e) {
 
@@ -166,6 +177,7 @@ int main(){
 
     tests() ;
     std::cout << std::endl << "7 WONDERS DUEL" << std::endl << "--------------" << std::endl  << std::endl ;
+    /*
     Box my_box = Box() ; 
     my_box.allCardsCreation();
     my_box.newAge();
@@ -182,6 +194,7 @@ int main(){
 
     my_box.getPlateau()->getLayout()->displayLayout();
     displayCards( my_box.getPlateau()->getLayout()->getCards() ); 
+    */
 
     //displayCards( my_box.getAllBatiments() );
 
@@ -191,18 +204,16 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// working on movePion
-// méthodes du Plateau (pion conflit, saccages...)
-// distribution (début de partie) -> initialiser le plateau avec 5 jetons
+// instancier les Merveilles (ziad)
 
 
 // NEXT : 
-// instancier les Merveilles (ziad)
 // créer une nouvelle branche sur le github de groupe
 
 
 // MAIN QUESTS : 
 // effet des Jetons
+// distribution (début de partie) -> initialiser le plateau avec 5 jetons
 
 
 // OTHER TASKS : 
@@ -215,6 +226,6 @@ int main(){
 
 // SIDE QUESTS : 
 // écrire une documentation et expliquer les choix de développement
-// enhanced console display
+// enhanced console display (Layout, Plateau)
 // rendre Box singleton
 // rendre Joueur doubleton

@@ -42,7 +42,8 @@ class GameException {
 // FORWARD DECLARATION
 class Perk ;
 class Joueur ;
-class Box ; 
+class Plateau ; 
+class Box ;
 
 class Carte { // ABSTRACT 
 
@@ -413,31 +414,6 @@ class Layout {
         };
 };
 
-class Plateau {
-    public:
-        // le plateau est responsable du layout qu'il gère
-
-        Plateau(Box* box);
-        ~Plateau();
-        Layout* getLayout() const { return layout; }
-
-        void movePion(bool id, unsigned int avance);
-        bool victoireMilitaire() const { return (pion_militaire == -9 || pion_militaire == 9); }
-
-    private:
-
-        Layout* layout ;
-        Box* box ; 
-
-        int pion_militaire = 0 ; // between -9 and +9
-        // se déplace vers le positif pour le joueur1, vers le négatif pour le joueur 0
-        unsigned int saccages[4] = {5, 2, 2, 5};
-        // 0 | 1 ; 2 | 3 ; 4 ; 5 | 6 ; 7 ; 8 | 9 
-
-        std::list<Jeton> jeton ;
-        
-};
-
 class Box { 
     // responsable de toutes les Cartes, Jetons, Merveilles
     // SHOULD BE SINGLETON
@@ -476,4 +452,33 @@ class Box {
         std::vector<const Merveille*> all_merveilles ; // NOT USED YET
 
         std::vector<const Carte*> defausse ; // NOT USED YET
+};
+
+class Plateau {
+    public:
+        // le plateau est responsable du layout qu'il gère
+
+        Plateau(Box* box);
+        ~Plateau();
+        Layout* getLayout() const { return layout; }
+        int getPionMilitaire() const { return pion_militaire; }
+
+        void movePion(bool id, unsigned int avance);
+        bool victoireMilitaire() const { return (pion_militaire == -9 || pion_militaire == 9); }
+        Joueur* joueurDominant() const { return box->getJoueur( pion_militaire > 0 ) ; }
+        unsigned int pointsVictoire() const ; 
+        // retourne le nombre de points de victoire à attribuer au joueur dominant
+
+    private:
+
+        Layout* layout ;
+        Box* box ; 
+
+        int pion_militaire = 0 ; // between -9 and +9
+        // se déplace vers le positif pour le joueur1, vers le négatif pour le joueur 0
+        unsigned int saccage[4] = {2, 5, 2, 5};
+        // 0 | 1 ; 2 | 3 ; 4 ; 5 | 6 ; 7 ; 8 | 9 
+
+        std::list<Jeton> jeton ;
+        
 };
