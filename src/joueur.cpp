@@ -195,3 +195,20 @@ unsigned int Joueur::getNumberBatiment(type_batiment t) const {
     }
     return nb;
 }
+
+void Joueur::reinitTradePrice(){
+    fixed_trade.clear();
+    fixed_trade[ressource::Argile] = 0;
+    fixed_trade[ressource::Pierre] = 0;
+    fixed_trade[ressource::Bois] = 0;
+    fixed_trade[ressource::Papyrus] = 0;
+    fixed_trade[ressource::Verre] = 0;
+}
+
+void Joueur::reinit(){
+    batiments.clear();
+    jetons.clear();
+    merveilles.clear();
+    reinitTradePrice();
+    tresor = 0 ; 
+}

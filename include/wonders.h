@@ -216,11 +216,7 @@ class Joueur {
 
         Joueur(bool id) : id(id){
 
-            fixed_trade[ressource::Argile] = 0;
-            fixed_trade[ressource::Pierre] = 0;
-            fixed_trade[ressource::Bois] = 0;
-            fixed_trade[ressource::Papyrus] = 0;
-            fixed_trade[ressource::Verre] = 0;
+            reinitTradePrice();
         }
 
         unsigned int getId() const { return id ;}
@@ -254,15 +250,18 @@ class Joueur {
         unsigned int getFixedTrade(ressource r);
         void setFixedTrade(ressource r, unsigned int price);
         unsigned int getTradePrice(ressource r);
+        void reinitTradePrice();
+
+        void reinit();
 
     private:
 
         Joueur* adversaire ;
         std::vector<const Jeton*> jetons ;
-        std::vector<const Batiment*> batiments ;
+        std::vector<const Batiment*> batiments ; // remplacer par Carte* ? ou ajouter vecteur pour Guildes
         std::vector<const Merveille*> merveilles ;
 
-        std::map<ressource, unsigned int> fixed_trade ; 
+        std::map<ressource, unsigned int> fixed_trade ;
         // prix fixé du commerce : 0 = non fixé, other than 0 = fixed price
 
         unsigned int tresor = 0 ;
@@ -386,6 +385,8 @@ class Layout {
         // retourne l'int de la position de la Carte dans cards à partir de i et j
         // pour toutes les cartes du layout 
 
+        void reinit();
+
     private:
 
         void updateLayout();
@@ -429,21 +430,24 @@ class Box {
         Box();
         ~Box();
 
-        void allCardsCreation(); // dans instance.cpp
-        //void displayAllCards(); 
-        void newAge();
-        void distributeCards(phase_jeu p);
-
+        // GETTERS
         Plateau* getPlateau() const { return plateau ;}
-
         Joueur* getJoueur(bool x) const { return x ? joueur2 : joueur1 ;}
+        std::vector<const Carte*> getAllBatiments() const { return all_batiments; }
 
+        // GESTION DU JEU
+        void newAge();
+        void reinitAll();
+
+        // UTILS
         Joueur* getCurrentJoueur() const { return current ;}
         void switchCurrent() { current = current->getAdversaire(); }
 
-        std::vector<const Carte*> getAllBatiments() const { return all_batiments; }
 
     private:
+
+        void distributeCards(phase_jeu p); // utilisée dans newAge
+        void allCardsCreation(); // dans instance.cpp, utilisée par le constructeur
 
         Plateau* plateau ; 
 
@@ -466,14 +470,26 @@ class Plateau {
 
         Plateau(Box* box);
         ~Plateau();
+
+        // GETTERS
         Layout* getLayout() const { return layout; }
         int getPionMilitaire() const { return pion_militaire; }
 
         void movePion(bool id, unsigned int avance);
+        // déplace le pion sur le plateau en utilisant l'ID du Joueur
+        
         bool victoireMilitaire() const { return (pion_militaire == -9 || pion_militaire == 9); }
+        // check victoire Militaire
+        
         Joueur* joueurDominant() const { return box->getJoueur( pion_militaire > 0 ) ; }
+        // joueur qui a avancé le plus le pion vers la capitale ennemie
+        
         unsigned int pointsVictoire() const ; 
         // retourne le nombre de points de victoire à attribuer au joueur dominant
+
+        void reinit() ; 
+        // clear & reinit all attributes
+        
 
     private:
 

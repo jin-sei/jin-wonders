@@ -65,3 +65,10 @@ unsigned int Plateau::pointsVictoire() const {
 
     return 0 ; 
 }
+
+void Plateau::reinit(){
+    pion_militaire = 0 ; 
+    saccage[0] = 2 ; saccage[1] = 5 ; saccage[2] = 2 ; saccage[3] = 5 ;
+    jeton.clear();
+    layout->reinit();
+}

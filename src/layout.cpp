@@ -199,3 +199,8 @@ void Layout::inputCards(std::vector<const Carte*> deck){
     return ;
 
 }
+
+void Layout::reinit(){
+    cards.clear();
+    age = ageI ; 
+}

@@ -57,7 +57,7 @@ int tests(){
     //std::cout << "SANDBOX END" << std::endl << "--------------" << std::endl  << std::endl ;
 
     Box my_box1 = Box();
-    my_box1.allCardsCreation();
+    //my_box1.allCardsCreation();
     //my_box1.displayAllCards();
     my_box1.newAge();
     //my_box1.getPlateau()->getLayout()->displayCards();
@@ -177,9 +177,9 @@ int main(){
 
     tests() ;
     std::cout << std::endl << "7 WONDERS DUEL" << std::endl << "--------------" << std::endl  << std::endl ;
-    /*
+    
     Box my_box = Box() ; 
-    my_box.allCardsCreation();
+    //my_box.allCardsCreation();
     my_box.newAge();
 
     my_box.getPlateau()->getLayout()->displayLayout();
@@ -194,7 +194,7 @@ int main(){
 
     my_box.getPlateau()->getLayout()->displayLayout();
     displayCards( my_box.getPlateau()->getLayout()->getCards() ); 
-    */
+    
 
     //displayCards( my_box.getAllBatiments() );
 
@@ -204,9 +204,12 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
+// début de jeu
+// fin de jeu, compter les points, recommencer une partie
 
 
 // NEXT : 
+// tours de jeu 
 
 
 // MAIN QUESTS : 
@@ -217,15 +220,12 @@ int main(){
 // OTHER TASKS : 
 // implémenter un système pour communiquer simplement avec le joueur (choix...) : prendre en compte l'IA
 // interactions avec le joueur (perks notamment)
-// tours de jeu 
-// début de jeu
-// fin de jeu, compter les points, recommencer une partie
+
 
 
 // SIDE QUESTS : 
 // écrire une documentation et expliquer les choix de développement
 // enhanced console display (Layout, Plateau)
-
 // rendre Box singleton
 // rendre Joueur doubleton
 // méthode static pour track les instances Jeton

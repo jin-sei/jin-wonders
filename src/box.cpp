@@ -12,6 +12,8 @@ Box::Box(){
     
     phase = phase_jeu::START ;
 
+    allCardsCreation();
+
 }
 
 Box::~Box(){
@@ -114,4 +116,10 @@ void Box::distributeCards(phase_jeu p){
 
     return ; 
 
+}
+
+void Box::reinitAll(){
+    plateau->reinit();
+    joueur1->reinit();
+    joueur2->reinit();
 }
