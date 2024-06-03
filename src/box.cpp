@@ -62,6 +62,10 @@ void Box::newAge(){
         ++phase;
         
         // CHECK VICTOIRE MILITAIRE
+        if( plateau->victoireMilitaire() ){
+            std::cout << "SUPRÉMATIE MILITAIRE DU JOUEUR " << plateau->joueurDominant() << std::endl ; 
+            return ;
+        }
         
         // CHECK VICTOIRE SCIENTIFIQUE
 

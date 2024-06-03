@@ -253,6 +253,12 @@ class Joueur {
         unsigned int getNumberActiveWonders() const ;
         unsigned int getNumberBatiment(type_batiment t) const ;
 
+        // méthodes pour les jetons de progrès
+        unsigned int getNumberUniqueSymbols() const ;
+        unsigned int getNumberPairs() const ;
+        bool allowJetonPick() const { return getNumberPairs() > jetons.size() ;}
+        bool victoireScientifique() const { return getNumberUniqueSymbols() >= 6 ; }
+
         // méthodes pour Trade
         unsigned int getFixedTrade(ressource r);
         void setFixedTrade(ressource r, unsigned int price);
@@ -440,7 +446,7 @@ class Box {
 
         // GETTERS
         Plateau* getPlateau() const { return plateau ;}
-        Joueur* getJoueur(bool x) const { return x ? joueur2 : joueur1 ;}
+        Joueur* getJoueur(bool x) const { return x ? joueur1 : joueur0 ;}
         std::vector<const Batiment*> getAllBatiments() const { return all_batiments; }
 
         // GESTION DU JEU

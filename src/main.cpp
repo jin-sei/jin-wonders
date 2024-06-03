@@ -180,6 +180,21 @@ int tests(){
     std::cout << "------------------plateau" << std::endl ; 
     displayCards( my_box1.getPlateau()->getJetons() ) ;
 
+
+    const Batiment science_bat_1 = Batiment("Scientifique 1", type_batiment::Scientifique, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Roue} );
+    const Batiment science_bat_2 = Batiment("Scientifique 2", type_batiment::Scientifique, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Roue} );
+    const Batiment science_bat_3 = Batiment("Scientifique 3", type_batiment::Scientifique, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Plume} );
+    const Batiment science_bat_4 = Batiment("Scientifique 4", type_batiment::Scientifique, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Plume} );
+    const Batiment science_bat_5 = Batiment("Scientifique 5", type_batiment::Scientifique, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Balance} );
+
+    my_box1.getJoueur(1)->addBatiment(&science_bat_1);
+    my_box1.getJoueur(1)->addBatiment(&science_bat_2);
+    my_box1.getJoueur(1)->addBatiment(&science_bat_3);
+    my_box1.getJoueur(1)->addBatiment(&science_bat_4);
+    my_box1.getJoueur(1)->addBatiment(&science_bat_5);
+
+    std::cout << "science stuff: " << my_box1.getJoueur(1)->getNumberUniqueSymbols() << " : " << my_box1.getJoueur(1)->getNumberPairs() << " : " << my_box1.getJoueur(1)->allowJetonPick() << " : " << my_box1.getJoueur(1)->victoireScientifique() << std::endl ; 
+
     
     } catch(const GameException& e) {
 
@@ -224,15 +239,10 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// implémenter la fin de jeu dans newAge()
-// fin de jeu: 
-//      déterminer le gagnant
-//      compter les points
-//      recommencer une partie
-// déterminer victoire scientifique
+// modifier achetableJoueur pour prendre en compte les Jetons Progrès
 
 
-// NEXT : 
+// NEXT :
 // tours de jeu: 
 //      construire une Carte / Merveille ; appeler les Effets
 //      défausser
@@ -252,6 +262,7 @@ int main(){
 //      perks (destruction, pickJeton)
 //      choix des Merveilles en début de partie
 //      choisir une carte à construire / action pendant le tour de jeu
+//      relancer une partie
 
 
 

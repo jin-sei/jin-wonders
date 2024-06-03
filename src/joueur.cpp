@@ -240,6 +240,27 @@ unsigned int Joueur::getNumberBatiment(type_batiment t) const {
     return nb;
 }
 
+unsigned int Joueur::getNumberUniqueSymbols() const {
+
+    std::set<ressource> set_s = getSymboleScientifique() ; 
+    std::list<ressource> list_s(set_s.begin(), set_s.end()) ;
+    std::list<ressource> science = fetchRessource( list_s );
+
+    std::set<ressource> no_duplicates(science.begin(), science.end());
+
+    return no_duplicates.size();
+
+}
+
+unsigned int Joueur::getNumberPairs() const {
+
+    std::set<ressource> set_s = getSymboleScientifique() ; 
+    std::list<ressource> list_s(set_s.begin(), set_s.end()) ;
+    std::list<ressource> science = fetchRessource( list_s );
+
+    return science.size() - getNumberUniqueSymbols(); 
+}
+
 void Joueur::reinitTradePrice(){
     fixed_trade.clear();
     fixed_trade[ressource::Argile] = 0;
