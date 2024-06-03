@@ -60,6 +60,7 @@ int tests(){
     //my_box1.allCardsCreation();
     //my_box1.displayAllCards();
     my_box1.newAge();
+    my_box1.newAge();
     //my_box1.getPlateau()->getLayout()->displayCards();
     my_box1.getPlateau()->getLayout()->displayLayout() ;
     std::cout << my_box1.getPlateau()->getLayout()->getLayoutSize() << " : " << my_box1.getPlateau()->getLayout()->getVectorSize() << std::endl;
@@ -181,6 +182,7 @@ int main(){
     Box my_box = Box() ; 
     //my_box.allCardsCreation();
     my_box.newAge();
+    my_box.newAge();
 
     my_box.getPlateau()->getLayout()->displayLayout();
     displayCards( my_box.getPlateau()->getLayout()->getCards() ); 
@@ -188,7 +190,7 @@ int main(){
     my_box.newAge();
 
     my_box.getPlateau()->getLayout()->displayLayout();
-    displayCards( my_box.getPlateau()->getLayout()->getCards() ); 
+    displayCards( my_box.getPlateau()->getLayout()->getCards() );
 
     my_box.newAge();
 
@@ -204,12 +206,20 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// début de jeu
-// fin de jeu, compter les points, recommencer une partie
 
+
+// début de jeu : working on setupAll 
+//      choix des Merveilles
+//      Jetons sur le Plateau
 
 // NEXT : 
-// tours de jeu 
+// fin de jeu: 
+//      déterminer le gagnant
+//      compter les points
+//      recommencer une partie
+// tours de jeu: 
+//      construire une Carte / Merveille ; appeler les Effets
+//      défausser
 
 
 // MAIN QUESTS : 
@@ -218,8 +228,11 @@ int main(){
 
 
 // OTHER TASKS : 
-// implémenter un système pour communiquer simplement avec le joueur (choix...) : prendre en compte l'IA
-// interactions avec le joueur (perks notamment)
+// implémenter un système pour communiquer simplement avec le joueur (choix...): 
+//      prendre en compte l'IA
+//      programmation générique
+// interactions avec le joueur:
+//      perks
 
 
 

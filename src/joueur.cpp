@@ -36,6 +36,14 @@ bool Joueur::possessBatiment(std::string s){
     return false ; 
 }
 
+bool Joueur::possessJeton(jeton_progres id){
+    auto it = std::find_if(jetons.begin(), jetons.end(), [id](const Jeton* j){
+        return j->getId() == id;  
+    });
+
+    return (it!=jetons.end()); 
+}
+
 std::vector<const Batiment*> Joueur::getBatimentsPerType(type_batiment t) const {
     std::vector<const Batiment*> bats ; 
     for( auto iter = batiments.begin() ; iter != batiments.end() ; ++iter ){

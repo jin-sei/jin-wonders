@@ -226,14 +226,17 @@ class Joueur {
 
         std::vector<const Batiment*> getBatiments() const { return batiments; }
         std::vector<const Batiment*> getBatimentsPerType(type_batiment t) const ; 
+
         void addBatiment(const Batiment* c){batiments.push_back(c);}
+        void addJeton(const Jeton* j){jetons.push_back(j);}
 
         unsigned int getTresor() const { return tresor ; }
         void setTresor(unsigned int t){tresor = t ;}
         void addTresor(unsigned int t){tresor += t;}
         void subTresor(unsigned int t){ if(tresor <= t){tresor = 0 ;} else { tresor -= t ;} }
 
-        bool possessBatiment(std::string s); // répliquer pour les Merveilles et Jetons ?
+        bool possessBatiment(std::string s);
+        bool possessJeton(jeton_progres id);
 
         // achat
         std::list<ressource> achetableRessource(std::list<ressource> cost) const;
@@ -437,7 +440,8 @@ class Box {
 
         // GESTION DU JEU
         void newAge();
-        void reinitAll();
+        void reinitAll(); // on clear tout et on reviens au début du Jeu
+        void setupAll(); // on prépare la partie
 
         // UTILS
         Joueur* getCurrentJoueur() const { return current ;}
@@ -449,6 +453,9 @@ class Box {
         void distributeCards(phase_jeu p); // utilisée dans newAge
         void allCardsCreation(); // dans instance.cpp, utilisée par le constructeur
 
+        void choixMerveilles(); // called by setup()
+        void setupJetons(); // called by setup();
+
         Plateau* plateau ; 
 
         Joueur* joueur1 ; Joueur* joueur2 ;
@@ -456,12 +463,13 @@ class Box {
 
         phase_jeu phase ;
 
-        std::vector<const Jeton*> all_jetons ; // NOT USED YET
+        std::vector<const Jeton*> all_jetons ;
         std::vector<const Carte*> all_batiments ;
         std::vector<const Carte*> all_guildes ;
-        std::vector<const Merveille*> all_merveilles ; // NOT USED YET
+        std::vector<const Merveille*> all_merveilles ;
 
         std::vector<const Carte*> defausse ; // NOT USED YET
+        std::vector<const Jeton*> unused_jetons ; 
 };
 
 class Plateau {
@@ -474,6 +482,11 @@ class Plateau {
         // GETTERS
         Layout* getLayout() const { return layout; }
         int getPionMilitaire() const { return pion_militaire; }
+        std::vector<const Jeton*> getJeton() const { return jetons; }
+        void addJeton(const Jeton* j) { jetons.push_back(j); }
+
+        const Jeton* takeJeton(jeton_progres id);
+        // renvoie le pointeur vers l'object jeton et le supprime du Plateau
 
         void movePion(bool id, unsigned int avance);
         // déplace le pion sur le plateau en utilisant l'ID du Joueur
@@ -501,6 +514,6 @@ class Plateau {
         unsigned int saccage[4] = {2, 5, 2, 5};
         // 0 | 1 ; 2 | 3 ; 4 ; 5 | 6 ; 7 ; 8 | 9 
 
-        std::vector<const Jeton*> jeton ;
+        std::vector<const Jeton*> jetons ;
         
 };

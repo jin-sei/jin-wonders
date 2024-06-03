@@ -10,7 +10,7 @@ Box::Box(){
     joueur2->setAdversaire(joueur1);
     current = joueur1 ; 
     
-    phase = phase_jeu::START ;
+    phase = phase_jeu::END ;
 
     allCardsCreation();
 
@@ -58,14 +58,17 @@ void Box::newAge(){
 
     } else if( phase == phase_jeu::AGE_III ){
 
-        ++phase; 
+        ++phase;
         // fin de jeu ; 
+        // comptage des points, détermination du gagant
         return ; 
 
     } else if ( phase == phase_jeu::END ){
 
         ++phase ; 
         // début d'une nouvelle partie
+        reinitAll();
+        setupAll();
         return; 
 
     } else { throw GameException("ERREUR : âge inconnu");}
@@ -119,7 +122,33 @@ void Box::distributeCards(phase_jeu p){
 }
 
 void Box::reinitAll(){
+    phase = phase_jeu::START ; 
     plateau->reinit();
     joueur1->reinit();
     joueur2->reinit();
+    unused_jetons.clear();
+    defausse.clear();
+}
+
+void Box::choixMerveilles(){
+
+}
+
+void Box::setupJetons(){
+
+    if( all_jetons.size() != 10 ){ throw GameException("ERREUR: instanciation des Jetons failed"); }
+    
+    std::random_device rd ; std::mt19937 gen(rd());
+    std::shuffle(all_jetons.begin(), all_jetons.end(), gen);
+
+    for(size_t i = 0 ; i < 10 ; i++){
+        if( i < 5 ){ plateau->addJeton( all_jetons[i] );}
+        else { this->unused_jetons.push_back( all_jetons[i] );}
+    }
+
+}
+
+void Box::setupAll(){
+    setupJetons();
+    choixMerveilles();
 }

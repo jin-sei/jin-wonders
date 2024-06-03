@@ -66,9 +66,23 @@ unsigned int Plateau::pointsVictoire() const {
     return 0 ; 
 }
 
+const Jeton* Plateau::takeJeton(jeton_progres id){
+
+    auto it = std::find_if(jetons.begin(), jetons.end(), [id](const Jeton* j){
+        return j->getId() == id;  
+    });
+
+    if(it == jetons.end()){ throw GameException("ERREUR: Ce jeton n'est pas sur le plateau"); }
+
+    const Jeton* j = *it ; jetons.erase(it);
+    
+    return j; 
+
+}
+
 void Plateau::reinit(){
     pion_militaire = 0 ; 
     saccage[0] = 2 ; saccage[1] = 5 ; saccage[2] = 2 ; saccage[3] = 5 ;
-    jeton.clear();
+    jetons.clear();
     layout->reinit();
 }
