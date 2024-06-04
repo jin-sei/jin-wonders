@@ -120,3 +120,16 @@ void displayRessources(std::list<ressource> r){
     }
     std::cout << std::endl ; 
 }
+
+unsigned int askJoueur(std::vector<std::string> r){
+    for( size_t i = 0 ; i < r.size() ; i++ ){
+        std::cout << i << ". " << r[i] << std::endl << std::endl ;
+    }
+
+    unsigned int choice = r.size() ; 
+    while( choice >= r.size() ){
+        std::cout << "0-" << r.size()-1 << " > " ;
+        std::cin >> choice ;  
+    }
+    return choice ; 
+}

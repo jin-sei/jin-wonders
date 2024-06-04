@@ -30,6 +30,7 @@ std::string tostringAge(phase_jeu p);
 phase_jeu& operator++(phase_jeu& phase);
 
 void displayRessources(std::list<ressource> r);
+unsigned int askJoueur(std::vector<std::string> r);
 
 class GameException {
 	public:
@@ -98,11 +99,26 @@ class Carte { // ABSTRACT
 std::ostream& operator<<(std::ostream& f, const Carte& c);
 
 template <typename T>
-void displayCards(std::vector<const T*> c){
+void displayFromPointerVector(std::vector<const T*> c){
     for(auto iter = c.begin() ; iter != c.end() ; ++iter){
         std::cout << **iter << std::endl  ;
     }
     return;
+}
+
+template <typename T>
+const T* chooseFromPointerVector(std::vector<const T*> c){
+    for( size_t i = 0 ; i < c.size() ; i++ ){
+        std::cout << i << ". " ; 
+        std::cout << *c[i] << std::endl << std::endl ; ; 
+    }
+
+    unsigned int choice = c.size();
+    while( choice >= c.size() ){
+        std::cout << "0-" << c.size()-1 << " > " ;
+        std::cin >> choice ; 
+    }
+    return c[choice] ;
 }
 
 class Batiment : public Carte {

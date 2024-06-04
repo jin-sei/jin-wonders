@@ -88,7 +88,7 @@ int tests(){
     my_box1.getJoueur(0)->addBatiment(&my_batiment5);
     my_box1.getJoueur(0)->addBatiment(&my_batiment6);
 
-    displayCards( my_box1.getJoueur(0)->getBatiments() );
+    displayFromPointerVector( my_box1.getJoueur(0)->getBatiments() );
 
     displayRessources( my_box1.getJoueur(0)->fetchRessource({ressource::Argile, ressource::Bois})) ;
     std::cout << my_box1.getJoueur(0)->possessBatiment("Montagne") << std::endl ;
@@ -113,7 +113,7 @@ int tests(){
     //my_box1.getJoueur(1)->addBatiment(&mock_bat_6);
 
     std::cout << "batiment de p2 : " << std::endl ; 
-    displayCards( my_box1.getJoueur(1)->getBatiments() );
+    displayFromPointerVector( my_box1.getJoueur(1)->getBatiments() );
 
     const Perk* perk_1 = new Perk_CoinPerCard(2, type_batiment::Premiere);
     Commerce commerce_1 = Commerce("Commerce I", type_batiment::Commerce, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Argile, ressource::Pierre, ressource::Bois}, "", perk_1);
@@ -171,15 +171,15 @@ int tests(){
 
     std::cout << "-----------------------------------before taking jeton" << std::endl ; 
     std::cout << "------------------joueur" << std::endl ; 
-    displayCards( my_box1.getJoueur(0)->getJetons() ) ;
+    displayFromPointerVector( my_box1.getJoueur(0)->getJetons() ) ;
     std::cout << "------------------plateau" << std::endl ; 
-    displayCards( my_box1.getPlateau()->getJetons() ) ;
+    displayFromPointerVector( my_box1.getPlateau()->getJetons() ) ;
     my_box1.getJoueur(0)->addJeton( my_box1.getPlateau()->takeJeton(my_box1.getPlateau()->getJetons()[0]->getId()));
     std::cout << "----------------------------------after taking jeton" << std::endl ; 
     std::cout << "-------------------joueur" << std::endl ; 
-    displayCards( my_box1.getJoueur(0)->getJetons() ) ;
+    displayFromPointerVector( my_box1.getJoueur(0)->getJetons() ) ;
     std::cout << "------------------plateau" << std::endl ; 
-    displayCards( my_box1.getPlateau()->getJetons() ) ;
+    displayFromPointerVector( my_box1.getPlateau()->getJetons() ) ;
 
 
     const Batiment science_bat_1 = Batiment("Scientifique 1", type_batiment::Scientifique, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Roue} );
@@ -215,6 +215,10 @@ int tests(){
         ressource::Verre,  
     } );
     my_box1.getJoueur(1)->achetableJoueur(&wannabuy);
+
+    std::cout << *chooseFromPointerVector( my_box1.getPlateau()->getJetons() ) << std::endl ;
+
+    std::cout << askJoueur({"Lancer une partie", "Quitter le jeu", "Credits"}) << std::endl ;
 
     
     } catch(const GameException& e) {
@@ -263,14 +267,22 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
+// programmation générique 
+// fonction pour demander de choisir dans une liste de pointeurs 
+// fonction pour demander un choix au joueur
+// modifier layout pour pouvoir choisir plus simplement les cartes
 
 
 // NEXT :
 // tours de jeu: 
-//      construire une Carte / Merveille ; appeler les Effets
+//      construire une Carte / Merveille
+//          appeler les Effets
 //      défausser
+//          gagner de l'argent
 //      doublons de jetons scientifiques 
-//      choisir un jeton
+//          choisir un jeton
+//      avancer le pion conflit
+//      checker les suprématies
 
 
 // MAIN QUESTS : 
