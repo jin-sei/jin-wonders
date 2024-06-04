@@ -92,7 +92,7 @@ int tests(){
 
     displayRessources( my_box1.getJoueur(0)->fetchRessource({ressource::Argile, ressource::Bois})) ;
     std::cout << my_box1.getJoueur(0)->possessBatiment("Montagne") << std::endl ;
-    std::cout << my_box1.getJoueur(0)->achetableJoueur(my_batiment6.getCoutRessource()) << std::endl ;
+    std::cout << my_box1.getJoueur(0)->achetableJoueur(&my_batiment6) << std::endl ;
 
     std::cout << "Fixed price p2: " << my_box1.getJoueur(1)->getFixedTrade(ressource::Argile) << std::endl ; 
     //my_box1.getJoueur(1)->setFixedTrade(ressource::Argile, 1);
@@ -135,7 +135,7 @@ int tests(){
     const Batiment mock_bat_7 = Batiment("Mock 7", type_batiment::Premiere, phase_jeu::AGE_I, {ressource::Argile, ressource::Bois, ressource::Pierre, ressource::Verre, ressource::Papyrus}, 0, 0, 0, {ressource::Pierre});
     Commerce commerce_3 = Commerce("Commerce III", type_batiment::Commerce, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Argile, ressource::Bois, ressource::Pierre});
     my_box1.getJoueur(1)->addBatiment(&commerce_3);
-    my_box1.getJoueur(1)->achetableJoueur(mock_bat_7.getCoutRessource());
+    my_box1.getJoueur(1)->achetableJoueur(&mock_bat_7);
 
     std::cout << "trésor p2 before guild : " << my_box1.getJoueur(1)->getTresor() << std::endl;
     const Guilde guilde_1 = Guilde("Guilde I", type_batiment::Guilde, phase_jeu::AGE_III, {}, 0, 1, 0, {type_batiment::Premiere}, false);
@@ -195,7 +195,26 @@ int tests(){
     my_box1.getJoueur(1)->addBatiment(&science_bat_5);
 
     std::cout << my_box1.getJoueur(1)->getNumberUniqueSymbols() + static_cast<int>(my_box1.getJoueur(1)->possessJeton(jeton_progres::Loi)) << std::endl ; 
-    std::cout << "science stuff: " << my_box1.getJoueur(1)->getNumberUniqueSymbols() << " : " << my_box1.getJoueur(1)->getNumberPairs() << " : " << my_box1.getJoueur(1)->allowJetonPick() << " : " << my_box1.getJoueur(1)->victoireScientifique() << std::endl ; 
+    std::cout << "science stuff: " << my_box1.getJoueur(1)->getNumberUniqueSymbols() << " : " << my_box1.getJoueur(1)->getNumberPairs() << " : " << my_box1.getJoueur(1)->allowJetonPick() << " : " << my_box1.getJoueur(1)->victoireScientifique() << std::endl ;
+
+    my_box1.getJoueur(1)->reinit();
+    my_box1.getJoueur(1)->addBatiment(&mock_bat_1);
+    my_box1.getJoueur(1)->addBatiment(&mock_bat_2);
+    my_box1.getJoueur(1)->addBatiment(&mock_bat_3);
+    my_box1.getJoueur(1)->addBatiment(&mock_bat_4);
+    my_box1.getJoueur(1)->addBatiment(&mock_bat_5);
+    const Jeton jeton2 = Jeton(jeton_progres::Maconnerie);
+    std::cout << "prix pierre: " << my_box1.getJoueur(1)->getTradePrice(ressource::Pierre) << std::endl ; 
+    std::cout << "prix verre:  " << my_box1.getJoueur(1)->getTradePrice(ressource::Verre) << std::endl ; 
+    my_box1.getJoueur(1)->addJeton(&jeton2);
+    const Batiment wannabuy = Batiment("WANNABUY", type_batiment::Civil, phase_jeu::AGE_I,{
+        ressource::Argile, 
+        ressource::Argile, 
+        ressource::Pierre, 
+        ressource::Pierre,
+        ressource::Verre,  
+    } );
+    my_box1.getJoueur(1)->achetableJoueur(&wannabuy);
 
     
     } catch(const GameException& e) {
@@ -216,6 +235,8 @@ int main(){
     
     Box my_box = Box() ; 
     //my_box.allCardsCreation();
+
+    /*
     my_box.newAge();
     my_box.newAge();
 
@@ -231,6 +252,7 @@ int main(){
 
     my_box.getPlateau()->getLayout()->displayLayout();
     displayCards( my_box.getPlateau()->getLayout()->getCards() ); 
+    */
     
 
     //displayCards( my_box.getAllBatiments() );
@@ -241,7 +263,6 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// modifier achetableJoueur pour prendre en compte les Jetons Progrès
 
 
 // NEXT :
@@ -253,17 +274,12 @@ int main(){
 
 
 // MAIN QUESTS : 
-// effet des Jetons:
-//      Agriculture
-//      Architecture
-//      Economie
-//      Loi
-//      Maconnerie
-//      Mathematiques
-//      Philosophie
-//      Strategie
-//      Theologie
-//      Urbanisme
+// effet des Jetons: onObtain method ?
+//      Agriculture : pt victoire fait, argent pas fait
+//      Economie : not done
+//      Strategie : not done
+//      Theologie : not done
+//      Urbanisme : not done
 
 
 // OTHER TASKS : 

@@ -122,14 +122,15 @@ std::list<ressource> Joueur::achetableRessource(std::list<ressource> cost) const
     return missing ;
 }
 
-unsigned int Joueur::achetableJoueur(std::list<ressource> cost){
+unsigned int Joueur::achetableJoueur(const Carte* c) const {
     // retourne le nombre de pièces qu'il faudra dépenser pour acheter la Carte
+    std::list<ressource> cost = c->getCoutRessource() ;
 
     // check chaînage (on fera ça en dehors de la méthode)
     
     // check ressources possédées
     std::list<ressource> missing = achetableRessource(cost);
-    if( missing.empty() ){ return 0; }
+    if( missing.empty() ){ return c->getCoutArgent(); }
 
     std::cout << "MISSING RESSOURCES: " ; displayRessources( missing ) ; std::cout << std::endl;
 
@@ -172,14 +173,38 @@ unsigned int Joueur::achetableJoueur(std::list<ressource> cost){
         }
     }
 
+    if( missing.empty() ){ return c->getCoutArgent(); }
+
     std::cout << "STILL MISSING RESSOURCES: " ; displayRessources( missing ) ; std::cout << std::endl;
 
     // check ressources offertes : // Jetons Architecture et Maçonnerie
-    // si il reste plus de 2 ressources manquantes, il faut choisir d'éliminer les ressources 
-    // avec le TradePrice les plus élevés
+
+    if( 
+        (c->getType() == type_batiment::Civil) && possessJeton(jeton_progres::Maconnerie)
+        ||
+        (c->getType() == type_batiment::Merveille) && possessJeton(jeton_progres::Architecture)
+    ){ 
+        if(missing.size() <= 2){ return c->getCoutArgent(); } else {
+
+            // more than 2 ressources were missing
+            // determine ressources with the highest trade price to eliminate them
+
+            for(size_t i = 0 ; i <= 1 ; i ++){
+                auto max = std::max_element(missing.begin(), missing.end(), 
+                [this](ressource r1, ressource r2){ 
+                    return this->getTradePrice(r1) < this->getTradePrice(r2) ;
+                }) ;
+                missing.erase(max);
+            }
+
+        }
+    }
+
+    std::cout << "STILL MISSING RESSOURCES: " ; displayRessources( missing ) ; std::cout << std::endl;
+    
     
     // check prix du commerce pour acheter les ressources manquantes
-    unsigned int price = 0 ;
+    unsigned int price = c->getCoutArgent() ;
 
     if( !missing.empty() ){ // on vérifie que les étapes précédentes n'ont pas permis de trouver toutes les ressources manquantes
         for( auto iter = missing.begin() ; iter != missing.end() ; ++iter ){
@@ -192,11 +217,11 @@ unsigned int Joueur::achetableJoueur(std::list<ressource> cost){
 }
 
 
-unsigned int Joueur::getFixedTrade(ressource r){
+unsigned int Joueur::getFixedTrade(ressource r) const {
     if( static_cast<int>(r) > 5 || static_cast<int>(r) < 1 ){
         throw GameException("ERREUR : FixedTrade ne s'applique que aux ressources de production");
     }
-    return fixed_trade[r];
+    return fixed_trade.at(r);
 
 }
 
@@ -207,7 +232,7 @@ void Joueur::setFixedTrade(ressource r, unsigned int price){
     fixed_trade[r] = price ; 
 }
 
-unsigned int Joueur::getTradePrice(ressource r){
+unsigned int Joueur::getTradePrice(ressource r) const {
     if( static_cast<int>(r) > 5 || static_cast<int>(r) < 1 ){
         throw GameException("ERREUR : le prix de Trade ne s'obtient que pour les ressources de production");
     }

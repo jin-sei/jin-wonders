@@ -243,7 +243,7 @@ class Joueur {
 
         // achat
         std::list<ressource> achetableRessource(std::list<ressource> cost) const;
-        unsigned int achetableJoueur(std::list<ressource> r);
+        unsigned int achetableJoueur(const Carte* c) const ;
 
         // fetch military, fetch science
         std::list<ressource> fetchRessource(std::list<ressource> r) const ;
@@ -262,9 +262,9 @@ class Joueur {
         }
 
         // méthodes pour Trade
-        unsigned int getFixedTrade(ressource r);
+        unsigned int getFixedTrade(ressource r) const ;
         void setFixedTrade(ressource r, unsigned int price);
-        unsigned int getTradePrice(ressource r);
+        unsigned int getTradePrice(ressource r) const ;
         void reinitTradePrice();
 
         void reinit();
