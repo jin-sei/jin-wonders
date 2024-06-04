@@ -107,7 +107,7 @@ void displayFromPointerVector(std::vector<const T*> c){
 }
 
 template <typename T>
-const T* chooseFromPointerVector(std::vector<const T*> c){
+unsigned int chooseFromPointerVector(std::vector<const T*> c){
     for( size_t i = 0 ; i < c.size() ; i++ ){
         std::cout << i << ". " ; 
         std::cout << *c[i] << std::endl << std::endl ; ; 
@@ -118,7 +118,7 @@ const T* chooseFromPointerVector(std::vector<const T*> c){
         std::cout << "0-" << c.size()-1 << " > " ;
         std::cin >> choice ; 
     }
-    return c[choice] ;
+    return choice ;
 }
 
 class Batiment : public Carte {
@@ -260,6 +260,10 @@ class Joueur {
         // achat
         std::list<ressource> achetableRessource(std::list<ressource> cost) const;
         unsigned int achetableJoueur(const Carte* c) const ;
+        bool obtainable(const Carte* c) const { 
+            // does not check chaînage
+            return achetableJoueur(c) <= tresor ; 
+        }
 
         // fetch military, fetch science
         std::list<ressource> fetchRessource(std::list<ressource> r) const ;
@@ -399,12 +403,17 @@ class Layout {
     public:
 
         void inputCards(std::vector<const Carte*> deck);
-        void displayLayout();
+        void displayLayout() const ;
         //void displayCards();
-        std::list<int> getAvailableSlots();
-        bool isEmpty();
-        unsigned int getLayoutSize();
-        unsigned int getVectorSize();
+        std::vector<int> getAvailableSlots() const ;
+        std::vector<const Carte*> getAvailableCards() const ;
+        std::vector<int> vectorToLayout(int x) const {
+            return {getAvailableSlots()[x], getAvailableSlots()[x+1]};
+        }
+
+        bool isEmpty() const ;
+        unsigned int getLayoutSize() const ;
+        unsigned int getVectorSize() const;
         std::vector<const Carte*> getCards() const { return cards ;}
         
         void switchAge(phase_jeu p);
@@ -413,7 +422,7 @@ class Layout {
         // update le layout, retourne la Carte choisie et update cards
         // seulement pour les slots 1 
 
-        unsigned int getBatimentFromLayout(int i, int j);
+        unsigned int getBatimentFromLayout(int i, int j) const ;
         // retourne l'int de la position de la Carte dans cards à partir de i et j
         // pour toutes les cartes du layout 
 
@@ -475,6 +484,7 @@ class Box {
         // UTILS
         Joueur* getCurrentJoueur() const { return current ;}
         void switchCurrent() { current = current->getAdversaire(); }
+        void endgame() { phase = phase_jeu::AGE_III ; newAge() ;}
 
 
     private:

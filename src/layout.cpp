@@ -1,7 +1,7 @@
 #include "../include/wonders.h"
 
 
-void Layout::displayLayout(){
+void Layout::displayLayout() const {
     size_t rows = age.size() ; 
     size_t columns = age[0].size();
     //size_t rows = sizeof(age) / sizeof(age[0]);
@@ -50,12 +50,12 @@ void Layout::updateLayout(){
     }
 }
 
-std::list<int> Layout::getAvailableSlots(){
+std::vector<int> Layout::getAvailableSlots() const {
 
     size_t rows = age.size() ;
     size_t columns = age[0].size() ;
 
-    std::list<int> available ; 
+    std::vector<int> available ; 
 
     for(int i = 0 ; i < rows ; i++){ // on ne va pas sur la dernière rangée, toujours accessibles
         for(int j=0 ; j < columns ; j++){
@@ -69,6 +69,17 @@ std::list<int> Layout::getAvailableSlots(){
 
     return available ;
 
+}
+
+std::vector<const Carte*> Layout::getAvailableCards() const {
+
+    std::vector<const Carte*> temp ; 
+
+    for( size_t i = 0 ; i < (getAvailableSlots().size()/2) ; i++ ){
+        temp.push_back( cards[ getBatimentFromLayout( getAvailableSlots()[i], getAvailableSlots()[i+1] ) ] );
+    }
+
+    return temp  ;
 }
 
 void Layout::switchAge(phase_jeu p){
@@ -111,7 +122,7 @@ const Carte* Layout::pickSlot(int i, int j){
 
 }
 
-unsigned int Layout::getBatimentFromLayout(int i, int j){
+unsigned int Layout::getBatimentFromLayout(int i, int j) const {
 
     if( this->getLayoutSize() != this->getVectorSize() ){ throw GameException("ERREUR : unmatched matrix ("+std::to_string(this->getLayoutSize())+") and vector ("+std::to_string(this->getVectorSize())+")" ); }
     if( this->getLayoutSize() == 0 || this->getVectorSize() == 0 ){ throw GameException("ERREUR : le layout est vide"); }
@@ -145,7 +156,7 @@ unsigned int Layout::getBatimentFromLayout(int i, int j){
     throw GameException("ERREUR : erreur dans le parcours de la matrice");
 }
 
-bool Layout::isEmpty(){
+bool Layout::isEmpty() const {
     for(auto iter_rows = age.begin() ; iter_rows != age.end() ; ++iter_rows){
         for(auto iter_columns = iter_rows->begin() ; iter_columns != iter_rows->end() ; ++iter_columns){
             
@@ -158,7 +169,7 @@ bool Layout::isEmpty(){
     return true ; 
 }
 
-unsigned int Layout::getLayoutSize(){ // retourne le nombre de non 0 dans la matrice
+unsigned int Layout::getLayoutSize() const { // retourne le nombre de non 0 dans la matrice
 
     unsigned int size = 0 ; 
 
@@ -172,7 +183,7 @@ unsigned int Layout::getLayoutSize(){ // retourne le nombre de non 0 dans la mat
             
 }
 
-unsigned int Layout::getVectorSize(){ // retourne le nombre d'éléments non nullptr dans cards
+unsigned int Layout::getVectorSize() const { // retourne le nombre d'éléments non nullptr dans cards
 
     unsigned int x = 0 ; 
     

@@ -196,6 +196,7 @@ int tests(){
 
     std::cout << my_box1.getJoueur(1)->getNumberUniqueSymbols() + static_cast<int>(my_box1.getJoueur(1)->possessJeton(jeton_progres::Loi)) << std::endl ; 
     std::cout << "science stuff: " << my_box1.getJoueur(1)->getNumberUniqueSymbols() << " : " << my_box1.getJoueur(1)->getNumberPairs() << " : " << my_box1.getJoueur(1)->allowJetonPick() << " : " << my_box1.getJoueur(1)->victoireScientifique() << std::endl ;
+    //my_box1.endgame();
 
     my_box1.getJoueur(1)->reinit();
     my_box1.getJoueur(1)->addBatiment(&mock_bat_1);
@@ -216,9 +217,26 @@ int tests(){
     } );
     my_box1.getJoueur(1)->achetableJoueur(&wannabuy);
 
-    std::cout << *chooseFromPointerVector( my_box1.getPlateau()->getJetons() ) << std::endl ;
+    //std::cout << *chooseFromPointerVector( my_box1.getPlateau()->getJetons() ) << std::endl ;
 
-    std::cout << askJoueur({"Lancer une partie", "Quitter le jeu", "Credits"}) << std::endl ;
+    //std::cout << askJoueur({"Lancer une partie", "Quitter le jeu", "Credits"}) << std::endl ;
+
+    my_box1.getPlateau()->getLayout()->displayLayout();
+
+    /*auto available = my_box1.getPlateau()->getLayout()->getAvailableSlots(); 
+    for( auto iter = available.begin() ; iter != available.end() ; ++iter ){
+        std::cout << *iter << " " ;
+    }*/
+
+    unsigned int choice ; 
+    
+    while( !my_box1.getPlateau()->getLayout()->isEmpty() ){
+        choice = chooseFromPointerVector( my_box1.getPlateau()->getLayout()->getAvailableCards() );
+        my_box1.getPlateau()->getLayout()->pickSlot( my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[0], my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[1] );
+
+        my_box1.getPlateau()->getLayout()->displayLayout(); 
+    }
+    // ISSUE HERE
 
     
     } catch(const GameException& e) {
@@ -267,9 +285,6 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// programmation générique 
-// fonction pour demander de choisir dans une liste de pointeurs 
-// fonction pour demander un choix au joueur
 // modifier layout pour pouvoir choisir plus simplement les cartes
 
 
