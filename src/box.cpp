@@ -62,7 +62,7 @@ void Box::newAge(){
         ++phase ;
         plateau->getLayout()->switchAge(phase); // SWITCH AGE CLEAR LES CARTES DE LAYOUT
         distributeCards(phase);
-        // commencer les tours de jeu
+        gameLoop(); // retour aux tours de jeu
         return ;
 
     } else if( phase == phase_jeu::AGE_III ){
@@ -118,8 +118,6 @@ void Box::gameLoop(){
 
     while( !plateau->getLayout()->isEmpty() ){
 
-//getLayout()->pickSlot( my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[0], my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[1] );
-
         plateau->displayPlateau();
         choice_card = chooseFromPointerVector( plateau->getLayout()->getAvailableCards() );
         choice_action = askJoueur({"Défausser", "Construire la Carte", "Construire une Merveille"});
@@ -140,6 +138,8 @@ void Box::gameLoop(){
         current = current->getAdversaire();
 
     }
+
+    newAge();
 
 }
 
