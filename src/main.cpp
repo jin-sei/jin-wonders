@@ -289,28 +289,16 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// afficher le joueur
-// joueur : get merveilles non actives
-// joueur : any merveilles non actives buildable ?
+// IA Player
 
 
 // NEXT :
-// tours de jeu: 
-//      construire une Merveille
-//          appeler les Effets
-//          check 7 merveilles
 
 
 // MAIN QUESTS : 
-// effet des Jetons:
-//      Theologie : not done
 
 
 // OTHER TASKS : 
-// interactions avec le joueur:
-//      perks (destruction, pickJeton)
-//      IA player
-
 
 
 // SIDE QUESTS : 

@@ -31,8 +31,7 @@ void Box::allCardsCreation(){
                 {ressource::Bouclier}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
                 new Perk_Destruction(type_batiment::Manufacture), // perk
-                false, // indique si la carte est rejouée
-                nullptr// feed
+                false // indique si la carte est rejouée
         ));
 
         all_merveilles.push_back( new Merveille(
@@ -46,8 +45,7 @@ void Box::allCardsCreation(){
                 {ressource::Bouclier, ressource::Bouclier}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
                 nullptr, // perk
-                false, // indique si la carte est rejouée
-                nullptr// feed
+                false // indique si la carte est rejouée
         ));
 
         all_merveilles.push_back( new Merveille(
@@ -61,8 +59,7 @@ void Box::allCardsCreation(){
                 {ressource::Bois, ressource::Pierre, ressource::Argile}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
                 nullptr, // perk
-                false, // indique si la carte est rejouée
-                nullptr// feed
+                false // indique si la carte est rejouée
         ));
 
         all_merveilles.push_back( new Merveille(
@@ -76,8 +73,7 @@ void Box::allCardsCreation(){
                 {}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
                 nullptr, // perk
-                true, // indique si la carte est rejouée
-                nullptr// feed
+                true // indique si la carte est rejouée
         ));
 
         all_merveilles.push_back( new Merveille(
@@ -91,8 +87,7 @@ void Box::allCardsCreation(){
                 {}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
                 new Perk_Classic(1, this), // perk
-                false, // indique si la carte est rejouée
-                nullptr// feed
+                false // indique si la carte est rejouée
         ));
 
         all_merveilles.push_back( new Merveille(
@@ -106,8 +101,7 @@ void Box::allCardsCreation(){
                 {}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
                 new Perk_Classic(2, this), // perk
-                false, // indique si la carte est rejouée
-                nullptr// feed
+                false // indique si la carte est rejouée
         ));
 
         all_merveilles.push_back( new Merveille(
@@ -121,8 +115,7 @@ void Box::allCardsCreation(){
                 {ressource::Papyrus, ressource::Verre}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
                 nullptr, // perk
-                true, // indique si la carte est rejouée
-                nullptr// feed
+                true // indique si la carte est rejouée
         ));
 
         all_merveilles.push_back( new Merveille(
@@ -136,8 +129,7 @@ void Box::allCardsCreation(){
                 {}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
                 nullptr, // perk
-                false, // indique si la carte est rejouée
-                nullptr// feed
+                false // indique si la carte est rejouée
         ));
 
         all_merveilles.push_back( new Merveille(
@@ -151,8 +143,7 @@ void Box::allCardsCreation(){
                 {}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
                 nullptr, // perk
-                true, // indique si la carte est rejouée
-                nullptr// feed
+                true // indique si la carte est rejouée
         ));
 
         all_merveilles.push_back( new Merveille(
@@ -166,8 +157,7 @@ void Box::allCardsCreation(){
                 {ressource::Bouclier}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
                 new Perk_Destruction(type_batiment::Premiere), // perk
-                false, // indique si la carte est rejouée
-                nullptr// feed
+                false // indique si la carte est rejouée
         ));
 
         all_merveilles.push_back( new Merveille(
@@ -181,8 +171,7 @@ void Box::allCardsCreation(){
                 {}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
                 nullptr, // perk
-                true, // indique si la carte est rejouée
-                nullptr// feed
+                true // indique si la carte est rejouée
         ));
 
         all_merveilles.push_back( new Merveille(
@@ -196,8 +185,7 @@ void Box::allCardsCreation(){
                 {}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
                 new Perk_Classic(0, this), // perk
-                true, // indique si la carte est rejouée
-                nullptr// feed
+                true // indique si la carte est rejouée
         ));
 
     all_batiments.push_back( new Batiment(

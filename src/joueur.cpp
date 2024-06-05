@@ -93,6 +93,51 @@ std::vector<const Batiment*> Joueur::getBatimentsPerType(type_batiment t) const 
     return bats ; 
 }
 
+std::vector<const Merveille*> Joueur::getInactiveMerveille() const {
+    std::vector<const Merveille*> temp ;
+    for(int i = 0 ; i<=3 ; i++){
+        if(!merveille_active[i]){
+            temp.push_back(merveilles[i]);
+        }
+    }
+    return temp ; 
+}
+
+void Joueur::deleteLastMerveille() {
+    if(getInactiveMerveille().size() != 1){
+        throw GameException("ERREUR: deleteLastMerveille() appelée sur un joueur invalide");
+    } else {
+        auto iter = std::find(merveilles.begin(), merveilles.end(), getInactiveMerveille()[0]);
+        merveilles[std::distance(merveilles.begin(), iter)] = nullptr;
+        //merveilles.erase(iter);
+    }
+}
+
+std::vector<const Merveille*> Joueur::buildableMerveilles() const {
+    std::vector<const Merveille*> temp = getInactiveMerveille();
+    std::vector<const Merveille*> result ;
+    for(auto iter = temp.begin() ; iter!=temp.end() ; ++iter){
+        //std::cout << "YOOOOO" << achetableJoueur(*iter) << std::endl; 
+        if(obtainable(*iter)){
+            result.push_back(*iter);
+        }
+    }
+    return result ; 
+}
+
+void Joueur::activateMerveille(const Merveille* c) {
+    if(this->getNumberActiveMerveilles() + this->adversaire->getNumberActiveMerveilles() >= 7){
+        throw GameException("ERREUR: Impossible d'activer une nouvelle Merveille (7 actives)");
+    }
+    for(int i = 0 ; i<=3 ; i++){
+        if( merveilles[i]->getNom() == c->getNom() ){
+            merveille_active[i] = true ; 
+            return ;
+        }
+    }
+    throw GameException("ERREUR: Merveille not found");
+}
+
 std::list<ressource> Joueur::achetableRessource(std::list<ressource> cost) const {
     if(cost.empty()) { return {} ; }
     //if(cost_r.size() > buy.size()) { return false ; }
@@ -213,6 +258,7 @@ unsigned int Joueur::achetableJoueur(const Carte* c) const {
 
     if( !missing.empty() ){ // on vérifie que les étapes précédentes n'ont pas permis de trouver toutes les ressources manquantes
         for( auto iter = missing.begin() ; iter != missing.end() ; ++iter ){
+            //std::cout << getTradePrice(*iter) << std::endl ;
             price += getTradePrice(*iter); 
         }
     }
@@ -262,10 +308,10 @@ unsigned int Joueur::getTradePrice(ressource r) const {
     }
 }
 
-unsigned int Joueur::getNumberActiveWonders() const {
+unsigned int Joueur::getNumberActiveMerveilles() const {
     unsigned int nb = 0;  
-    for( auto iter =  merveilles.begin() ; iter != merveilles.end() ; ++iter ){
-        if( (**iter).getFeed() != nullptr ){
+    for(int i = 0 ; i <= 3 ; i++){
+        if(merveille_active[i]){
             nb ++ ; 
         }
     }
@@ -273,7 +319,7 @@ unsigned int Joueur::getNumberActiveWonders() const {
 }
 
 unsigned int Joueur::getNumberBatiment(type_batiment t) const {
-    if(t == type_batiment::Merveille){ return getNumberActiveWonders(); }
+    if(t == type_batiment::Merveille){ return getNumberActiveMerveilles(); }
 
     unsigned int nb = 0;
     for( auto iter =  batiments.begin() ; iter != batiments.end() ; ++iter ){
@@ -305,6 +351,39 @@ unsigned int Joueur::getNumberPairs() const {
     return science.size() - getNumberUniqueSymbols(); 
 }
 
+void Joueur::displayJoueur() const {
+    std::cout << nom << ", " << tresor << " pièces" ;
+    if(getNumberUniqueSymbols() != 0){
+        std::cout << ", " << getNumberUniqueSymbols() << " symboles";
+    }
+    std::cout << std::endl ; 
+
+    std::set<ressource> set_r = getRessource();
+    std::list<ressource> res(set_r.begin(), set_r.end());
+
+    unsigned int nb = 0 ;
+    for(auto iter = res.begin() ; iter != res.end() ; ++iter){
+        nb = fetchRessource({*iter}).size() ;
+        if( nb != 0){
+            std::cout << tostringRessources(*iter) << ": " << nb << std::endl ;
+        }
+    }
+    
+    for(int i = 0 ; i < merveilles.size() ; i++){
+        if(merveilles[i] != nullptr && merveille_active[i]) {std::cout << merveilles[i]->getNom() << std::endl ;} 
+    }
+    displayFromPointerVector( jetons ); 
+}
+
+void Joueur::destroyBatiment(const Batiment* c) {
+    auto iter = std::find(batiments.begin(), batiments.end(), c);
+    if(iter != batiments.end()){
+        batiments.erase(iter);
+    } else {
+        throw GameException("ERREUR: Bâtiment à détruire non trouvé");
+    }
+}
+
 void Joueur::reinitTradePrice(){
     fixed_trade.clear();
     fixed_trade[ressource::Argile] = 0;
@@ -315,6 +394,7 @@ void Joueur::reinitTradePrice(){
 }
 
 void Joueur::reinit(){
+    for(int i = 0 ; i <= 3 ; i++){ merveille_active[i] = false; }
     batiments.clear();
     jetons.clear();
     merveilles.clear();

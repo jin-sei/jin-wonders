@@ -76,7 +76,8 @@ void Carte::affichage() const {
     }
     if(argent != 0 || pt_victoire != 0){std::cout<< "REWARDS: ";}
     if(argent != 0) {std::cout << argent << " pièces ; " ; }
-    if(pt_victoire != 0){std::cout << pt_victoire << " points victoire" << std::endl ;}
+    if(pt_victoire != 0){std::cout << pt_victoire << " points victoire" ;}
+    if(argent != 0 || pt_victoire != 0){std::cout << std::endl;}
 }
 
 void Batiment::affichage() const {
@@ -85,6 +86,7 @@ void Batiment::affichage() const {
         std::cout << "PRODUCTION: " ;
         displayRessources( production ) ;
     }
+    std::cout << std::endl ; 
 }
 
 void Batiment::onBuild(Joueur* j) const {

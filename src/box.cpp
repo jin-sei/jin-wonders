@@ -121,6 +121,7 @@ void Box::gameLoop(){
     unsigned int choice_card = 0;
     unsigned int choice_action = 0;
     std::vector<std::string> choices = {};
+    bool replay = false ; 
     if(phase != phase_jeu::AGE_I){
 
         if(plateau->getPionMilitaire() == 0){
@@ -139,12 +140,16 @@ void Box::gameLoop(){
         system("clear");
 
         choices = {"Défausser"}; 
+        replay = false ; 
         plateau->displayPlateau();
+        current->displayJoueur(); std::cout << std::endl ; 
+
         std::cout  << "#. Tour de " << current->getNom() << ": " << std::endl << std::endl ;  
         choice_card = chooseFromPointerVector( plateau->getLayout()->getAvailableCards() );
 
         const Carte* c = plateau->getLayout()->getAvailableCards()[choice_card];
         if( current->obtainable(c) ){ choices.push_back("Construire la Carte"); }
+        if (current->buildableMerveilles().size()!=0 && (current->getNumberActiveMerveilles()+current->getAdversaire()->getNumberActiveMerveilles() < 7)){ choices.push_back("Construire une Merveille"); }
         
         std::cout << "#. Carte choisie: " << c->getNom() << std::endl << std::endl; 
         choice_action = askJoueur(choices);
@@ -207,11 +212,28 @@ void Box::gameLoop(){
                     g->onBuild(current); // applique les effets de la Guilde
                 }
 
-
-
                 break;
 
             case 2 : // CONSTRUIRE UNE MERVEILLE
+            {
+                const Merveille* m = current->buildableMerveilles()[ chooseFromPointerVector( current->buildableMerveilles() ) ];
+                std::cout << "#. Merveille choisie: " << m->getNom() << std::endl << std::endl ;
+                current->subTresor( current->achetableJoueur(m)+m->getCoutArgent() );
+                current->activateMerveille(m);
+
+                if(m->getPerk() != nullptr){ m->getPerk()->onCall(current); }
+                if(m->getReplay() || current->possessJeton(jeton_progres::Theologie)){
+                    replay = true ; 
+                }
+                if(!m->getProduction().empty() && m->getProduction().front() == ressource::Bouclier){
+                    plateau->movePion(current->getId(), m->getProduction().size());
+                }
+
+                if(current->getNumberActiveMerveilles()+current->getAdversaire()->getNumberActiveMerveilles() >= 7){
+                    current->getAdversaire()->deleteLastMerveille();
+                }
+
+            }
 
                 break;
 
@@ -219,7 +241,7 @@ void Box::gameLoop(){
 
         }
 
-        current = current->getAdversaire();
+        if(!replay) {current = current->getAdversaire();}
 
     }
 

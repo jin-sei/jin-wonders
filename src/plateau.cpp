@@ -87,9 +87,11 @@ const Jeton* Plateau::takeJeton(unsigned int index){
 void Plateau::displayPlateau() const {
     //std::cout << "|" ; 
     for(int i = -9 ; i <= 9 ; i++){
-        if(pion_militaire == i){ std::cout << "X" ; } else { std::cout << "_" ; }
+        if(pion_militaire == i){ std::cout << "X " ; } else { std::cout << "_ " ; }
     }
-    std::cout << std::endl << std::endl ;
+    std::cout << std::endl ;
+
+    std::cout << "_|__" << saccage[3] << "__|__" << saccage[2] <<"__|___|_|___|__" <<  saccage [0] <<"__|__" << saccage[1] <<"__|_" << std::endl << std::endl;
 
     for(auto iter =jetons.begin() ; iter != jetons.end() ; ++iter){
         std::cout << **iter << " " ;

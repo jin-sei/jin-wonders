@@ -52,7 +52,7 @@ unsigned int chooseFromPointerVector(std::vector<const T*> c){
     unsigned int choice = c.size();
     while( choice >= c.size() ){
         std::cout << "0-" << c.size()-1 << " > " ;
-        std::cin >> choice ; 
+        std::cin >> choice ;
     }
     std::cout << std::endl;
     return choice ;
@@ -171,8 +171,8 @@ class Commerce : public Batiment {
 
 class Merveille : public Commerce {
     public:
-        Merveille(std::string nom, type_batiment type=type_batiment::Merveille, phase_jeu age=phase_jeu::AGE_I, std::list<ressource> cost_r = {}, unsigned int cost_m = 0, unsigned int argent = 0, unsigned int pt_victoire = 0, std::list<ressource> prod={}, std::string chained_by="", const Perk* perk=nullptr, bool b=false, Carte* f=nullptr) : 
-        Commerce(nom, type, age, cost_r, cost_m, argent, pt_victoire, prod, chained_by, perk), replay(b), feed(f) {
+        Merveille(std::string nom, type_batiment type=type_batiment::Merveille, phase_jeu age=phase_jeu::AGE_I, std::list<ressource> cost_r = {}, unsigned int cost_m = 0, unsigned int argent = 0, unsigned int pt_victoire = 0, std::list<ressource> prod={}, std::string chained_by="", const Perk* perk=nullptr, bool b=false) : 
+        Commerce(nom, type, age, cost_r, cost_m, argent, pt_victoire, prod, chained_by, perk), replay(b) {
             if(type!=type_batiment::Merveille){
                 throw GameException("ERREUR: Merveille instanciée avec un type autre que Merveille");
             }
@@ -183,17 +183,17 @@ class Merveille : public Commerce {
 
         //GETTERS
         bool getReplay() const { return replay ;}
-        const Carte* getFeed() const { return feed ;}
-        bool isFed() const { return feed != nullptr; }
+        //const Carte* getFeed() const { return feed ;}
+        //bool isFed() const { return feed != nullptr; }
 
         //SETTERS
-        void setReplay(bool b) { replay = b ;}
+        //void setReplay(bool b) { replay = b ;}
 
         //void onBuild(Joueur* j) const override ; // Calls onBuild commerce
 
     private:
 
-        const Carte* feed ;
+        //const Carte* feed ;
         bool replay ;
 };
 
@@ -249,11 +249,13 @@ class Joueur {
         std::vector<const Batiment*> getBatiments() const { return batiments; }
         std::vector<const Batiment*> getBatimentsPerType(type_batiment t) const ; 
         std::vector<const Jeton*> getJetons() const { return jetons; }
+        std::vector<const Merveille*> getInactiveMerveille() const ;
 
         void addBatiment(const Batiment* c){batiments.push_back(c);}
         void addMerveille(const Merveille* m){merveilles.push_back(m);}
         void addJeton(const Jeton* j){jetons.push_back(j);}
         void addGuilde(const Guilde* c){guildes.push_back(c);}
+        void destroyBatiment(const Batiment* c) ;
 
         unsigned int getTresor() const { return tresor ; }
         void setTresor(unsigned int t){tresor = t ;}
@@ -266,6 +268,9 @@ class Joueur {
         // achat
         std::list<ressource> achetableRessource(std::list<ressource> cost) const;
         unsigned int achetableJoueur(const Carte* c) const ;
+        std::vector<const Merveille*> buildableMerveilles() const ; 
+        void activateMerveille(const Merveille* c);
+        void deleteLastMerveille() ;
         bool obtainable(const Carte* c) const ;
 
         // fetch military, fetch science
@@ -273,7 +278,7 @@ class Joueur {
         unsigned int fetchPtVictoire(bool tiebreaker) const ;
 
         // utils pour les guildes et cartes commerces
-        unsigned int getNumberActiveWonders() const ;
+        unsigned int getNumberActiveMerveilles() const ;
         unsigned int getNumberBatiment(type_batiment t) const ;
 
         // méthodes pour les jetons de progrès
@@ -290,6 +295,8 @@ class Joueur {
         unsigned int getTradePrice(ressource r) const ;
         void reinitTradePrice();
 
+        // utils
+        void displayJoueur() const ;
         void reinit();
 
     private:
@@ -304,6 +311,7 @@ class Joueur {
         // prix fixé du commerce : 0 = non fixé, other than 0 = fixed price
 
         unsigned int tresor = 0 ;
+        bool merveille_active[4] = {false, false, false, false};
 
         bool id ; // 0 or 1
         std::string nom ; 
@@ -479,6 +487,8 @@ class Box {
         Plateau* getPlateau() const { return plateau ;}
         Joueur* getJoueur(bool x) const { return x ? joueur1 : joueur0 ;}
         std::vector<const Batiment*> getAllBatiments() const { return all_batiments; }
+        std::vector<const Carte*> getDefausse() const { return defausse ;}
+        std::vector<const Jeton*> getUnusedJetons() const { return unused_jetons;}
 
         // GESTION DU JEU
         void gameLoop(); 
@@ -512,7 +522,7 @@ class Box {
         std::vector<const Guilde*> all_guildes ;
         std::vector<const Merveille*> all_merveilles ;
 
-        std::vector<const Carte*> defausse ; // NOT USED YET
+        std::vector<const Carte*> defausse ;
         std::vector<const Jeton*> unused_jetons ; 
 };
 
