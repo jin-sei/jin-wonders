@@ -75,7 +75,7 @@ std::vector<const Carte*> Layout::getAvailableCards() const {
 
     std::vector<const Carte*> temp ; 
 
-    for( size_t i = 0 ; i < (getAvailableSlots().size()/2) ; i++ ){
+    for( size_t i = 0 ; i < getAvailableSlots().size() ; i+=2 ){
         temp.push_back( cards[ getBatimentFromLayout( getAvailableSlots()[i], getAvailableSlots()[i+1] ) ] );
     }
 
@@ -160,7 +160,7 @@ bool Layout::isEmpty() const {
     for(auto iter_rows = age.begin() ; iter_rows != age.end() ; ++iter_rows){
         for(auto iter_columns = iter_rows->begin() ; iter_columns != iter_rows->end() ; ++iter_columns){
             
-            if( *iter_columns != 0 || *iter_columns != 4 ){
+            if( *iter_columns != 0 && *iter_columns != 4 ){
                 return false ; 
             }
 

@@ -223,18 +223,34 @@ int tests(){
 
     my_box1.getPlateau()->getLayout()->displayLayout();
 
-    /*auto available = my_box1.getPlateau()->getLayout()->getAvailableSlots(); 
+    /*
+    auto available = my_box1.getPlateau()->getLayout()->getAvailableSlots(); 
     for( auto iter = available.begin() ; iter != available.end() ; ++iter ){
         std::cout << *iter << " " ;
-    }*/
+    }
+    */
 
     unsigned int choice ; 
     
     while( !my_box1.getPlateau()->getLayout()->isEmpty() ){
+
+        /*
+        auto available = my_box1.getPlateau()->getLayout()->getAvailableSlots(); 
+         for( auto iter = available.begin() ; iter != available.end() ; ++iter ){
+            std::cout << *iter << " " ;
+        }
+
+        std::cout << " || " << !my_box1.getPlateau()->getLayout()->isEmpty() << " ???" ;
+        
+        std::cout << std::endl << std::endl ; 
+        */
+
         choice = chooseFromPointerVector( my_box1.getPlateau()->getLayout()->getAvailableCards() );
+        //std::cout << my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[0] << " : " << my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[1] << std::endl ; 
         my_box1.getPlateau()->getLayout()->pickSlot( my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[0], my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[1] );
 
-        my_box1.getPlateau()->getLayout()->displayLayout(); 
+        std::cout << std::endl ; 
+        my_box1.getPlateau()->getLayout()->displayLayout(); std::cout << std::endl ; 
     }
     // ISSUE HERE
 
@@ -285,7 +301,7 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// modifier layout pour pouvoir choisir plus simplement les cartes
+// tour de jeu:
 
 
 // NEXT :

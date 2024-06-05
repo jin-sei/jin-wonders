@@ -408,7 +408,7 @@ class Layout {
         std::vector<int> getAvailableSlots() const ;
         std::vector<const Carte*> getAvailableCards() const ;
         std::vector<int> vectorToLayout(int x) const {
-            return {getAvailableSlots()[x], getAvailableSlots()[x+1]};
+            return {getAvailableSlots()[x*2], getAvailableSlots()[x*2+1]};
         }
 
         bool isEmpty() const ;
