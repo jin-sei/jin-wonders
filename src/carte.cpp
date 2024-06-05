@@ -66,18 +66,25 @@ Carte(nom, type, age, cost_r, cost_m, argent, pt_victoire), chained_by(chained_b
 
 void Carte::affichage() const {
     std::cout << nom << ", " << tostringType(type) << ", " << tostringAge(c_age) << std::endl ; 
-    std::cout << "COUT ARGENT: " << cost_m << std::endl ;
-    std::cout << "COUT RESSOURCES: " ;
-    std::list<ressource> res(getCoutRessource());
-    for(auto iter = res.begin() ; iter != res.end() ; ++iter) { std::cout << tostringRessources(*iter) << " ; " ; }
-    std::cout << std::endl ;
-    std::cout << "REWARDS: " << argent << " pièces ; " << pt_victoire << " points victoire" << std::endl ;
+    if(cost_m != 0){ std::cout << "COUT ARGENT: " << cost_m << std::endl ; }
+
+    if( !getCoutRessource().empty() ){
+        std::cout << "COUT RESSOURCES: " ;
+        std::list<ressource> res(getCoutRessource());
+        for(auto iter = res.begin() ; iter != res.end() ; ++iter) { std::cout << tostringRessources(*iter) << " ; " ; }
+        std::cout << std::endl ;
+    }
+    if(argent != 0 || pt_victoire != 0){std::cout<< "REWARDS: ";}
+    if(argent != 0) {std::cout << argent << " pièces ; " ; }
+    if(pt_victoire != 0){std::cout << pt_victoire << " points victoire" << std::endl ;}
 }
 
 void Batiment::affichage() const {
     Carte::affichage();
-    std::cout << "PRODUCTION: " ;
-    displayRessources( production ) ;
+    if(!production.empty()){
+        std::cout << "PRODUCTION: " ;
+        displayRessources( production ) ;
+    }
 }
 
 void Batiment::onBuild(Joueur* j) const {

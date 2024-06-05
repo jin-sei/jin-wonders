@@ -5,7 +5,15 @@ Box::Box(){
 
     plateau = new Plateau(this);
 
-    joueur0 = new Joueur(0) ; joueur1 = new Joueur(1) ; 
+    std::string nom; 
+    std::cout << "Joueur-0 : Nom > " ; 
+    std::cin >> nom ; 
+    joueur0 = new Joueur(0, nom) ; 
+    std::cout << "Joueur-1 : Nom > " ; 
+    std::cin >> nom ;
+    std::cout << std::endl ; 
+    joueur1 = new Joueur(1, nom) ; 
+
     joueur0->setAdversaire(joueur1); 
     joueur1->setAdversaire(joueur0);
     current = joueur0 ; 
@@ -160,6 +168,42 @@ void Box::reinitAll(){
 
 void Box::choixMerveilles(){
     // requires player interaction
+    std::vector<const Merveille*> temp = all_merveilles ;
+    std::vector<const Merveille*> selection(4) ; 
+    unsigned int choice = 0 ;
+
+    std::random_device rd ; std::mt19937 gen(rd());
+    std::shuffle(temp.begin(), temp.end(), gen);
+
+    std::cout << "Désigner le joueur qui commence:" << std::endl << std::endl ; 
+    choice = askJoueur({joueur0->getNom(), joueur1->getNom()});
+    current = getJoueur(choice) ;
+
+    for(int i = 0 ; i <= 5 ; i++){
+
+        if(i == 0 || i == 3){
+            selection.resize(4);
+            std::copy(temp.begin(), temp.begin()+4, selection.begin());
+            temp.erase(temp.begin(), temp.begin()+4);
+        }
+
+        std::cout << "#. Joueur " << current->getId() << " (" << current->getNom() << "):" << std::endl << std::endl ;
+        choice = chooseFromPointerVector(selection) ;
+        current->addMerveille( selection[ choice ] ) ;
+        selection.erase(selection.begin() + choice) ; 
+
+        if(i == 0 || i == 3){
+            current = current->getAdversaire(); 
+        }
+
+        if( selection.size() == 1 ){
+            std::cout << current->getAdversaire()->getNom() << " gets " << selection[0]->getNom() << std::endl << std::endl ;
+            current->getAdversaire()->addMerveille(selection[0]);
+            selection.clear();
+        }
+
+    }
+
 }
 
 void Box::setupJetons(){
@@ -179,4 +223,5 @@ void Box::setupJetons(){
 void Box::setupAll(){
     setupJetons();
     choixMerveilles();
+    joueur0->setTresor(7) ; joueur1->setTresor(7) ; 
 }

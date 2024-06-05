@@ -81,7 +81,7 @@ void Box::allCardsCreation(){
         ));
 
         all_merveilles.push_back( new Merveille(
-                "Le Grande Bibliotheque", // Nom du bâtiment
+                "La Grande Bibliotheque", // Nom du bâtiment
                 type_batiment::Merveille, // Type du bâtiment
                 phase_jeu::AGE_I, // âge de la carte
                 {}, // Liste des ressource nécessaires

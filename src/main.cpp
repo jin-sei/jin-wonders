@@ -267,12 +267,13 @@ int tests(){
 
 int main(){
 
-    tests() ;
+    //tests() ;
     std::cout << std::endl << "7 WONDERS DUEL" << std::endl << "--------------" << std::endl  << std::endl ;
     
     
     Box my_box = Box() ; 
-    //my_box.allCardsCreation();
+    my_box.newAge() ; // on passe de END à START pour setup le jeu
+    my_box.getPlateau()->displayPlateau() ;
 
     /*
     my_box.newAge();

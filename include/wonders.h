@@ -118,6 +118,7 @@ unsigned int chooseFromPointerVector(std::vector<const T*> c){
         std::cout << "0-" << c.size()-1 << " > " ;
         std::cin >> choice ; 
     }
+    std::cout << std::endl;
     return choice ;
 }
 
@@ -232,12 +233,13 @@ class Joueur {
 
     public:
 
-        Joueur(bool id) : id(id){
+        Joueur(bool id, std::string nom) : id(id), nom(nom){
 
             reinitTradePrice();
         }
 
         unsigned int getId() const { return id ;}
+        std::string getNom() const { return nom ; }
 
         Joueur* getAdversaire() const { return adversaire ; }
         void setAdversaire(Joueur* j){ adversaire = j ;}
@@ -247,6 +249,7 @@ class Joueur {
         std::vector<const Jeton*> getJetons() const { return jetons; }
 
         void addBatiment(const Batiment* c){batiments.push_back(c);}
+        void addMerveille(const Merveille* m){merveilles.push_back(m);}
         void addJeton(const Jeton* j){jetons.push_back(j);}
 
         unsigned int getTresor() const { return tresor ; }
@@ -303,6 +306,7 @@ class Joueur {
         unsigned int tresor = 0 ;
 
         bool id ; // 0 or 1
+        std::string nom ; 
 
 };
 
@@ -412,7 +416,7 @@ class Layout {
         }
 
         bool isEmpty() const ;
-        unsigned int getLayoutSize() const ;
+        unsigned int getLayoutSize() const;
         unsigned int getVectorSize() const;
         std::vector<const Carte*> getCards() const { return cards ;}
         
@@ -526,6 +530,9 @@ class Plateau {
 
         const Jeton* takeJeton(jeton_progres id);
         // renvoie le pointeur vers l'object jeton et le supprime du Plateau
+
+        void displayPlateau() const ;
+        // display le pion militaire, les jetons progrès et le layout 
 
         void movePion(bool id, unsigned int avance);
         // déplace le pion sur le plateau en utilisant l'ID du Joueur

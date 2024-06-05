@@ -80,6 +80,24 @@ const Jeton* Plateau::takeJeton(jeton_progres id){
 
 }
 
+void Plateau::displayPlateau() const {
+    //std::cout << "|" ; 
+    for(int i = -9 ; i <= 9 ; i++){
+        if(pion_militaire == i){ std::cout << "X" ; } else { std::cout << "_" ; }
+    }
+    std::cout << std::endl << std::endl ;
+
+    for(auto iter =jetons.begin() ; iter != jetons.end() ; ++iter){
+        std::cout << **iter << " " ;
+    }
+
+    std::cout << std::endl << std::endl ;
+
+    layout->displayLayout(); 
+    
+    std::cout << std::endl ; 
+}
+
 void Plateau::reinit(){
     pion_militaire = 0 ; 
     saccage[0] = 2 ; saccage[1] = 5 ; saccage[2] = 2 ; saccage[3] = 5 ;

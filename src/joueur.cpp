@@ -124,13 +124,15 @@ std::list<ressource> Joueur::achetableRessource(std::list<ressource> cost) const
 
 unsigned int Joueur::achetableJoueur(const Carte* c) const {
     // retourne le nombre de pièces qu'il faudra dépenser pour acheter la Carte
+    // on ne compte pas le cout en argent de la carte ici
+
     std::list<ressource> cost = c->getCoutRessource() ;
 
     // check chaînage (on fera ça en dehors de la méthode)
     
     // check ressources possédées
     std::list<ressource> missing = achetableRessource(cost);
-    if( missing.empty() ){ return c->getCoutArgent(); }
+    if( missing.empty() ){ return 0 ; }// c->getCoutArgent(); }
 
     std::cout << "MISSING RESSOURCES: " ; displayRessources( missing ) ; std::cout << std::endl;
 
@@ -173,7 +175,7 @@ unsigned int Joueur::achetableJoueur(const Carte* c) const {
         }
     }
 
-    if( missing.empty() ){ return c->getCoutArgent(); }
+    if( missing.empty() ){ return 0 ; }//c->getCoutArgent(); }
 
     std::cout << "STILL MISSING RESSOURCES: " ; displayRessources( missing ) ; std::cout << std::endl;
 
@@ -204,7 +206,7 @@ unsigned int Joueur::achetableJoueur(const Carte* c) const {
     
     
     // check prix du commerce pour acheter les ressources manquantes
-    unsigned int price = c->getCoutArgent() ;
+    unsigned int price = 0 ;//c->getCoutArgent() ;
 
     if( !missing.empty() ){ // on vérifie que les étapes précédentes n'ont pas permis de trouver toutes les ressources manquantes
         for( auto iter = missing.begin() ; iter != missing.end() ; ++iter ){
