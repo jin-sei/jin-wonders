@@ -111,6 +111,38 @@ void Box::newAge(){
 
 }
 
+void Box::gameLoop(){
+
+    unsigned int choice_card = 0;
+    unsigned int choice_action = 0;
+
+    while( !plateau->getLayout()->isEmpty() ){
+
+//getLayout()->pickSlot( my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[0], my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[1] );
+
+        plateau->displayPlateau();
+        choice_card = chooseFromPointerVector( plateau->getLayout()->getAvailableCards() );
+        choice_action = askJoueur({"Défausser", "Construire la Carte", "Construire une Merveille"});
+
+        switch(choice_action){
+
+            case 0 : // DÉFAUSSER
+                defausse.push_back( plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] ) );
+                current->addTresor( 2+current->getNumberBatiment(type_batiment::Commerce) );
+                break;
+            case 1 : // CONSTRUIRE LA CARTE
+                break;
+            case 2 : // CONSTRUIRE UNE MERVEILLE
+                break;
+
+        }
+
+        current = current->getAdversaire();
+
+    }
+
+}
+
 void Box::distributeCards(phase_jeu p){
 
     // CHOISIR 20 CARTES DE L'ÂGE CORRESPONDANT 

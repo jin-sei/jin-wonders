@@ -270,31 +270,18 @@ int main(){
     //tests() ;
     std::cout << std::endl << "7 WONDERS DUEL" << std::endl << "--------------" << std::endl  << std::endl ;
     
-    
-    Box my_box = Box() ; 
-    my_box.newAge() ; // on passe de END à START pour setup le jeu
-    my_box.getPlateau()->displayPlateau() ;
+    try {
 
-    /*
-    my_box.newAge();
-    my_box.newAge();
+        Box my_box = Box() ; 
+        my_box.newAge(); // on passe de END à START pour setup le jeu
+        my_box.newAge(); // on passe à l'âge I ; 
+        my_box.gameLoop();
 
-    my_box.getPlateau()->getLayout()->displayLayout();
-    displayCards( my_box.getPlateau()->getLayout()->getCards() ); 
+    } catch(const GameException& e) {
 
-    my_box.newAge();
+        std::cerr << e.getInfo() << std::endl; 
 
-    my_box.getPlateau()->getLayout()->displayLayout();
-    displayCards( my_box.getPlateau()->getLayout()->getCards() );
-
-    my_box.newAge();
-
-    my_box.getPlateau()->getLayout()->displayLayout();
-    displayCards( my_box.getPlateau()->getLayout()->getCards() ); 
-    */
-    
-
-    //displayCards( my_box.getAllBatiments() );
+    }
 
     return 0 ;
 }
@@ -302,7 +289,7 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// tour de jeu:
+// tour de jeu: base de la gameloop
 
 
 // NEXT :
@@ -327,20 +314,16 @@ int main(){
 
 
 // OTHER TASKS : 
-// implémenter un système pour communiquer simplement avec le joueur (choix...): 
-//      prendre en compte l'IA
-//      programmation générique
 // interactions avec le joueur:
 //      perks (destruction, pickJeton)
-//      choix des Merveilles en début de partie
-//      choisir une carte à construire / action pendant le tour de jeu
 //      relancer une partie
+//      IA player
 
 
 
 // SIDE QUESTS : 
 // écrire une documentation et expliquer les choix de développement
-// enhanced console display (Layout, Plateau)
+// enhanced console display (Layout, Plateau, Players)
 // rendre Box singleton
 // rendre Joueur doubleton
 // méthode static pour track les instances Jeton

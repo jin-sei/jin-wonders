@@ -481,6 +481,7 @@ class Box {
         std::vector<const Batiment*> getAllBatiments() const { return all_batiments; }
 
         // GESTION DU JEU
+        void gameLoop(); 
         void newAge();
         void reinitAll(); // on clear tout et on reviens au début du Jeu
         void setupAll(); // on prépare la partie
