@@ -72,30 +72,34 @@ void Box::newAge(){
         // CHECK VICTOIRE MILITAIRE
         if( plateau->victoireMilitaire() ){
             std::cout << "SUPRÉMATIE MILITAIRE DU JOUEUR " << plateau->joueurDominant() << std::endl ; 
-            return ;
+            //return ;
         } else if ( joueur0->victoireScientifique() || joueur1->victoireScientifique() ){
             std::cout << "SUPRÉMATIE SCIENTIFIQUE DU JOUEUR " << static_cast<int>(joueur1->victoireScientifique()) << std::endl ;
-            return ;
-        }
-        
-        // CHECK VICTOIRE SCIENTIFIQUE
+            //return ;
+        } else {
 
-        // COMPTAGE DE POINTS
-        unsigned int pt_j0 = joueur0->fetchPtVictoire(false) + plateau->pointsVictoire() * static_cast<int>(plateau->joueurDominant() == 0), 
-        pt_j1 = joueur1->fetchPtVictoire(false) + plateau->pointsVictoire() * static_cast<int>(plateau->joueurDominant() == 1) ;
-        
-        if( pt_j0 == pt_j1 ){
-            
-            pt_j0 = joueur0->fetchPtVictoire(true) ; pt_j1 = joueur1->fetchPtVictoire(true); 
+            // COMPTAGE DE POINTS
+            unsigned int pt_j0 = joueur0->fetchPtVictoire(false) + plateau->pointsVictoire() * static_cast<int>(plateau->joueurDominant() == 0), 
+            pt_j1 = joueur1->fetchPtVictoire(false) + plateau->pointsVictoire() * static_cast<int>(plateau->joueurDominant() == 1) ;
             
             if( pt_j0 == pt_j1 ){
-                std::cout << "ÉGALITÉ ABSOLUE" << std::endl ; 
+                
+                pt_j0 = joueur0->fetchPtVictoire(true) ; pt_j1 = joueur1->fetchPtVictoire(true); 
+                
+                if( pt_j0 == pt_j1 ){
+                    std::cout << "ÉGALITÉ ABSOLUE" << std::endl ; 
+                } else {
+                    std::cout << "LE JOUEUR " << static_cast<int>(pt_j0 < pt_j1) << " EST VICTORIEUX" << std::endl;
+                }
             } else {
-                std::cout << "LE JOUEUR " << static_cast<int>(pt_j0 < pt_j1) << " EST VICTORIEUX" << std::endl;
+                std::cout << "LE JOUEUR " << static_cast<int>(pt_j0 < pt_j1) << " EST VICTORIEUX" << std::endl; 
             }
-        } else {
-            std::cout << "LE JOUEUR " << static_cast<int>(pt_j0 < pt_j1) << " EST VICTORIEUX" << std::endl; 
         }
+
+        std::cout << std::endl << "Relancer une partie ?" << std::endl ; 
+        unsigned int choice = askJoueur({"Oui", "Non"});
+        if(!choice){ ++phase ; newAge(); } else { std::cout << "Aurevoir!" << std::endl ; exit(0); }
+
 
         return ; 
 
@@ -105,6 +109,7 @@ void Box::newAge(){
         // début d'une nouvelle partie
         reinitAll();
         setupAll();
+        newAge(); 
         return; 
 
     } else { throw GameException("ERREUR : âge inconnu");}
@@ -115,23 +120,102 @@ void Box::gameLoop(){
 
     unsigned int choice_card = 0;
     unsigned int choice_action = 0;
+    std::vector<std::string> choices = {};
+    if(phase != phase_jeu::AGE_I){
+
+        if(plateau->getPionMilitaire() == 0){
+            std::cout << current->getNom() ;
+        } else {
+            std::cout << getJoueur( plateau->joueurDominant() )->getNom() ;
+        }
+        std::cout << " choisis le joueur qui prendra la main: " << std::endl << std::endl ;
+        current = getJoueur(askJoueur({joueur0->getNom(), joueur1->getNom()}));
+
+    }
 
     while( !plateau->getLayout()->isEmpty() ){
 
+        waitForInteraction();
+        system("clear");
+
+        choices = {"Défausser"}; 
         plateau->displayPlateau();
+        std::cout  << "#. Tour de " << current->getNom() << ": " << std::endl << std::endl ;  
         choice_card = chooseFromPointerVector( plateau->getLayout()->getAvailableCards() );
-        choice_action = askJoueur({"Défausser", "Construire la Carte", "Construire une Merveille"});
+
+        const Carte* c = plateau->getLayout()->getAvailableCards()[choice_card];
+        if( current->obtainable(c) ){ choices.push_back("Construire la Carte"); }
+        
+        std::cout << "#. Carte choisie: " << c->getNom() << std::endl << std::endl; 
+        choice_action = askJoueur(choices);
 
         switch(choice_action){
 
             case 0 : // DÉFAUSSER
+
                 defausse.push_back( plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] ) );
                 current->addTresor( 2+current->getNumberBatiment(type_batiment::Commerce) );
                 break;
+
             case 1 : // CONSTRUIRE LA CARTE
+
+                if( c->getType() != type_batiment::Guilde ){
+
+                    const Batiment* b = dynamic_cast<const Batiment*>(c);
+                    if(!b){ throw GameException("ERREUR: dynamic cast failed to downcast to Batiment");}
+                    
+                    else { 
+                        if( current->possessBatiment(b->getChainage())){
+                            // le bâtiment est obtenu gratuitement
+                            if(current->possessJeton(jeton_progres::Urbanisme)){ current->addTresor(4); }
+                        } else {
+                            // le bâtiment est obtenu en payant
+                            current->subTresor( current->achetableJoueur(c)+c->getCoutArgent() );
+                            if(current->getAdversaire()->possessJeton(jeton_progres::Economie)){ 
+                                current->getAdversaire()->addTresor(current->achetableJoueur(c));
+                            }
+                        }
+                        // on construit le bâtiment
+                        plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] );
+                        current->addBatiment( b );
+
+                        switch(b->getType()){
+
+                            case type_batiment::Commerce :
+                                b->onBuild(current); // calls onBuild Commerce
+
+                            case type_batiment::Militaire :
+                                plateau->movePion( current->getId(), b->getProduction().size() +static_cast<int>(current->possessJeton(jeton_progres::Strategie)) );
+                                if(plateau->victoireMilitaire()){endgame();}
+
+                            case type_batiment::Scientifique :
+                                if(current->allowJetonPick()){
+                                    const Jeton* j = plateau->takeJeton( chooseFromPointerVector(plateau->getJetons()) );
+                                    current->addJeton( j ) ;
+                                    if( j->getId() == jeton_progres::Agriculture ){current->addTresor(4);}
+                                }
+                                if(current->victoireScientifique()){endgame();}
+
+                        }
+
+                    }
+                } else {
+                    plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] );
+                    const Guilde* g = dynamic_cast<const Guilde*>(c);
+                    if(!g) { throw GameException("ERREUR: dynamic cast failed to downcast to Guilde");}
+                    current->addGuilde(g);
+                    g->onBuild(current); // applique les effets de la Guilde
+                }
+
+
+
                 break;
+
             case 2 : // CONSTRUIRE UNE MERVEILLE
+
                 break;
+
+            default : throw GameException("ERREUR: Choix invalide dans Box::gameLoop()");
 
         }
 

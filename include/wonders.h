@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <random>
 #include <cstdlib> // For abs()
+#include <limits>
 
 
 enum class type_batiment {Militaire, Scientifique, Manufacture, Premiere, Civil, Commerce, Guilde, Merveille};
@@ -31,6 +32,31 @@ phase_jeu& operator++(phase_jeu& phase);
 
 void displayRessources(std::list<ressource> r);
 unsigned int askJoueur(std::vector<std::string> r);
+void waitForInteraction() ;
+
+template <typename T>
+void displayFromPointerVector(std::vector<const T*> c){
+    for(auto iter = c.begin() ; iter != c.end() ; ++iter){
+        std::cout << **iter << std::endl  ;
+    }
+    return;
+}
+
+template <typename T>
+unsigned int chooseFromPointerVector(std::vector<const T*> c){
+    for( size_t i = 0 ; i < c.size() ; i++ ){
+        std::cout << i << ". " ; 
+        std::cout << *c[i] << std::endl ; 
+    }
+
+    unsigned int choice = c.size();
+    while( choice >= c.size() ){
+        std::cout << "0-" << c.size()-1 << " > " ;
+        std::cin >> choice ; 
+    }
+    std::cout << std::endl;
+    return choice ;
+}
 
 class GameException {
 	public:
@@ -97,30 +123,6 @@ class Carte { // ABSTRACT
 };
 
 std::ostream& operator<<(std::ostream& f, const Carte& c);
-
-template <typename T>
-void displayFromPointerVector(std::vector<const T*> c){
-    for(auto iter = c.begin() ; iter != c.end() ; ++iter){
-        std::cout << **iter << std::endl  ;
-    }
-    return;
-}
-
-template <typename T>
-unsigned int chooseFromPointerVector(std::vector<const T*> c){
-    for( size_t i = 0 ; i < c.size() ; i++ ){
-        std::cout << i << ". " ; 
-        std::cout << *c[i] << std::endl << std::endl ; ; 
-    }
-
-    unsigned int choice = c.size();
-    while( choice >= c.size() ){
-        std::cout << "0-" << c.size()-1 << " > " ;
-        std::cin >> choice ; 
-    }
-    std::cout << std::endl;
-    return choice ;
-}
 
 class Batiment : public Carte {
     // Civil, Scientifique, Militaire, Ressources
@@ -251,6 +253,7 @@ class Joueur {
         void addBatiment(const Batiment* c){batiments.push_back(c);}
         void addMerveille(const Merveille* m){merveilles.push_back(m);}
         void addJeton(const Jeton* j){jetons.push_back(j);}
+        void addGuilde(const Guilde* c){guildes.push_back(c);}
 
         unsigned int getTresor() const { return tresor ; }
         void setTresor(unsigned int t){tresor = t ;}
@@ -263,10 +266,7 @@ class Joueur {
         // achat
         std::list<ressource> achetableRessource(std::list<ressource> cost) const;
         unsigned int achetableJoueur(const Carte* c) const ;
-        bool obtainable(const Carte* c) const { 
-            // does not check chaînage
-            return achetableJoueur(c) <= tresor ; 
-        }
+        bool obtainable(const Carte* c) const ;
 
         // fetch military, fetch science
         std::list<ressource> fetchRessource(std::list<ressource> r) const ;
@@ -529,7 +529,7 @@ class Plateau {
         std::vector<const Jeton*> getJetons() const { return jetons; }
         void addJeton(const Jeton* j) { jetons.push_back(j); }
 
-        const Jeton* takeJeton(jeton_progres id);
+        const Jeton* takeJeton(unsigned int index);
         // renvoie le pointeur vers l'object jeton et le supprime du Plateau
 
         void displayPlateau() const ;

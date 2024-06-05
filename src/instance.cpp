@@ -373,7 +373,7 @@ void Box::allCardsCreation(){
     ));
 
     all_batiments.push_back( new Batiment(
-            "apothicaire", 
+            "Apothicaire", 
             type_batiment::Scientifique, 
             phase_jeu::AGE_I, 
             {ressource::Verre}, // Liste des ressource nécéssaires

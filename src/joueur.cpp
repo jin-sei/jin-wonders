@@ -57,6 +57,9 @@ unsigned int Joueur::fetchPtVictoire(bool tiebreaker) const {
     if( possessJeton(jeton_progres::Philosophie) ){ points += 7; }
     if( possessJeton(jeton_progres::Agriculture) ){ points += 4; }
 
+    // ARGENT
+    points += tresor / 3 ; 
+
     return points ; 
     
 }
@@ -98,21 +101,21 @@ std::list<ressource> Joueur::achetableRessource(std::list<ressource> cost) const
     std::list<ressource> missing = {}; 
     
     for(auto iter = cost.begin() ; iter != cost.end() ; ++iter){ // parcours les ressources demandées
-        std::cout << "ASKED: " << tostringRessources(*iter) << std::endl ;
+        //std::cout << "ASKED: " << tostringRessources(*iter) << std::endl ;
         
         for(auto iter_b = pop_buy.begin() ; iter_b != pop_buy.end() ; ++iter_b){ // parcours les ressources disponibles
             
-            std::cout << "FOUND: " << tostringRessources(*iter_b) << " ; ";
+            //std::cout << "FOUND: " << tostringRessources(*iter_b) << " ; ";
 
             if(*iter_b == *iter){ // bonne ressource trouvée
 
-                std::cout << " MATCH!" << std::endl;
+                //std::cout << " MATCH!" << std::endl;
                 pop_buy.erase(iter_b);
                 break;
 
             } else if(next(iter_b) == pop_buy.end()){ // on atteint la fin sans trouver de ressource match : ressource manquante
 
-                std::cout << "NOT FOUND!" << std::endl;
+                //std::cout << "NOT FOUND!" << std::endl;
                 missing.push_back(*iter);
             }
 
@@ -134,7 +137,7 @@ unsigned int Joueur::achetableJoueur(const Carte* c) const {
     std::list<ressource> missing = achetableRessource(cost);
     if( missing.empty() ){ return 0 ; }// c->getCoutArgent(); }
 
-    std::cout << "MISSING RESSOURCES: " ; displayRessources( missing ) ; std::cout << std::endl;
+    //std::cout << "MISSING RESSOURCES: " ; displayRessources( missing ) ; std::cout << std::endl;
 
     // check ressources conditionelles (check Merveilles et Commerce)
     // COMMERCE
@@ -144,17 +147,17 @@ unsigned int Joueur::achetableJoueur(const Carte* c) const {
     bool breaker = false ; 
 
     for( auto iter_missing = missing.begin() ; iter_missing != missing.end() ; ++iter_missing ){
-        std::cout << "MISSING: " << tostringRessources(*iter_missing) << std::endl ; 
+        //std::cout << "MISSING: " << tostringRessources(*iter_missing) << std::endl ; 
         for( auto iter_bat = poly.begin() ; iter_bat != poly.end() ; ++iter_bat ){
-            std::cout << "ITERATING THROUGH: " << (**iter_bat).getNom() << std::endl ; 
+            //std::cout << "ITERATING THROUGH: " << (**iter_bat).getNom() << std::endl ; 
             prod_temp = (**iter_bat).getProduction() ;
 
             if( !(**iter_bat).getProduction().empty() ){
                 for( auto iter_bat_res = prod_temp.begin() ; iter_bat_res != prod_temp.end() ; ++iter_bat_res ){
-                    std::cout << "FOUND: " << tostringRessources( *iter_bat_res ) << std::endl; 
+                    //std::cout << "FOUND: " << tostringRessources( *iter_bat_res ) << std::endl; 
                     
                     if( *iter_bat_res == *iter_missing ){
-                        std::cout << "MATCH!" << std::endl;
+                        //std::cout << "MATCH!" << std::endl;
                         iter_missing = missing.erase(iter_missing);
                         breaker = true ; 
                         //if(iter_bat != poly.end()){ ++iter_bat ;};
@@ -177,7 +180,7 @@ unsigned int Joueur::achetableJoueur(const Carte* c) const {
 
     if( missing.empty() ){ return 0 ; }//c->getCoutArgent(); }
 
-    std::cout << "STILL MISSING RESSOURCES: " ; displayRessources( missing ) ; std::cout << std::endl;
+    //std::cout << "STILL MISSING RESSOURCES: " ; displayRessources( missing ) ; std::cout << std::endl;
 
     // check ressources offertes : // Jetons Architecture et Maçonnerie
 
@@ -202,7 +205,7 @@ unsigned int Joueur::achetableJoueur(const Carte* c) const {
         }
     }
 
-    std::cout << "STILL MISSING RESSOURCES: " ; displayRessources( missing ) ; std::cout << std::endl;
+    //std::cout << "STILL MISSING RESSOURCES: " ; displayRessources( missing ) ; std::cout << std::endl;
     
     
     // check prix du commerce pour acheter les ressources manquantes
@@ -216,6 +219,20 @@ unsigned int Joueur::achetableJoueur(const Carte* c) const {
 
     return price ; 
 
+}
+
+bool Joueur::obtainable(const Carte* c) const {
+
+    if( c->getType() != type_batiment::Guilde ){
+
+        const Batiment* b = dynamic_cast<const Batiment*>(c) ;
+        if(!b){ throw GameException("ERREUR: dynamic cast failed to downcast to Batiment");}
+
+        else {
+            if( possessBatiment( b->getChainage() ) ){ return true ; }
+        }
+    }
+    return (achetableJoueur(c) + c->getCoutArgent()) <= tresor ; 
 }
 
 

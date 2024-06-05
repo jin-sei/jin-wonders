@@ -174,7 +174,7 @@ int tests(){
     displayFromPointerVector( my_box1.getJoueur(0)->getJetons() ) ;
     std::cout << "------------------plateau" << std::endl ; 
     displayFromPointerVector( my_box1.getPlateau()->getJetons() ) ;
-    my_box1.getJoueur(0)->addJeton( my_box1.getPlateau()->takeJeton(my_box1.getPlateau()->getJetons()[0]->getId()));
+    //my_box1.getJoueur(0)->addJeton( my_box1.getPlateau()->takeJeton(my_box1.getPlateau()->getJetons()[0]->getId()));
     std::cout << "----------------------------------after taking jeton" << std::endl ; 
     std::cout << "-------------------joueur" << std::endl ; 
     displayFromPointerVector( my_box1.getJoueur(0)->getJetons() ) ;
@@ -268,14 +268,14 @@ int tests(){
 int main(){
 
     //tests() ;
+    system("clear");
     std::cout << std::endl << "7 WONDERS DUEL" << std::endl << "--------------" << std::endl  << std::endl ;
-    
+
     try {
 
         Box my_box = Box() ; 
         my_box.newAge(); // on passe de END à START pour setup le jeu
-        my_box.newAge(); // on passe à l'âge I ; 
-        my_box.gameLoop();
+        // on passe à l'âge I et le jeu commence
 
     } catch(const GameException& e) {
 
@@ -289,41 +289,33 @@ int main(){
 // NILS TO DO :
 
 // CURRENT :
-// tour de jeu: base de la gameloop
+// afficher le joueur
+// joueur : get merveilles non actives
+// joueur : any merveilles non actives buildable ?
 
 
 // NEXT :
 // tours de jeu: 
-//      construire une Carte / Merveille
+//      construire une Merveille
 //          appeler les Effets
-//      défausser
-//          gagner de l'argent
-//      doublons de jetons scientifiques 
-//          choisir un jeton
-//      avancer le pion conflit
-//      checker les suprématies
+//          check 7 merveilles
 
 
 // MAIN QUESTS : 
-// effet des Jetons: onObtain method ?
-//      Agriculture : pt victoire fait, argent pas fait
-//      Economie : not done
-//      Strategie : not done
+// effet des Jetons:
 //      Theologie : not done
-//      Urbanisme : not done
 
 
 // OTHER TASKS : 
 // interactions avec le joueur:
 //      perks (destruction, pickJeton)
-//      relancer une partie
 //      IA player
 
 
 
 // SIDE QUESTS : 
 // écrire une documentation et expliquer les choix de développement
-// enhanced console display (Layout, Plateau, Players)
+// enhanced console display (Layout, Plateau, Players, Décompte des points)
 // rendre Box singleton
 // rendre Joueur doubleton
 // méthode static pour track les instances Jeton

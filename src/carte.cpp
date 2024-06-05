@@ -88,7 +88,7 @@ void Batiment::affichage() const {
 }
 
 void Batiment::onBuild(Joueur* j) const {
-    std::cout << "CALLING ONBUILD BATIMENT" << std::endl ;
+    //std::cout << "CALLING ONBUILD BATIMENT" << std::endl ;
     return ; 
 }
 
@@ -108,7 +108,7 @@ Commerce::Commerce(
 Commerce::~Commerce() { if(perk!=nullptr){delete perk ;} }
 
 void Commerce::onBuild(Joueur* j) const {
-    std::cout << "CALLING ONBUILD COMMERCE" << std::endl ;
+    //std::cout << "CALLING ONBUILD COMMERCE" << std::endl ;
     if(perk!=nullptr){
         perk->onCall(j); 
     }
@@ -162,6 +162,6 @@ void Guilde::rewardArgent(Joueur* j) const {
 }
 
 void Guilde::onBuild(Joueur* j) const {
-    std::cout << "CALLING ONBUILD GUILDE" << std::endl ;
+    //std::cout << "CALLING ONBUILD GUILDE" << std::endl ;
     rewardArgent(j);
 }

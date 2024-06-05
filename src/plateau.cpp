@@ -66,15 +66,19 @@ unsigned int Plateau::pointsVictoire() const {
     return 0 ; 
 }
 
-const Jeton* Plateau::takeJeton(jeton_progres id){
+const Jeton* Plateau::takeJeton(unsigned int index){
 
+    if(index > jetons.size()-1){ throw GameException("ERREUR: Index pour récupérer le jeton invalide"); }
+
+    /*
     auto it = std::find_if(jetons.begin(), jetons.end(), [id](const Jeton* j){
         return j->getId() == id;  
     });
 
     if(it == jetons.end()){ throw GameException("ERREUR: Ce jeton n'est pas sur le plateau"); }
+    */
 
-    const Jeton* j = *it ; jetons.erase(it);
+    const Jeton* j = jetons[index] ; jetons.erase(jetons.begin()+index);
     
     return j; 
 

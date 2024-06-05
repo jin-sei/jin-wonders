@@ -135,3 +135,10 @@ unsigned int askJoueur(std::vector<std::string> r){
     std::cout << std::endl;
     return choice ; 
 }
+
+void waitForInteraction() {
+    std::cout << "#. Press enter to continue > " ;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear input
+    std::cin.get();
+    return ; 
+}
