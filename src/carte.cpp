@@ -27,6 +27,7 @@ Carte::Carte(std::string n, type_batiment t,  phase_jeu a, std::list<ressource> 
     cost_r = c_r ;
 }
 
+/*
 void Carte::setCoutRessource(std::list<ressource> cost){
     if(checkTypeRessources(cost, getRessource()) && cost.size() <= 5) {
         cost_r = cost ; 
@@ -34,6 +35,7 @@ void Carte::setCoutRessource(std::list<ressource> cost){
         throw GameException("ERREUR : list de ressources invalide dans la carte à modifier (matières premières ou produits manufacturés SEULEMENT)") ;
     }
 }
+*/
 
 std::ostream& operator<<(std::ostream& f, const Carte& c){
     c.affichage();

@@ -90,17 +90,16 @@ class Carte { // ABSTRACT
         unsigned int getPointVictoire() const { return pt_victoire ;}
         std::list<ressource> getCoutRessource() const { return cost_r ;}
 
-        // SETTERS
-        void setNom(std::string new_nom){ nom = new_nom ;}
+        // SETTERS (inutile car objets constants)
+        //void setNom(std::string new_nom){ nom = new_nom ;}
         //void setType(type_batiment new_type) {type = new_type ;} //  attribut const
-        void setAge(phase_jeu p){ c_age = p ;}
-        void setCoutArgent(unsigned int new_cost_m) { cost_m = new_cost_m ;}
-        void setRewardArgent(unsigned int new_argent) { argent = new_argent ;}
-        void setPointVictoire(unsigned int new_pt_victoire) { pt_victoire = new_pt_victoire ;}
-        void setCoutRessource(std::list<ressource> cost) ;
+        //void setAge(phase_jeu p){ c_age = p ;}
+        //void setCoutArgent(unsigned int new_cost_m) { cost_m = new_cost_m ;}
+        //void setRewardArgent(unsigned int new_argent) { argent = new_argent ;}
+        //void setPointVictoire(unsigned int new_pt_victoire) { pt_victoire = new_pt_victoire ;}
+        //void setCoutRessource(std::list<ressource> cost) ;
 
         // UTILS
-        std::list<ressource> achetableRessource(std::list<ressource> buy) const ; 
         // retourne la liste des ressources manquante pour acheter la Carte
 
         virtual void affichage() const ;
@@ -140,9 +139,9 @@ class Batiment : public Carte {
         std::string getChainage() const { return chained_by;}
         std::list<ressource> getProduction() const { return production ;}
 
-        // SETTERS
-        void setChainage(std::string new_chain) { chained_by = new_chain;}
-        void setProduction(std::list<ressource> new_prod) { production = new_prod ;}
+        // SETTERS (inutiles car on utilise uniquement des pointeurs vers objets constants)
+        //void setChainage(std::string new_chain) { chained_by = new_chain;}
+        //void setProduction(std::list<ressource> new_prod) { production = new_prod ;}
 
         void affichage() const override ;
         void onBuild(Joueur* j) const override ; 
@@ -208,11 +207,11 @@ class Guilde : public Carte {
             );
 
         unsigned int ptVictoireFinJeu(const Joueur* j) const ;
-        void rewardArgent(Joueur* j) const ;
 
         void onBuild(Joueur* j) const override ;
 
     private:
+        void rewardArgent(Joueur* j) const ;
         std::list<type_batiment> affectation ; 
         bool usurier ; 
 };
@@ -339,10 +338,10 @@ class Perk_CoinPerCard : public Perk {
         Perk_CoinPerCard(unsigned int coin, type_batiment card):coin(coin), card(card){}
         //~Perk_CoinPerCard(){};
 
-        void gainCoinPerCard(Joueur* j) const ;
         void onCall(Joueur* j) const override ;
 
     private: // perk settings
+        void gainCoinPerCard(Joueur* j) const ;
         unsigned int coin ; // nombre de pièces que l'on gagne par carte
         type_batiment card ; // type de carte sur laquelle le calcul se base
 
@@ -352,9 +351,9 @@ class Perk_Destruction : public Perk { // requires player interaction
     public:
         Perk_Destruction(type_batiment c);
 
-        void destruction(Joueur* j) const ; 
         void onCall(Joueur* j) const override; 
     private:
+        void destruction(Joueur* j) const ; 
         type_batiment card ; // type de Bâtiment autorisé à la destruction
 };
 
@@ -363,9 +362,9 @@ class Perk_FixedTrade : public Perk {
     public:
         Perk_FixedTrade(std::list<ressource> res, unsigned int coin): res(res), coin(coin){}
 
-        void setFixedTrade(Joueur* j) const ;
         void onCall(Joueur* j) const override ; 
     private: // perk settings
+        void setFixedTrade(Joueur* j) const ;
         std::list<ressource> res ; // ressource pour laquelle le prix de trade est fixé
         unsigned int coin ; // prix fixé
 
@@ -378,12 +377,11 @@ class Perk_Classic : public Perk { // PERKS W/O SETTINGS
     public: 
         Perk_Classic(unsigned int id, const Box* box);
 
+        void onCall(Joueur* j) const override;
+    private:
         void saccage(Joueur* j) const ; // 0
         void freeConstructionFromDefausse(Joueur* j) const; // 2
         void pickJeton(Joueur* j) const; // 1
-
-        void onCall(Joueur* j) const override;
-    private:
         unsigned int id ;
         const Box* box ; 
 };
