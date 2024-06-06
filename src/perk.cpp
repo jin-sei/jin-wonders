@@ -55,7 +55,7 @@ void Perk_Classic::freeConstructionFromDefausse(Joueur* j) const {
         }
     } else {
         const Batiment* b = dynamic_cast<const Batiment*>(c);
-        if(!b){ j->addBatiment(b) ; b->onBuild(j); return ;} 
+        if(b != nullptr){ j->addBatiment(b) ; b->onBuild(j); return ;} 
         else {
         throw GameException("ERREUR: failed dynamic cast downcasting to Batiment");
         }
