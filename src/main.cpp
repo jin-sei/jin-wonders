@@ -293,15 +293,15 @@ int main(){
 
 
 // NEXT :
-
-
-
-// MAIN QUESTS : 
 // classes cleanup : 
 //      rendre Box singleton
 //      rendre Joueur doubleton
 //      méthode static pour track les instances Jeton
 //      cleanup public / private
+
+
+// MAIN QUESTS : 
+//
 
 
 // OTHER TASKS : 
