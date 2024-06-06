@@ -182,6 +182,7 @@ void Box::gameLoop(){
                         // on construit le bâtiment
                         plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] );
                         current->addBatiment( b );
+                        current->addTresor( b->getRewardArgent() );
 
                         switch(b->getType()){
 
@@ -221,6 +222,7 @@ void Box::gameLoop(){
                 current->activateMerveille(m);
 
                 if(m->getPerk() != nullptr){ m->getPerk()->onCall(current); }
+                current->addTresor( m->getRewardArgent() );
                 if(m->getReplay() || current->possessJeton(jeton_progres::Theologie)){
                     replay = true ; 
                 }
@@ -312,7 +314,7 @@ void Box::choixMerveilles(){
     std::random_device rd ; std::mt19937 gen(rd());
     std::shuffle(temp.begin(), temp.end(), gen);
 
-    std::cout << "Désigner le joueur qui commence:" << std::endl << std::endl ; 
+    std::cout << "#. Désigner le joueur qui commence:" << std::endl << std::endl ; 
     choice = askJoueur({joueur0->getNom(), joueur1->getNom()});
     current = getJoueur(choice) ;
 
