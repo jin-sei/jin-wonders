@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <random>
 #include <cstdlib> // For abs()
-#include <limits>
+//#include <limits>
 
 
 enum class type_batiment {Militaire, Scientifique, Manufacture, Premiere, Civil, Commerce, Guilde, Merveille};
@@ -250,6 +250,7 @@ class Joueur {
         std::vector<const Batiment*> getBatimentsPerType(type_batiment t) const ; 
         std::vector<const Jeton*> getJetons() const { return jetons; }
         std::vector<const Merveille*> getInactiveMerveille() const ;
+        std::vector<const Merveille*> getActiveMerveille() const ; 
 
         void addBatiment(const Batiment* c){batiments.push_back(c);}
         void addMerveille(const Merveille* m){merveilles.push_back(m);}

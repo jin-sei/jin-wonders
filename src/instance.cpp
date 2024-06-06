@@ -80,7 +80,7 @@ void Box::allCardsCreation(){
                 "La Grande Bibliotheque", // Nom du bâtiment
                 type_batiment::Merveille, // Type du bâtiment
                 phase_jeu::AGE_I, // âge de la carte
-                {}, // Liste des ressource nécessaires
+                {ressource::Bois, ressource::Bois, ressource::Bois, ressource::Papyrus, ressource::Verre}, // Liste des ressource nécessaires
                 0, // Coût en argent
                 0, // Récompense en argent
                 4, // Points de victoire

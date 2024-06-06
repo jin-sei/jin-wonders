@@ -268,7 +268,7 @@ int tests(){
 int main(){
 
     //tests() ;
-    system("clear");
+    //system("clear");
     std::cout << std::endl << "7 WONDERS DUEL" << std::endl << "--------------" << std::endl  << std::endl ;
 
     try {
@@ -295,15 +295,21 @@ int main(){
 // NEXT :
 
 
+
 // MAIN QUESTS : 
+// classes cleanup : 
+//      rendre Box singleton
+//      rendre Joueur doubleton
+//      méthode static pour track les instances Jeton
+//      cleanup public / private
 
 
 // OTHER TASKS : 
+// passages par réferences
+//      utiliser le design pattern iterator ?
+//      utiliser des passages par références pour retourner les containers standards
 
 
 // SIDE QUESTS : 
 // écrire une documentation et expliquer les choix de développement
 // enhanced console display (Layout, Plateau, Players, Décompte des points)
-// rendre Box singleton
-// rendre Joueur doubleton
-// méthode static pour track les instances Jeton

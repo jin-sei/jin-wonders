@@ -103,6 +103,16 @@ std::vector<const Merveille*> Joueur::getInactiveMerveille() const {
     return temp ; 
 }
 
+std::vector<const Merveille*> Joueur::getActiveMerveille() const {
+    std::vector<const Merveille*> temp ;
+    for(int i = 0 ; i<=3 ; i++){
+        if(merveille_active[i]){
+            temp.push_back(merveilles[i]);
+        }
+    }
+    return temp ; 
+}
+
 void Joueur::deleteLastMerveille() {
     if(getInactiveMerveille().size() != 1){
         throw GameException("ERREUR: deleteLastMerveille() appelée sur un joueur invalide");
@@ -143,6 +153,7 @@ std::list<ressource> Joueur::achetableRessource(std::list<ressource> cost) const
     //if(cost_r.size() > buy.size()) { return false ; }
 
     std::list<ressource> pop_buy = fetchRessource( {ressource::Argile, ressource::Bois, ressource::Pierre, ressource::Papyrus, ressource::Verre} );
+    if(pop_buy.empty()){ return cost ; }
     std::list<ressource> missing = {}; 
     
     for(auto iter = cost.begin() ; iter != cost.end() ; ++iter){ // parcours les ressources demandées
@@ -165,7 +176,6 @@ std::list<ressource> Joueur::achetableRessource(std::list<ressource> cost) const
             }
 
         } 
-        std::cout << std::endl ;
     }
     return missing ;
 }
@@ -187,39 +197,42 @@ unsigned int Joueur::achetableJoueur(const Carte* c) const {
     // check ressources conditionelles (check Merveilles et Commerce)
     // COMMERCE
     std::vector<const Batiment*> poly = getBatimentsPerType(type_batiment::Commerce);
-    poly.insert(poly.end(), merveilles.begin(), merveilles.end());
+    std::vector<const Merveille*> actives = getActiveMerveille();
+    poly.insert(poly.end(), actives.begin(), actives.end());
     std::list<ressource> prod_temp  ;
     bool breaker = false ; 
 
-    for( auto iter_missing = missing.begin() ; iter_missing != missing.end() ; ++iter_missing ){
-        //std::cout << "MISSING: " << tostringRessources(*iter_missing) << std::endl ; 
-        for( auto iter_bat = poly.begin() ; iter_bat != poly.end() ; ++iter_bat ){
-            //std::cout << "ITERATING THROUGH: " << (**iter_bat).getNom() << std::endl ; 
-            prod_temp = (**iter_bat).getProduction() ;
+    if( !poly.empty() ){
+        for( auto iter_missing = missing.begin() ; iter_missing != missing.end() ; ++iter_missing ){
+            //std::cout << "MISSING: " << tostringRessources(*iter_missing) << std::endl ; 
+            for( auto iter_bat = poly.begin() ; iter_bat != poly.end() ; ++iter_bat ){
+                //std::cout << "ITERATING THROUGH: " << (**iter_bat).getNom() << std::endl ; 
+                prod_temp = (**iter_bat).getProduction() ;
 
-            if( !(**iter_bat).getProduction().empty() ){
-                for( auto iter_bat_res = prod_temp.begin() ; iter_bat_res != prod_temp.end() ; ++iter_bat_res ){
-                    //std::cout << "FOUND: " << tostringRessources( *iter_bat_res ) << std::endl; 
-                    
-                    if( *iter_bat_res == *iter_missing ){
-                        //std::cout << "MATCH!" << std::endl;
-                        iter_missing = missing.erase(iter_missing);
-                        breaker = true ; 
-                        //if(iter_bat != poly.end()){ ++iter_bat ;};
-                        //if(iter_missing != missing.end()) {++iter_missing ;} ;
-                        break ;
+                if( !(**iter_bat).getProduction().empty() ){
+                    for( auto iter_bat_res = prod_temp.begin() ; iter_bat_res != prod_temp.end() ; ++iter_bat_res ){
+                        //std::cout << "FOUND: " << tostringRessources( *iter_bat_res ) << std::endl; 
+                        
+                        if( *iter_bat_res == *iter_missing ){
+                            //std::cout << "MATCH!" << std::endl;
+                            iter_missing = missing.erase(iter_missing);
+                            breaker = true ; 
+                            //if(iter_bat != poly.end()){ ++iter_bat ;};
+                            //if(iter_missing != missing.end()) {++iter_missing ;} ;
+                            break ;
+                        }
+
                     }
-
                 }
+
+                if(breaker) break ; 
+
             }
 
-            if(breaker) break ; 
-
-        }
-
-        if(breaker){
-            breaker = false;
-            continue ; 
+            if(breaker){
+                breaker = false;
+                continue ; 
+            }
         }
     }
 
@@ -262,7 +275,6 @@ unsigned int Joueur::achetableJoueur(const Carte* c) const {
             price += getTradePrice(*iter); 
         }
     }
-
     return price ; 
 
 }
@@ -277,8 +289,8 @@ bool Joueur::obtainable(const Carte* c) const {
         else {
             if( possessBatiment( b->getChainage() ) ){ return true ; }
         }
-    }
-    return (achetableJoueur(c) + c->getCoutArgent()) <= tresor ; 
+    } 
+    return ((achetableJoueur(c) + c->getCoutArgent()) <= tresor) ; 
 }
 
 

@@ -137,7 +137,7 @@ void Box::gameLoop(){
     while( !plateau->getLayout()->isEmpty() ){
 
         waitForInteraction();
-        system("clear");
+        //system("clear");
 
         choices = {"Défausser"}; 
         replay = false ; 
@@ -146,11 +146,10 @@ void Box::gameLoop(){
 
         std::cout  << "#. Tour de " << current->getNom() << ": " << std::endl << std::endl ;  
         choice_card = chooseFromPointerVector( plateau->getLayout()->getAvailableCards() );
-
+        
         const Carte* c = plateau->getLayout()->getAvailableCards()[choice_card];
         if( current->obtainable(c) ){ choices.push_back("Construire la Carte"); }
         if (current->buildableMerveilles().size()!=0 && (current->getNumberActiveMerveilles()+current->getAdversaire()->getNumberActiveMerveilles() < 7)){ choices.push_back("Construire une Merveille"); }
-        
         std::cout << "#. Carte choisie: " << c->getNom() << std::endl << std::endl; 
         choice_action = askJoueur(choices);
 
