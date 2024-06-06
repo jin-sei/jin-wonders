@@ -98,7 +98,7 @@ void Box::newAge(){
 
         std::cout << std::endl << "Relancer une partie ?" << std::endl ; 
         unsigned int choice = askJoueur({"Oui", "Non"});
-        if(!choice){ ++phase ; newAge(); } else { std::cout << "Aurevoir!" << std::endl ; exit(0); }
+        if(!choice){ newAge(); } else { std::cout << "Aurevoir!" << std::endl ; exit(0); }
 
 
         return ; 
@@ -110,7 +110,6 @@ void Box::newAge(){
         reinitAll();
         setupAll();
         newAge(); 
-        return; 
 
     } else { throw GameException("ERREUR : âge inconnu");}
 
@@ -231,7 +230,11 @@ void Box::gameLoop(){
                 }
 
                 if(current->getNumberActiveMerveilles()+current->getAdversaire()->getNumberActiveMerveilles() >= 7){
-                    current->getAdversaire()->deleteLastMerveille();
+                    if(current->getNumberActiveMerveilles() == 4){
+                        current->getAdversaire()->deleteLastMerveille();
+                    } else {
+                        current->deleteLastMerveille();
+                    }
                 }
 
             }

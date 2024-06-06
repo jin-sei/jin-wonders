@@ -286,30 +286,30 @@ int main(){
     return 0 ;
 }
 
-// NILS TO DO :
+// NILS TO DO:
 
-// CURRENT :
-// IA Player
-
+// CURRENT:
+// bug fixes:
+//      0. Défausser | 1. Construire Merveille
 
 // NEXT :
-// classes cleanup : 
+// classes cleanup: 
 //      rendre Box singleton
 //      rendre Joueur doubleton
 //      méthode static pour track les instances Jeton
 //      cleanup public / private
 
 
-// MAIN QUESTS : 
-//
+// MAIN QUESTS: 
+// IA Player
 
 
-// OTHER TASKS : 
+// OTHER TASKS: 
 // passages par réferences
 //      utiliser le design pattern iterator ?
 //      utiliser des passages par références pour retourner les containers standards
 
 
-// SIDE QUESTS : 
+// SIDE QUESTS: 
 // écrire une documentation et expliquer les choix de développement
 // enhanced console display (Layout, Plateau, Players, Décompte des points)

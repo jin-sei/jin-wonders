@@ -44,7 +44,7 @@ unsigned int Joueur::fetchPtVictoire(bool tiebreaker) const {
 
     // MERVEILLES
     for(auto iter = merveilles.begin() ; iter != merveilles.end() ; ++iter){
-        points += (**iter).getPointVictoire();
+        if(*iter != nullptr){points += (**iter).getPointVictoire();}
     }
 
     // GUILDES
@@ -96,7 +96,7 @@ std::vector<const Batiment*> Joueur::getBatimentsPerType(type_batiment t) const 
 std::vector<const Merveille*> Joueur::getInactiveMerveille() const {
     std::vector<const Merveille*> temp ;
     for(int i = 0 ; i<=3 ; i++){
-        if(!merveille_active[i]){
+        if(!merveille_active[i] && merveilles[i] != nullptr){
             temp.push_back(merveilles[i]);
         }
     }
