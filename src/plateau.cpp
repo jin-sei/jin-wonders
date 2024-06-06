@@ -37,7 +37,7 @@ void Plateau::movePion(bool id, unsigned int avance){
         } else if( abs(pion_militaire) >= 6 && abs(pion_militaire) <= 8 ){
             
             box->getJoueur( pion_militaire < 0 )->subTresor(saccage[1 + 2*static_cast<int>(pion_militaire < 0)]);
-            saccage[0 + 2*static_cast<int>(pion_militaire < 0)] = 0 ;
+            saccage[1 + 2*static_cast<int>(pion_militaire < 0)] = 0 ;
         }
 
         return;
