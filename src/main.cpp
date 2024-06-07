@@ -291,13 +291,13 @@ int main(){
 // CURRENT:
 // bug fixes:
 //      0. Défausser | 1. Construire Merveille
+//      inputing a char instead of a number causes an infinite loop
 
 // NEXT :
 // classes cleanup: 
 //      rendre Box singleton
 //      rendre Joueur doubleton
 //      méthode static pour track les instances Jeton
-//      cleanup public / private
 
 
 // MAIN QUESTS: 
@@ -306,8 +306,8 @@ int main(){
 
 // OTHER TASKS: 
 // passages par réferences
-//      utiliser le design pattern iterator ?
-//      utiliser des passages par références pour retourner les containers standards
+//      utiliser le design pattern iterator pour retourner des références
+//      utiliser des passages par références pour retourner les containers standards (pas sûr que ce soit faisable)
 
 
 // SIDE QUESTS: 

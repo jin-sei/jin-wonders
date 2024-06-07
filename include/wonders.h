@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <random>
 #include <cstdlib> // For abs()
-//#include <limits>
+#include <limits>
 
 
 enum class type_batiment {Militaire, Scientifique, Manufacture, Premiere, Civil, Commerce, Guilde, Merveille};
