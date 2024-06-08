@@ -289,9 +289,6 @@ int main(){
 // NILS TO DO:
 
 // CURRENT:
-// bug fixes:
-//      0. Défausser | 1. Construire Merveille
-//      inputing a char instead of a number causes an infinite loop
 
 // NEXT :
 // classes cleanup: 
@@ -308,6 +305,7 @@ int main(){
 // passages par réferences
 //      utiliser le design pattern iterator pour retourner des références
 //      utiliser des passages par références pour retourner les containers standards (pas sûr que ce soit faisable)
+//      unify askJoueur et askPointerVector
 
 
 // SIDE QUESTS: 

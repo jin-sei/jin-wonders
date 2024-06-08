@@ -50,9 +50,18 @@ unsigned int chooseFromPointerVector(std::vector<const T*> c){
     }
 
     unsigned int choice = c.size();
-    while( choice >= c.size() ){
+
+    std::cout << "0-" << c.size()-1 << " > " ;
+    std::cin >> choice ; 
+
+    while( choice >= c.size() || std::cin.fail()){
+
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear input
+        
         std::cout << "0-" << c.size()-1 << " > " ;
         std::cin >> choice ;
+
     }
     std::cout << std::endl;
     return choice ;

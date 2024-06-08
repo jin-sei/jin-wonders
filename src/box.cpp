@@ -152,105 +152,94 @@ void Box::gameLoop(){
         std::cout << "#. Carte choisie: " << c->getNom() << std::endl << std::endl; 
         choice_action = askJoueur(choices);
 
-        switch(choice_action){
+        if( choices[choice_action] == "Défausser" ){
 
-            case 0 : // DÉFAUSSER
+            // DÉFAUSSER
 
-                defausse.push_back( plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] ) );
-                current->addTresor( 2+current->getNumberBatiment(type_batiment::Commerce) );
-                break;
+            defausse.push_back( plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] ) );
+            current->addTresor( 2+current->getNumberBatiment(type_batiment::Commerce) );
 
-            case 1 : // CONSTRUIRE LA CARTE
+        } else if ( choices[choice_action] == "Construire la Carte" ){ // CONSTRUIRE LA CARTE
 
-                if( c->getType() != type_batiment::Guilde ){
+            if( c->getType() != type_batiment::Guilde ){
 
-                    const Batiment* b = dynamic_cast<const Batiment*>(c);
-                    if(!b){ throw GameException("ERREUR: dynamic cast failed to downcast to Batiment");}
-                    
-                    else { 
-                        if( current->possessBatiment(b->getChainage())){
-                            // le bâtiment est obtenu gratuitement
-                            if(current->possessJeton(jeton_progres::Urbanisme)){ current->addTresor(4); }
-                        } else {
-                            // le bâtiment est obtenu en payant
-                            current->subTresor( current->achetableJoueur(c)+c->getCoutArgent() );
-                            if(current->getAdversaire()->possessJeton(jeton_progres::Economie)){ 
-                                current->getAdversaire()->addTresor(current->achetableJoueur(c));
-                            }
-                        }
-                        // on construit le bâtiment
-                        plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] );
-                        current->addBatiment( b );
-                        current->addTresor( b->getRewardArgent() );
-
-                        switch(b->getType()){
-
-                            case type_batiment::Commerce :
-                                b->onBuild(current); // calls onBuild Commerce
-
-                            case type_batiment::Militaire :
-                                plateau->movePion( current->getId(), b->getProduction().size() +static_cast<int>(current->possessJeton(jeton_progres::Strategie)) );
-                                if(plateau->victoireMilitaire()){endgame();}
-
-                            case type_batiment::Scientifique :
-                                if(current->allowJetonPick()){
-                                    const Jeton* j = plateau->takeJeton( chooseFromPointerVector(plateau->getJetons()) );
-                                    current->addJeton( j ) ;
-                                    if( j->getId() == jeton_progres::Agriculture ){current->addTresor(4);}
-                                }
-                                if(current->victoireScientifique()){endgame();}
-
-                        }
-
-                    }
-                } else {
-                    plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] );
-                    const Guilde* g = dynamic_cast<const Guilde*>(c);
-                    if(!g) { throw GameException("ERREUR: dynamic cast failed to downcast to Guilde");}
-                    current->addGuilde(g);
-                    g->onBuild(current); // applique les effets de la Guilde
-                }
-
-                break;
-
-            case 2 : // CONSTRUIRE UNE MERVEILLE
-            {
-                const Merveille* m = current->buildableMerveilles()[ chooseFromPointerVector( current->buildableMerveilles() ) ];
-                std::cout << "#. Merveille choisie: " << m->getNom() << std::endl << std::endl ;
-                current->subTresor( current->achetableJoueur(m)+m->getCoutArgent() );
-                current->activateMerveille(m);
-
-                if(m->getPerk() != nullptr){ m->getPerk()->onCall(current); }
-                current->addTresor( m->getRewardArgent() );
-                if(m->getReplay() || current->possessJeton(jeton_progres::Theologie)){
-                    replay = true ; 
-                }
-                if(!m->getProduction().empty() && m->getProduction().front() == ressource::Bouclier){
-                    plateau->movePion(current->getId(), m->getProduction().size());
-                }
-
-                if(current->getNumberActiveMerveilles()+current->getAdversaire()->getNumberActiveMerveilles() >= 7){
-                    if(current->getNumberActiveMerveilles() == 4){
-                        current->getAdversaire()->deleteLastMerveille();
+                const Batiment* b = dynamic_cast<const Batiment*>(c);
+                if(!b){ throw GameException("ERREUR: dynamic cast failed to downcast to Batiment");}
+                
+                else { 
+                    if( current->possessBatiment(b->getChainage())){
+                        // le bâtiment est obtenu gratuitement
+                        if(current->possessJeton(jeton_progres::Urbanisme)){ current->addTresor(4); }
                     } else {
-                        current->deleteLastMerveille();
+                        // le bâtiment est obtenu en payant
+                        current->subTresor( current->achetableJoueur(c)+c->getCoutArgent() );
+                        if(current->getAdversaire()->possessJeton(jeton_progres::Economie)){ 
+                            current->getAdversaire()->addTresor(current->achetableJoueur(c));
+                        }
+                    }
+                    // on construit le bâtiment
+                    plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] );
+                    current->addBatiment( b );
+                    current->addTresor( b->getRewardArgent() );
+
+                    switch(b->getType()){
+
+                        case type_batiment::Commerce :
+                            b->onBuild(current); // calls onBuild Commerce
+
+                        case type_batiment::Militaire :
+                            plateau->movePion( current->getId(), b->getProduction().size() +static_cast<int>(current->possessJeton(jeton_progres::Strategie)) );
+                            if(plateau->victoireMilitaire()){endgame();}
+
+                        case type_batiment::Scientifique :
+                            if(current->allowJetonPick()){
+                                const Jeton* j = plateau->takeJeton( chooseFromPointerVector(plateau->getJetons()) );
+                                current->addJeton( j ) ;
+                                if( j->getId() == jeton_progres::Agriculture ){current->addTresor(4);}
+                            }
+                            if(current->victoireScientifique()){endgame();}
                     }
                 }
 
+            } else {
+                plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] );
+                const Guilde* g = dynamic_cast<const Guilde*>(c);
+                if(!g) { throw GameException("ERREUR: dynamic cast failed to downcast to Guilde");}
+                current->addGuilde(g);
+                g->onBuild(current); // applique les effets de la Guilde
             }
 
-                break;
+        } else if( choices[choice_action] == "Construire une Merveille" ){ // CONSTRUIRE UNE MERVEILLE
 
-            default : throw GameException("ERREUR: Choix invalide dans Box::gameLoop()");
+            const Merveille* m = current->buildableMerveilles()[ chooseFromPointerVector( current->buildableMerveilles() ) ];
+            std::cout << "#. Merveille choisie: " << m->getNom() << std::endl << std::endl ;
+            current->subTresor( current->achetableJoueur(m)+m->getCoutArgent() );
+            current->activateMerveille(m);
 
+            if(m->getPerk() != nullptr){ m->getPerk()->onCall(current); }
+            current->addTresor( m->getRewardArgent() );
+            if(m->getReplay() || current->possessJeton(jeton_progres::Theologie)){
+                replay = true ; 
+            }
+            if(!m->getProduction().empty() && m->getProduction().front() == ressource::Bouclier){
+                plateau->movePion(current->getId(), m->getProduction().size());
+            }
+
+            if(current->getNumberActiveMerveilles()+current->getAdversaire()->getNumberActiveMerveilles() >= 7){
+                if(current->getNumberActiveMerveilles() == 4){
+                    current->getAdversaire()->deleteLastMerveille();
+                } else {
+                    current->deleteLastMerveille();
+                }
+            }
+
+        } else { // DEFUAULT 
+            throw GameException("ERREUR: Choix invalide dans Box::gameLoop()");
         }
-
         if(!replay) {current = current->getAdversaire();}
-
     }
 
     newAge();
-
 }
 
 void Box::distributeCards(phase_jeu p){

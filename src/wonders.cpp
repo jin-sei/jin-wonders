@@ -127,8 +127,16 @@ unsigned int askJoueur(std::vector<std::string> r){
     }
     std::cout << std::endl ; 
 
-    unsigned int choice = r.size() ; 
-    while( choice >= r.size() ){
+    unsigned int choice = r.size() ;
+
+    std::cout << "0-" << r.size()-1 << " > " ;
+    std::cin >> choice ;  
+
+    while(choice >= r.size() || std::cin.fail() ){
+
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear input
+        
         std::cout << "0-" << r.size()-1 << " > " ;
         std::cin >> choice ;  
     }
@@ -139,6 +147,7 @@ unsigned int askJoueur(std::vector<std::string> r){
 void waitForInteraction() {
     
     std::cout << "#. Press enter to continue > " ;
+    std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear input
     std::cin.get();
     return ; 
