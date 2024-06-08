@@ -363,6 +363,45 @@ unsigned int Joueur::getNumberPairs() const {
     return science.size() - getNumberUniqueSymbols(); 
 }
 
+void Joueur::addCarte(const Carte* c) {
+    if(c->getType() == type_batiment::Guilde){
+        const Guilde* g = dynamic_cast<const Guilde*>(c);
+        if(!g){ addGuilde(g) ; return ;} 
+        else {
+            throw GameException("ERREUR: failed dynamic cast downcasting to Guilde");
+        }
+    } else {
+        const Batiment* b = dynamic_cast<const Batiment*>(c);
+        if(b != nullptr){ 
+            addBatiment(b) ; 
+            //if(b->getType() == type_batiment::Militaire){ box->getPlateau()->movePion(Box::getInstance().getCurrentJoueur()->getId(), b->getProduction().size()); }
+            return ;
+        } 
+        else {
+        throw GameException("ERREUR: failed dynamic cast downcasting to Batiment");
+        }
+    }
+}
+
+void Joueur::construireCarte(const Carte* c){ 
+    // gère l'appliquation des effets et l'ajout à la cité
+    // ne gère pas le coût, la possibilité d'obtention
+    this->addCarte(c);
+    c->onBuild();
+
+    switch(c->getType()){
+
+        case type_batiment::Militaire :
+            // l'avancement du Pion est dans onBuild
+            if(Box::getInstance().getPlateau()->victoireMilitaire()){Box::getInstance().endgame();}
+
+        case type_batiment::Scientifique :
+            // la gestion d'un nouveau Jeton est dans onBuild
+            if( victoireScientifique() ){Box::getInstance().endgame();}
+    }
+
+}
+
 void Joueur::displayJoueur() const {
     std::cout << nom << ", " << tresor << " pièces" ;
     if(getNumberUniqueSymbols() != 0){

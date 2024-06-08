@@ -1,7 +1,7 @@
 #include "../include/wonders.h"
 
 
-Plateau::Plateau(Box* box):box(box){
+Plateau::Plateau(){
     this->layout = new Layout() ; 
 }
 
@@ -31,12 +31,12 @@ void Plateau::movePion(bool id, unsigned int avance){
 
         if( abs(pion_militaire) >= 3 && abs(pion_militaire) <= 5 ){
 
-            box->getJoueur( pion_militaire < 0 )->subTresor( saccage[0 + 2*static_cast<int>(pion_militaire < 0)] );
+            Box::getInstance().getJoueur( pion_militaire < 0 )->subTresor( saccage[0 + 2*static_cast<int>(pion_militaire < 0)] );
             saccage[0 + 2*static_cast<int>(pion_militaire < 0)] = 0 ; 
 
         } else if( abs(pion_militaire) >= 6 && abs(pion_militaire) <= 8 ){
             
-            box->getJoueur( pion_militaire < 0 )->subTresor(saccage[1 + 2*static_cast<int>(pion_militaire < 0)]);
+            Box::getInstance().getJoueur( pion_militaire < 0 )->subTresor(saccage[1 + 2*static_cast<int>(pion_militaire < 0)]);
             saccage[1 + 2*static_cast<int>(pion_militaire < 0)] = 0 ;
         }
 

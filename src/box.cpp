@@ -1,9 +1,15 @@
 #include "../include/wonders.h"
 
+Box::Handler Box::shell=Box::Handler();
+
+Box& Box::getInstance(){
+    if( shell.box == nullptr ){ shell.box = new Box ; }
+    return *shell.box ; 
+}
 
 Box::Box(){
 
-    plateau = new Plateau(this);
+    plateau = new Plateau();
 
     std::string nom; 
     std::cout << "Joueur-0 : Nom > " ; 
@@ -21,7 +27,6 @@ Box::Box(){
     phase = phase_jeu::END ;
 
     allCardsCreation();
-
 }
 
 Box::~Box(){
@@ -161,6 +166,8 @@ void Box::gameLoop(){
 
         } else if ( choices[choice_action] == "Construire la Carte" ){ // CONSTRUIRE LA CARTE
 
+            plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] );
+
             if( c->getType() != type_batiment::Guilde ){
 
                 const Batiment* b = dynamic_cast<const Batiment*>(c);
@@ -177,54 +184,32 @@ void Box::gameLoop(){
                             current->getAdversaire()->addTresor(current->achetableJoueur(c));
                         }
                     }
-                    // on construit le bâtiment
-                    plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] );
-                    current->addBatiment( b );
-                    current->addTresor( b->getRewardArgent() );
-
-                    switch(b->getType()){
-
-                        case type_batiment::Commerce :
-                            b->onBuild(current); // calls onBuild Commerce
-
-                        case type_batiment::Militaire :
-                            plateau->movePion( current->getId(), b->getProduction().size() +static_cast<int>(current->possessJeton(jeton_progres::Strategie)) );
-                            if(plateau->victoireMilitaire()){endgame();}
-
-                        case type_batiment::Scientifique :
-                            if(current->allowJetonPick()){
-                                const Jeton* j = plateau->takeJeton( chooseFromPointerVector(plateau->getJetons()) );
-                                current->addJeton( j ) ;
-                                if( j->getId() == jeton_progres::Agriculture ){current->addTresor(4);}
-                            }
-                            if(current->victoireScientifique()){endgame();}
-                    }
                 }
 
-            } else {
-                plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] );
-                const Guilde* g = dynamic_cast<const Guilde*>(c);
-                if(!g) { throw GameException("ERREUR: dynamic cast failed to downcast to Guilde");}
-                current->addGuilde(g);
-                g->onBuild(current); // applique les effets de la Guilde
             }
+
+            current->construireCarte(c);
 
         } else if( choices[choice_action] == "Construire une Merveille" ){ // CONSTRUIRE UNE MERVEILLE
 
             const Merveille* m = current->buildableMerveilles()[ chooseFromPointerVector( current->buildableMerveilles() ) ];
             std::cout << "#. Merveille choisie: " << m->getNom() << std::endl << std::endl ;
+
             current->subTresor( current->achetableJoueur(m)+m->getCoutArgent() );
             current->activateMerveille(m);
 
-            if(m->getPerk() != nullptr){ m->getPerk()->onCall(current); }
-            current->addTresor( m->getRewardArgent() );
-            if(m->getReplay() || current->possessJeton(jeton_progres::Theologie)){
+            if(m->getPerk() != nullptr){ m->getPerk()->onCall(); } // apply perks
+
+            current->addTresor( m->getRewardArgent() ); // gain money
+
+            if(m->getReplay() || current->possessJeton(jeton_progres::Theologie)){ // replay
                 replay = true ; 
             }
-            if(!m->getProduction().empty() && m->getProduction().front() == ressource::Bouclier){
+            if(!m->getProduction().empty() && m->getProduction().front() == ressource::Bouclier){ // military advance
                 plateau->movePion(current->getId(), m->getProduction().size());
             }
 
+            // 7 Merveilles, pas une de plus
             if(current->getNumberActiveMerveilles()+current->getAdversaire()->getNumberActiveMerveilles() >= 7){
                 if(current->getNumberActiveMerveilles() == 4){
                     current->getAdversaire()->deleteLastMerveille();
@@ -276,7 +261,7 @@ void Box::distributeCards(phase_jeu p){
         std::shuffle(temp.begin(), temp.end(), gen);
     }
 
-    this->plateau->getLayout()->inputCards( temp ) ;
+    plateau->getLayout()->inputCards( temp ) ;
 
     /** CHECK IF SHUFFLE WORKS
     for( auto iter = temp.begin() ; iter != temp.end() ; ++iter ){
@@ -346,7 +331,7 @@ void Box::setupJetons(){
 
     for(size_t i = 0 ; i < 10 ; i++){
         if( i < 5 ){ plateau->addJeton( all_jetons[i] );}
-        else { this->unused_jetons.push_back( all_jetons[i] );}
+        else { unused_jetons.push_back( all_jetons[i] );}
     }
 
 }

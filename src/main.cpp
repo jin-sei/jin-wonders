@@ -4,7 +4,7 @@
 #include <string>
 
 int tests(){
-    
+    /*
     try {
     
     //Carte my_carte1 = Carte("Stables", type_batiment::Militaire, phase_jeu::AGE_I, {ressource::Argile, ressource::Argile, ressource::Bois, ressource::Bois, ressource::Bois}, 3) ;
@@ -56,7 +56,7 @@ int tests(){
 
     //std::cout << "SANDBOX END" << std::endl << "--------------" << std::endl  << std::endl ;
 
-    Box my_box1 = Box();
+    //Box my_box1 = Box();
     //my_box1.allCardsCreation();
     //my_box1.displayAllCards();
     my_box1.newAge();
@@ -230,6 +230,7 @@ int tests(){
     }
     */
 
+    /*
     unsigned int choice ; 
     
     while( !my_box1.getPlateau()->getLayout()->isEmpty() ){
@@ -244,7 +245,7 @@ int tests(){
         
         std::cout << std::endl << std::endl ; 
         */
-
+    /*
         choice = chooseFromPointerVector( my_box1.getPlateau()->getLayout()->getAvailableCards() );
         //std::cout << my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[0] << " : " << my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[1] << std::endl ; 
         my_box1.getPlateau()->getLayout()->pickSlot( my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[0], my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[1] );
@@ -261,6 +262,7 @@ int tests(){
 
     }
 
+    */
     return 0 ; 
     
 }
@@ -273,7 +275,7 @@ int main(){
 
     try {
 
-        Box my_box = Box() ; 
+        Box& my_box = Box::getInstance(); 
         my_box.newAge(); // on passe de END à START pour setup le jeu
         // on passe à l'âge I et le jeu commence
 
@@ -289,16 +291,16 @@ int main(){
 // NILS TO DO:
 
 // CURRENT:
+// cleanup gameLoop()
 
 // NEXT :
 // classes cleanup: 
-//      rendre Box singleton
-//      rendre Joueur doubleton
 //      méthode static pour track les instances Jeton
 
 
 // MAIN QUESTS: 
 // IA Player
+//      once askJouer and askPointerVector are unified, add Subject of the ask and Repondant so we know when to ask Player or AI
 
 
 // OTHER TASKS: 

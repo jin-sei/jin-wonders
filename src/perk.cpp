@@ -8,22 +8,22 @@ bool Perk::isPolyRes() {
 }
 */
 
-void Perk_CoinPerCard::gainCoinPerCard(Joueur* j) const {
-    j->addTresor( j->getNumberBatiment(this->card)*coin );
+void Perk_CoinPerCard::gainCoinPerCard() const {
+    Box::getInstance().getCurrentJoueur()->addTresor( Box::getInstance().getCurrentJoueur()->getNumberBatiment(this->card)*coin );
 }
 
-void Perk_CoinPerCard::onCall(Joueur* j) const {
-    gainCoinPerCard(j);
+void Perk_CoinPerCard::onCall() const {
+    gainCoinPerCard();
 }
 
-void Perk_FixedTrade::setFixedTrade(Joueur* j) const {
+void Perk_FixedTrade::setFixedTrade() const {
     for(auto iter = res.begin() ; iter != res.end() ; ++iter){
-        j->setFixedTrade(*iter, coin);
+        Box::getInstance().getCurrentJoueur()->setFixedTrade(*iter, coin);
     }
 }
 
-void Perk_FixedTrade::onCall(Joueur* j) const {
-    setFixedTrade(j);
+void Perk_FixedTrade::onCall() const {
+    setFixedTrade();
 }
 
 Perk_Classic::Perk_Classic(unsigned int id, const Box* box):id(id), box(box){
@@ -35,11 +35,11 @@ Perk_Classic::Perk_Classic(unsigned int id, const Box* box):id(id), box(box){
     }
 }
 
-void Perk_Classic::saccage(Joueur* j) const {
-    j->getAdversaire()->subTresor(3);
+void Perk_Classic::saccage() const {
+    Box::getInstance().getCurrentJoueur()->getAdversaire()->subTresor(3);
 }
 
-void Perk_Classic::freeConstructionFromDefausse(Joueur* j) const { 
+void Perk_Classic::freeConstructionFromDefausse() const {
     // requires player interaction
     if(box->getDefausse().empty()){std::cout << "#. Pas de carte défaussée à construire" << std::endl << std::endl ; return ;}
 
@@ -47,27 +47,10 @@ void Perk_Classic::freeConstructionFromDefausse(Joueur* j) const {
     const Carte* c = box->getDefausse()[ chooseFromPointerVector( box->getDefausse() ) ];
     std::cout << "#. Carte choisie: " << c->getNom() << std::endl << std::endl;
     
-    if(c->getType() == type_batiment::Guilde){
-        const Guilde* g = dynamic_cast<const Guilde*>(c);
-        if(!g){ j->addGuilde(g) ; g->onBuild(j); return ;} 
-        else {
-            throw GameException("ERREUR: failed dynamic cast downcasting to Guilde");
-        }
-    } else {
-        const Batiment* b = dynamic_cast<const Batiment*>(c);
-        if(b != nullptr){ 
-            j->addBatiment(b) ; 
-            b->onBuild(j);
-            if(b->getType() == type_batiment::Militaire){ box->getPlateau()->movePion(j->getId(), b->getProduction().size()); }
-            return ;
-        } 
-        else {
-        throw GameException("ERREUR: failed dynamic cast downcasting to Batiment");
-        }
-    }
+    Box::getInstance().getCurrentJoueur()->construireCarte(c);
 }
 
-void Perk_Classic::pickJeton(Joueur* j) const { 
+void Perk_Classic::pickJeton() const { 
     // requires player interaction
     std::vector<const Jeton*> temp = box->getUnusedJetons() ;
 
@@ -77,15 +60,15 @@ void Perk_Classic::pickJeton(Joueur* j) const {
 
     const Jeton* jet = dispo[choice] ; 
     std::cout << std::endl << "#. Jeton choisi: " << *jet << std::endl << std::endl ;
-    j->addJeton(jet); 
+    Box::getInstance().getCurrentJoueur()->addJeton(jet); 
     
 }
 
-void Perk_Classic::onCall(Joueur* j) const {
+void Perk_Classic::onCall() const {
     switch(id){
-        case 0 : saccage(j) ; break ;
-        case 1 : pickJeton(j) ; break ; 
-        case 2 : freeConstructionFromDefausse(j) ; break ; 
+        case 0 : saccage() ; break ;
+        case 1 : pickJeton() ; break ; 
+        case 2 : freeConstructionFromDefausse() ; break ; 
         default : throw GameException("ERREUR: unknown Classic Perk id") ; 
     }
 }
@@ -96,19 +79,19 @@ Perk_Destruction::Perk_Destruction(type_batiment c):card(c){
     }
 }
 
-void Perk_Destruction::destruction(Joueur* j) const {
+void Perk_Destruction::destruction() const {
     // requires player interaction
-    if(j->getAdversaire()->getBatimentsPerType(card).empty()){std::cout << "#. Pas de bâtiment adverse à détruire" << std::endl << std::endl ; return ;}
+    if(Box::getInstance().getCurrentJoueur()->getAdversaire()->getBatimentsPerType(card).empty()){std::cout << "#. Pas de bâtiment adverse à détruire" << std::endl << std::endl ; return ;}
     std::cout << "#. Choisissez un bâtiment adverse à détruire:" << std::endl << std::endl ;
-    std::vector<const Batiment*> bats = j->getAdversaire()->getBatimentsPerType(card);
+    std::vector<const Batiment*> bats = Box::getInstance().getCurrentJoueur()->getAdversaire()->getBatimentsPerType(card);
     unsigned int choice = chooseFromPointerVector( bats );
     std::cout << "#. Choix: " << bats[choice]->getNom() << std::endl << std::endl ;
-    j->getAdversaire()->destroyBatiment(bats[choice]);
+    Box::getInstance().getCurrentJoueur()->getAdversaire()->destroyBatiment(bats[choice]);
 
 }
 
-void Perk_Destruction::onCall(Joueur* j) const {
-    destruction(j);
+void Perk_Destruction::onCall() const {
+    destruction();
 }
 
 /*

@@ -58,7 +58,7 @@ unsigned int chooseFromPointerVector(std::vector<const T*> c){
 
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear input
-        
+
         std::cout << "0-" << c.size()-1 << " > " ;
         std::cin >> choice ;
 
@@ -112,7 +112,7 @@ class Carte { // ABSTRACT
         // retourne la liste des ressources manquante pour acheter la Carte
 
         virtual void affichage() const ;
-        virtual void onBuild(Joueur* j) const = 0; // Joueur qui a construit la carte
+        virtual void onBuild() const = 0; // Joueur qui a construit la carte
     
     protected : 
 
@@ -153,7 +153,7 @@ class Batiment : public Carte {
         //void setProduction(std::list<ressource> new_prod) { production = new_prod ;}
 
         void affichage() const override ;
-        void onBuild(Joueur* j) const override ; 
+        void onBuild() const override ; 
 
 
     private:
@@ -170,7 +170,7 @@ class Commerce : public Batiment {
         
         const Perk* getPerk() const { return perk; }
 
-        void onBuild(Joueur* j) const override ;
+        void onBuild() const override ;
 
     protected:
 
@@ -217,10 +217,10 @@ class Guilde : public Carte {
 
         unsigned int ptVictoireFinJeu(const Joueur* j) const ;
 
-        void onBuild(Joueur* j) const override ;
+        void onBuild() const override ;
 
     private:
-        void rewardArgent(Joueur* j) const ;
+        void rewardArgent() const ;
         std::list<type_batiment> affectation ; 
         bool usurier ; 
 };
@@ -259,6 +259,9 @@ class Joueur {
         std::vector<const Jeton*> getJetons() const { return jetons; }
         std::vector<const Merveille*> getInactiveMerveille() const ;
         std::vector<const Merveille*> getActiveMerveille() const ; 
+
+        void addCarte(const Carte* c) ; // gère le downcasting pour ajouter dans la bonne catégorie
+        void construireCarte(const Carte* c);
 
         void addBatiment(const Batiment* c){batiments.push_back(c);}
         void addMerveille(const Merveille* m){merveilles.push_back(m);}
@@ -331,7 +334,7 @@ class Perk { // ABSTRACT
 
     public: // PERK: ON CALL
     
-        virtual void onCall(Joueur* j) const = 0 ; // PURE VIRTUAL
+        virtual void onCall() const = 0 ; // PURE VIRTUAL
         // on prend en paramètre le joueur qui a construit la carte
 
         //~Perk(){} // vtable error paranoia ???
@@ -347,10 +350,10 @@ class Perk_CoinPerCard : public Perk {
         Perk_CoinPerCard(unsigned int coin, type_batiment card):coin(coin), card(card){}
         //~Perk_CoinPerCard(){};
 
-        void onCall(Joueur* j) const override ;
+        void onCall() const override ;
 
     private: // perk settings
-        void gainCoinPerCard(Joueur* j) const ;
+        void gainCoinPerCard() const ;
         unsigned int coin ; // nombre de pièces que l'on gagne par carte
         type_batiment card ; // type de carte sur laquelle le calcul se base
 
@@ -360,9 +363,9 @@ class Perk_Destruction : public Perk { // requires player interaction
     public:
         Perk_Destruction(type_batiment c);
 
-        void onCall(Joueur* j) const override; 
+        void onCall() const override; 
     private:
-        void destruction(Joueur* j) const ; 
+        void destruction() const ; 
         type_batiment card ; // type de Bâtiment autorisé à la destruction
 };
 
@@ -371,9 +374,9 @@ class Perk_FixedTrade : public Perk {
     public:
         Perk_FixedTrade(std::list<ressource> res, unsigned int coin): res(res), coin(coin){}
 
-        void onCall(Joueur* j) const override ; 
+        void onCall() const override ; 
     private: // perk settings
-        void setFixedTrade(Joueur* j) const ;
+        void setFixedTrade() const ;
         std::list<ressource> res ; // ressource pour laquelle le prix de trade est fixé
         unsigned int coin ; // prix fixé
 
@@ -386,11 +389,11 @@ class Perk_Classic : public Perk { // PERKS W/O SETTINGS
     public: 
         Perk_Classic(unsigned int id, const Box* box);
 
-        void onCall(Joueur* j) const override;
+        void onCall() const override;
     private:
-        void saccage(Joueur* j) const ; // 0
-        void freeConstructionFromDefausse(Joueur* j) const; // 2
-        void pickJeton(Joueur* j) const; // 1
+        void saccage() const ; // 0
+        void freeConstructionFromDefausse() const; // 2
+        void pickJeton() const; // 1
         unsigned int id ;
         const Box* box ; 
 };
@@ -488,9 +491,6 @@ class Box {
 
     public:
 
-        Box();
-        ~Box();
-
         // GETTERS
         Plateau* getPlateau() const { return plateau ;}
         Joueur* getJoueur(bool x) const { return x ? joueur1 : joueur0 ;}
@@ -509,10 +509,13 @@ class Box {
         void switchCurrent() { current = current->getAdversaire(); }
         void endgame() { phase = phase_jeu::AGE_III ; newAge() ;}
 
+        // SINGLETON
+        static Box& getInstance();
+
 
     private:
 
-        void distributeCards(phase_jeu p); // utilisée dans newAge
+        void distributeCards(phase_jeu p); // utilisée dans newAge();
         void allCardsCreation(); // dans instance.cpp, utilisée par le constructeur
 
         void choixMerveilles(); // called by setup()
@@ -531,14 +534,27 @@ class Box {
         std::vector<const Merveille*> all_merveilles ;
 
         std::vector<const Carte*> defausse ;
-        std::vector<const Jeton*> unused_jetons ; 
+        std::vector<const Jeton*> unused_jetons ;
+
+        // SINGLETON 
+        Box();
+        ~Box();
+        Box(const Box& b) = delete; 
+        Box& operator=(const Box&) = delete; 
+
+        struct Handler {
+            Box* box = nullptr ;
+            ~Handler() { delete box ; };
+        };
+
+        static Handler shell ;
 };
 
 class Plateau {
     public:
         // le plateau est responsable du layout qu'il gère
 
-        Plateau(Box* box);
+        Plateau();
         ~Plateau();
 
         // GETTERS
@@ -559,7 +575,7 @@ class Plateau {
         bool victoireMilitaire() const { return (pion_militaire == -9 || pion_militaire == 9); }
         // check victoire Militaire
         
-        bool joueurDominant() const { return box->getJoueur( pion_militaire > 0 )->getId() ; }
+        bool joueurDominant() const { return Box::getInstance().getJoueur( pion_militaire > 0 )->getId() ; }
         // joueur qui a avancé le plus le pion vers la capitale ennemie
         
         unsigned int pointsVictoire() const ; 
@@ -572,7 +588,6 @@ class Plateau {
     private:
 
         Layout* layout ;
-        Box* box ; 
 
         int pion_militaire = 0 ; // between -9 and +9
         // se déplace vers le positif pour le joueur1, vers le négatif pour le joueur 0
