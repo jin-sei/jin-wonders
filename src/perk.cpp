@@ -26,13 +26,15 @@ void Perk_FixedTrade::onCall() const {
     setFixedTrade();
 }
 
-Perk_Classic::Perk_Classic(unsigned int id, const Box* box):id(id), box(box){
+Perk_Classic::Perk_Classic(unsigned int id):id(id){
     if(id > 2){
         throw GameException("ERREUR: Classic Perk id is 0 - 1 - 2");
     }
+    /*
     if(box == nullptr){
         throw GameException("ERREUR: Un pointeur vers Box non nul est requis pour une Perk Classic");
     }
+    */
 }
 
 void Perk_Classic::saccage() const {
@@ -41,10 +43,10 @@ void Perk_Classic::saccage() const {
 
 void Perk_Classic::freeConstructionFromDefausse() const {
     // requires player interaction
-    if(box->getDefausse().empty()){std::cout << "#. Pas de carte défaussée à construire" << std::endl << std::endl ; return ;}
+    if(Box::getInstance().getDefausse().empty()){std::cout << "#. Pas de carte défaussée à construire" << std::endl << std::endl ; return ;}
 
     std::cout << "#. Choisissez une carte de la défausse à construire:" << std::endl << std::endl ;
-    const Carte* c = box->getDefausse()[ chooseFromPointerVector( box->getDefausse() ) ];
+    const Carte* c = Box::getInstance().getDefausse()[ chooseFromPointerVector( Box::getInstance().getDefausse() ) ];
     std::cout << "#. Carte choisie: " << c->getNom() << std::endl << std::endl;
     
     Box::getInstance().getCurrentJoueur()->construireCarte(c);
@@ -52,10 +54,9 @@ void Perk_Classic::freeConstructionFromDefausse() const {
 
 void Perk_Classic::pickJeton() const { 
     // requires player interaction
-    std::vector<const Jeton*> temp = box->getUnusedJetons() ;
 
     std::cout << "#. Choisissez un jeton:" << std::endl << std::endl ; 
-    std::vector<const Jeton*> dispo(temp.begin(), temp.begin()+3);
+    std::vector<const Jeton*> dispo(Box::getInstance().getUnusedJetons().begin(), Box::getInstance().getUnusedJetons().begin()+3);
     unsigned int choice = chooseFromPointerVector( dispo );
 
     const Jeton* jet = dispo[choice] ; 

@@ -291,7 +291,10 @@ int main(){
 // NILS TO DO:
 
 // CURRENT:
-// cleanup gameLoop()
+// utiliser des passages par références 
+// implémenter template iterator et utiliser
+// unifier askPointerVector et askJouer => askJoueur and revamp all
+
 
 // NEXT :
 // classes cleanup: 
@@ -313,3 +316,16 @@ int main(){
 // SIDE QUESTS: 
 // écrire une documentation et expliquer les choix de développement
 // enhanced console display (Layout, Plateau, Players, Décompte des points)
+
+/*
+class iterator : public std::vector<Carte*>::iterator { // utiliser une template
+			friend class Box ;
+            friend class Joueur ; 
+            friend class Layout ;  
+			iterator(std::vector<Carte*>::iterator it): std::vector<Carte*>::iterator(it){}
+			public: 
+				// redéfinition de l'opérateur *
+				Carte& operator*() const { return *std::vector<Carte*>::iterator::operator*() ;}
+				iterator operator++(){ std::vector<Carte*>::iterator::operator++() ; return *this;  }
+		};
+*/

@@ -76,9 +76,9 @@ class GameException {
 };
 
 // FORWARD DECLARATION
+class Joueur ; 
+class Plateau ;
 class Perk ;
-class Joueur ;
-class Plateau ; 
 class Box ;
 
 class Carte { // ABSTRACT 
@@ -97,16 +97,16 @@ class Carte { // ABSTRACT
         unsigned int getCoutArgent() const { return cost_m ; }
         unsigned int getRewardArgent() const { return argent ; }
         unsigned int getPointVictoire() const { return pt_victoire ;}
-        std::list<ressource> getCoutRessource() const { return cost_r ;}
+        const std::list<ressource>& getCoutRessource() const { return cost_r ;}
 
         // SETTERS (inutile car objets constants)
-        //void setNom(std::string new_nom){ nom = new_nom ;}
+        void setNom(std::string new_nom){ nom = new_nom ;}
         //void setType(type_batiment new_type) {type = new_type ;} //  attribut const
-        //void setAge(phase_jeu p){ c_age = p ;}
-        //void setCoutArgent(unsigned int new_cost_m) { cost_m = new_cost_m ;}
-        //void setRewardArgent(unsigned int new_argent) { argent = new_argent ;}
-        //void setPointVictoire(unsigned int new_pt_victoire) { pt_victoire = new_pt_victoire ;}
-        //void setCoutRessource(std::list<ressource> cost) ;
+        void setAge(phase_jeu p){ c_age = p ;}
+        void setCoutArgent(unsigned int new_cost_m) { cost_m = new_cost_m ;}
+        void setRewardArgent(unsigned int new_argent) { argent = new_argent ;}
+        void setPointVictoire(unsigned int new_pt_victoire) { pt_victoire = new_pt_victoire ;}
+        void setCoutRessource(std::list<ressource> cost) ;
 
         // UTILS
         // retourne la liste des ressources manquante pour acheter la Carte
@@ -128,6 +128,7 @@ class Carte { // ABSTRACT
 
         unsigned int argent ;
         unsigned int pt_victoire ;
+
 };
 
 std::ostream& operator<<(std::ostream& f, const Carte& c);
@@ -146,11 +147,11 @@ class Batiment : public Carte {
         
         // GETTERS
         std::string getChainage() const { return chained_by;}
-        std::list<ressource> getProduction() const { return production ;}
+        const std::list<ressource>& getProduction() const { return production ;}
 
         // SETTERS (inutiles car on utilise uniquement des pointeurs vers objets constants)
-        //void setChainage(std::string new_chain) { chained_by = new_chain;}
-        //void setProduction(std::list<ressource> new_prod) { production = new_prod ;}
+        void setChainage(std::string new_chain) { chained_by = new_chain;}
+        void setProduction(std::list<ressource> new_prod) { production = new_prod ;}
 
         void affichage() const override ;
         void onBuild() const override ; 
@@ -191,17 +192,14 @@ class Merveille : public Commerce {
 
         //GETTERS
         bool getReplay() const { return replay ;}
-        //const Carte* getFeed() const { return feed ;}
-        //bool isFed() const { return feed != nullptr; }
 
         //SETTERS
-        //void setReplay(bool b) { replay = b ;}
+        void setReplay(bool b) { replay = b ;}
 
         //void onBuild(Joueur* j) const override ; // Calls onBuild commerce
 
     private:
 
-        //const Carte* feed ;
         bool replay ;
 };
 
@@ -254,11 +252,11 @@ class Joueur {
         Joueur* getAdversaire() const { return adversaire ; }
         void setAdversaire(Joueur* j){ adversaire = j ;}
 
-        std::vector<const Batiment*> getBatiments() const { return batiments; }
-        std::vector<const Batiment*> getBatimentsPerType(type_batiment t) const ; 
-        std::vector<const Jeton*> getJetons() const { return jetons; }
+        const std::vector<const Batiment*>& getBatiments() const { return batiments; }
+        const std::vector<const Jeton*>& getJetons() const { return jetons; }
+        std::vector<const Batiment*> getBatimentsPerType(type_batiment t) const ;
         std::vector<const Merveille*> getInactiveMerveille() const ;
-        std::vector<const Merveille*> getActiveMerveille() const ; 
+        std::vector<const Merveille*> getActiveMerveille() const ;
 
         void addCarte(const Carte* c) ; // gère le downcasting pour ajouter dans la bonne catégorie
         void construireCarte(const Carte* c);
@@ -278,7 +276,7 @@ class Joueur {
         bool possessJeton(jeton_progres id) const;
 
         // achat
-        std::list<ressource> achetableRessource(std::list<ressource> cost) const;
+        std::list<ressource> achetableRessource(const std::list<ressource> cost) const;
         unsigned int achetableJoueur(const Carte* c) const ;
         std::vector<const Merveille*> buildableMerveilles() const ; 
         void activateMerveille(const Merveille* c);
@@ -387,7 +385,7 @@ class Perk_Classic : public Perk { // PERKS W/O SETTINGS
 // FREE CONSTRUCTION FROM DEFAUSSE
 // SACCAGE
     public: 
-        Perk_Classic(unsigned int id, const Box* box);
+        Perk_Classic(unsigned int id);
 
         void onCall() const override;
     private:
@@ -395,7 +393,6 @@ class Perk_Classic : public Perk { // PERKS W/O SETTINGS
         void freeConstructionFromDefausse() const; // 2
         void pickJeton() const; // 1
         unsigned int id ;
-        const Box* box ; 
 };
 
 /* 
@@ -437,7 +434,7 @@ class Layout {
         bool isEmpty() const ;
         unsigned int getLayoutSize() const;
         unsigned int getVectorSize() const;
-        std::vector<const Carte*> getCards() const { return cards ;}
+        const std::vector<const Carte*>& getCards() const { return cards ;}
         
         void switchAge(phase_jeu p);
 
@@ -494,9 +491,9 @@ class Box {
         // GETTERS
         Plateau* getPlateau() const { return plateau ;}
         Joueur* getJoueur(bool x) const { return x ? joueur1 : joueur0 ;}
-        std::vector<const Batiment*> getAllBatiments() const { return all_batiments; }
-        std::vector<const Carte*> getDefausse() const { return defausse ;}
-        std::vector<const Jeton*> getUnusedJetons() const { return unused_jetons;}
+        const std::vector<const Batiment*>& getAllBatiments() const { return all_batiments; }
+        const std::vector<const Carte*>& getDefausse() const { return defausse ;}
+        const std::vector<const Jeton*>& getUnusedJetons() const { return unused_jetons;}
 
         // GESTION DU JEU
         void gameLoop(); 
@@ -560,7 +557,7 @@ class Plateau {
         // GETTERS
         Layout* getLayout() const { return layout; }
         int getPionMilitaire() const { return pion_militaire; }
-        std::vector<const Jeton*> getJetons() const { return jetons; }
+        const std::vector<const Jeton*>& getJetons() const { return jetons; }
         void addJeton(const Jeton* j) { jetons.push_back(j); }
 
         const Jeton* takeJeton(unsigned int index);

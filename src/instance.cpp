@@ -86,7 +86,7 @@ void Box::allCardsCreation(){
                 4, // Points de victoire
                 {}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
-                new Perk_Classic(1, this), // perk
+                new Perk_Classic(1), // perk
                 false // indique si la carte est rejouée
         ));
 
@@ -100,7 +100,7 @@ void Box::allCardsCreation(){
                 2, // Points de victoire
                 {}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
-                new Perk_Classic(2, this), // perk
+                new Perk_Classic(2), // perk
                 false // indique si la carte est rejouée
         ));
 
@@ -184,7 +184,7 @@ void Box::allCardsCreation(){
                 3, // Points de victoire
                 {}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
-                new Perk_Classic(0, this), // perk
+                new Perk_Classic(0), // perk
                 true // indique si la carte est rejouée
         ));
 

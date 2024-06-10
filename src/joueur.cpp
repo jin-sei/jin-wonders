@@ -148,7 +148,7 @@ void Joueur::activateMerveille(const Merveille* c) {
     throw GameException("ERREUR: Merveille not found");
 }
 
-std::list<ressource> Joueur::achetableRessource(std::list<ressource> cost) const {
+std::list<ressource> Joueur::achetableRessource(const std::list<ressource> cost) const {
     if(cost.empty()) { return {} ; }
     //if(cost_r.size() > buy.size()) { return false ; }
 
@@ -182,14 +182,10 @@ std::list<ressource> Joueur::achetableRessource(std::list<ressource> cost) const
 
 unsigned int Joueur::achetableJoueur(const Carte* c) const {
     // retourne le nombre de pièces qu'il faudra dépenser pour acheter la Carte
-    // on ne compte pas le cout en argent de la carte ici
-
-    std::list<ressource> cost = c->getCoutRessource() ;
-
-    // check chaînage (on fera ça en dehors de la méthode)
+    // on ne compte pas le cout en argent de la carte ici, ni le chaînage
     
     // check ressources possédées
-    std::list<ressource> missing = achetableRessource(cost);
+    std::list<ressource> missing = achetableRessource( c->getCoutRessource() );
     if( missing.empty() ){ return 0 ; }// c->getCoutArgent(); }
 
     //std::cout << "MISSING RESSOURCES: " ; displayRessources( missing ) ; std::cout << std::endl;
@@ -199,18 +195,18 @@ unsigned int Joueur::achetableJoueur(const Carte* c) const {
     std::vector<const Batiment*> poly = getBatimentsPerType(type_batiment::Commerce);
     std::vector<const Merveille*> actives = getActiveMerveille();
     poly.insert(poly.end(), actives.begin(), actives.end());
-    std::list<ressource> prod_temp  ;
     bool breaker = false ; 
 
     if( !poly.empty() ){
         for( auto iter_missing = missing.begin() ; iter_missing != missing.end() ; ++iter_missing ){
             //std::cout << "MISSING: " << tostringRessources(*iter_missing) << std::endl ; 
             for( auto iter_bat = poly.begin() ; iter_bat != poly.end() ; ++iter_bat ){
+
                 //std::cout << "ITERATING THROUGH: " << (**iter_bat).getNom() << std::endl ; 
-                prod_temp = (**iter_bat).getProduction() ;
+                // prod_temp = (**iter_bat).getProduction() ; // inutile car on utilise maintenant un passage par référence
 
                 if( !(**iter_bat).getProduction().empty() ){
-                    for( auto iter_bat_res = prod_temp.begin() ; iter_bat_res != prod_temp.end() ; ++iter_bat_res ){
+                    for( auto iter_bat_res = (**iter_bat).getProduction().begin() ; iter_bat_res != (**iter_bat).getProduction().end() ; ++iter_bat_res ){
                         //std::cout << "FOUND: " << tostringRessources( *iter_bat_res ) << std::endl; 
                         
                         if( *iter_bat_res == *iter_missing ){
