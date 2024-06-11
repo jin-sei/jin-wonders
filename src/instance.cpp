@@ -19,6 +19,7 @@ void Box::allCardsCreation(){
         all_jetons.push_back( new Jeton(jeton_progres::Strategie) );
         all_jetons.push_back( new Jeton(jeton_progres::Theologie) );
         all_jetons.push_back( new Jeton(jeton_progres::Urbanisme) );
+        //all_jetons.push_back( new Jeton(jeton_progres::Urbanisme) );
 
         all_merveilles.push_back( new Merveille(
                 "Le Circus Maximus", // Nom du bâtiment

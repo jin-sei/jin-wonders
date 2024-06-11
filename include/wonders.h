@@ -228,10 +228,24 @@ class Jeton {
     // classe inutile pour le moment mais on pourra faire une méthode static
     // pour vérifier que chaque jeton n'est instancié qu'une seule fois
     public:
-        Jeton(jeton_progres id):id(id){}
+        Jeton(jeton_progres id):id(id){
+
+            auto it = std::find_if(instances.begin(), instances.end(), [id](const Jeton* j){
+                return j->getId() == id;  
+            });
+            if(it == instances.end()){
+                instances.push_back(this);
+                return ;
+            } else {
+                throw GameException("ERREUR: Deux jetons identitiques instanciés");
+            }
+        }
+        
         const jeton_progres getId() const { return id; }
+
     private:
-        const jeton_progres id ; 
+        const jeton_progres id ;
+        static std::vector<const Jeton*> instances ; 
 };
 
 std::ostream& operator<<(std::ostream& f, const Jeton& c);
@@ -258,7 +272,7 @@ class Joueur {
         std::vector<const Merveille*> getInactiveMerveille() const ;
         std::vector<const Merveille*> getActiveMerveille() const ;
 
-        void addCarte(const Carte* c) ; // gère le downcasting pour ajouter dans la bonne catégorie
+        void addCarte(const Carte* c); // gère le downcasting pour ajouter dans la bonne catégorie
         void construireCarte(const Carte* c);
 
         void addBatiment(const Batiment* c){batiments.push_back(c);}

@@ -292,25 +292,22 @@ int main(){
 
 // CURRENT:
 // utiliser des passages par références 
+// utiliser opérateur << pour ajouter des cartes à un joueur ?
 // implémenter template iterator et utiliser
 // unifier askPointerVector et askJouer => askJoueur and revamp all
 
 
 // NEXT :
-// classes cleanup: 
-//      méthode static pour track les instances Jeton
 
 
-// MAIN QUESTS: 
-// IA Player
-//      once askJouer and askPointerVector are unified, add Subject of the ask and Repondant so we know when to ask Player or AI
+// MAIN QUESTS:
+// IA Player : nce askJouer and askPointerVector are unified, add Subject of the ask and Repondant so we know when to ask Player or AI
 
 
 // OTHER TASKS: 
 // passages par réferences
 //      utiliser le design pattern iterator pour retourner des références
-//      utiliser des passages par références pour retourner les containers standards (pas sûr que ce soit faisable)
-//      unify askJoueur et askPointerVector
+//      unify askJoueur et askPointerVector (possible ?)
 
 
 // SIDE QUESTS: 

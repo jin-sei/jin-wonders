@@ -1,6 +1,7 @@
 #include "../include/wonders.h"
 
 Box::Handler Box::shell=Box::Handler();
+std::vector<const Jeton*> Jeton::instances = {} ; 
 
 Box& Box::getInstance(){
     if( shell.box == nullptr ){ shell.box = new Box ; }
