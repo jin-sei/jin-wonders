@@ -150,11 +150,11 @@ void Box::gameLoop(){
         current->displayJoueur(); std::cout << std::endl ; 
 
         std::cout  << "#. Tour de " << current->getNom() << ": " << std::endl << std::endl ;  
-        choice_card = chooseFromPointerVector( plateau->getLayout()->getAvailableCards() );
+        choice_card = askJoueur( plateau->getLayout()->getAvailableCards() );
         
         const Carte* c = plateau->getLayout()->getAvailableCards()[choice_card];
-        if( current->obtainable(c) ){ choices.push_back("Construire la Carte"); }
-        if (current->buildableMerveilles().size()!=0 && (current->getNumberActiveMerveilles()+current->getAdversaire()->getNumberActiveMerveilles() < 7)){ choices.push_back("Construire une Merveille"); }
+        if( current->obtainable(*c) ){ choices.push_back("Construire la Carte"); }
+        if (current->buildableMerveilles().size()!=0 && (current->getNumberActiveMerveilles()+current->getAdversaire().getNumberActiveMerveilles() < 7)){ choices.push_back("Construire une Merveille"); }
         std::cout << "#. Carte choisie: " << c->getNom() << std::endl << std::endl; 
         choice_action = askJoueur(choices);
 
@@ -162,7 +162,7 @@ void Box::gameLoop(){
 
             // DÉFAUSSER
 
-            defausse.push_back( plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] ) );
+            defausse.push_back( &plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] ) );
             current->addTresor( 2+current->getNumberBatiment(type_batiment::Commerce) );
 
         } else if ( choices[choice_action] == "Construire la Carte" ){ // CONSTRUIRE LA CARTE
@@ -180,24 +180,24 @@ void Box::gameLoop(){
                         if(current->possessJeton(jeton_progres::Urbanisme)){ current->addTresor(4); }
                     } else {
                         // le bâtiment est obtenu en payant
-                        current->subTresor( current->achetableJoueur(c)+c->getCoutArgent() );
-                        if(current->getAdversaire()->possessJeton(jeton_progres::Economie)){ 
-                            current->getAdversaire()->addTresor(current->achetableJoueur(c));
+                        current->subTresor( current->achetableJoueur(*c)+c->getCoutArgent() );
+                        if(current->getAdversaire().possessJeton(jeton_progres::Economie)){ 
+                            current->getAdversaire().addTresor(current->achetableJoueur(*c));
                         }
                     }
                 }
 
             }
 
-            current->construireCarte(c);
+            current->construireCarte(*c);
 
         } else if( choices[choice_action] == "Construire une Merveille" ){ // CONSTRUIRE UNE MERVEILLE
 
-            const Merveille* m = current->buildableMerveilles()[ chooseFromPointerVector( current->buildableMerveilles() ) ];
+            const Merveille* m = current->buildableMerveilles()[ askJoueur( current->buildableMerveilles() ) ];
             std::cout << "#. Merveille choisie: " << m->getNom() << std::endl << std::endl ;
 
-            current->subTresor( current->achetableJoueur(m)+m->getCoutArgent() );
-            current->activateMerveille(m);
+            current->subTresor( current->achetableJoueur(*m)+m->getCoutArgent() );
+            current->activateMerveille(*m);
 
             if(m->getPerk() != nullptr){ m->getPerk()->onCall(); } // apply perks
 
@@ -211,9 +211,9 @@ void Box::gameLoop(){
             }
 
             // 7 Merveilles, pas une de plus
-            if(current->getNumberActiveMerveilles()+current->getAdversaire()->getNumberActiveMerveilles() >= 7){
+            if(current->getNumberActiveMerveilles()+current->getAdversaire().getNumberActiveMerveilles() >= 7){
                 if(current->getNumberActiveMerveilles() == 4){
-                    current->getAdversaire()->deleteLastMerveille();
+                    current->getAdversaire().deleteLastMerveille();
                 } else {
                     current->deleteLastMerveille();
                 }
@@ -222,7 +222,7 @@ void Box::gameLoop(){
         } else { // DEFUAULT 
             throw GameException("ERREUR: Choix invalide dans Box::gameLoop()");
         }
-        if(!replay) {current = current->getAdversaire();}
+        if(!replay) { switchCurrent();}
     }
 
     newAge();
@@ -305,17 +305,17 @@ void Box::choixMerveilles(){
         }
 
         std::cout << "#. Joueur " << current->getId() << " (" << current->getNom() << "):" << std::endl << std::endl ;
-        choice = chooseFromPointerVector(selection) ;
-        current->addMerveille( selection[ choice ] ) ;
+        choice = askJoueur(selection) ;
+        current->addMerveille( *selection[ choice ] ) ;
         selection.erase(selection.begin() + choice) ; 
 
         if(i == 0 || i == 3){
-            current = current->getAdversaire(); 
+            switchCurrent(); 
         }
 
         if( selection.size() == 1 ){
-            std::cout << current->getAdversaire()->getNom() << " gets " << selection[0]->getNom() << std::endl << std::endl ;
-            current->getAdversaire()->addMerveille(selection[0]);
+            std::cout << current->getAdversaire().getNom() << " gets " << selection[0]->getNom() << std::endl << std::endl ;
+            current->getAdversaire().addMerveille( *selection[0] );
             selection.clear();
         }
 
@@ -331,7 +331,7 @@ void Box::setupJetons(){
     std::shuffle(all_jetons.begin(), all_jetons.end(), gen);
 
     for(size_t i = 0 ; i < 10 ; i++){
-        if( i < 5 ){ plateau->addJeton( all_jetons[i] );}
+        if( i < 5 ){ plateau->addJeton( *all_jetons[i] );}
         else { unused_jetons.push_back( all_jetons[i] );}
     }
 

@@ -9,7 +9,7 @@ bool Perk::isPolyRes() {
 */
 
 void Perk_CoinPerCard::gainCoinPerCard() const {
-    Box::getInstance().getCurrentJoueur()->addTresor( Box::getInstance().getCurrentJoueur()->getNumberBatiment(this->card)*coin );
+    Box::getInstance().getCurrentJoueur().addTresor( Box::getInstance().getCurrentJoueur().getNumberBatiment(this->card)*coin );
 }
 
 void Perk_CoinPerCard::onCall() const {
@@ -18,7 +18,7 @@ void Perk_CoinPerCard::onCall() const {
 
 void Perk_FixedTrade::setFixedTrade() const {
     for(auto iter = res.begin() ; iter != res.end() ; ++iter){
-        Box::getInstance().getCurrentJoueur()->setFixedTrade(*iter, coin);
+        Box::getInstance().getCurrentJoueur().setFixedTrade(*iter, coin);
     }
 }
 
@@ -38,7 +38,7 @@ Perk_Classic::Perk_Classic(unsigned int id):id(id){
 }
 
 void Perk_Classic::saccage() const {
-    Box::getInstance().getCurrentJoueur()->getAdversaire()->subTresor(3);
+    Box::getInstance().getCurrentJoueur().getAdversaire().subTresor(3);
 }
 
 void Perk_Classic::freeConstructionFromDefausse() const {
@@ -46,10 +46,10 @@ void Perk_Classic::freeConstructionFromDefausse() const {
     if(Box::getInstance().getDefausse().empty()){std::cout << "#. Pas de carte défaussée à construire" << std::endl << std::endl ; return ;}
 
     std::cout << "#. Choisissez une carte de la défausse à construire:" << std::endl << std::endl ;
-    const Carte* c = Box::getInstance().getDefausse()[ chooseFromPointerVector( Box::getInstance().getDefausse() ) ];
+    const Carte* c = Box::getInstance().getDefausse()[ askJoueur( Box::getInstance().getDefausse() ) ];
     std::cout << "#. Carte choisie: " << c->getNom() << std::endl << std::endl;
     
-    Box::getInstance().getCurrentJoueur()->construireCarte(c);
+    Box::getInstance().getCurrentJoueur().construireCarte(*c);
 }
 
 void Perk_Classic::pickJeton() const { 
@@ -57,11 +57,11 @@ void Perk_Classic::pickJeton() const {
 
     std::cout << "#. Choisissez un jeton:" << std::endl << std::endl ; 
     std::vector<const Jeton*> dispo(Box::getInstance().getUnusedJetons().begin(), Box::getInstance().getUnusedJetons().begin()+3);
-    unsigned int choice = chooseFromPointerVector( dispo );
+    unsigned int choice = askJoueur( dispo );
 
     const Jeton* jet = dispo[choice] ; 
     std::cout << std::endl << "#. Jeton choisi: " << *jet << std::endl << std::endl ;
-    Box::getInstance().getCurrentJoueur()->addJeton(jet); 
+    Box::getInstance().getCurrentJoueur().addJeton(*jet); 
     
 }
 
@@ -82,12 +82,12 @@ Perk_Destruction::Perk_Destruction(type_batiment c):card(c){
 
 void Perk_Destruction::destruction() const {
     // requires player interaction
-    if(Box::getInstance().getCurrentJoueur()->getAdversaire()->getBatimentsPerType(card).empty()){std::cout << "#. Pas de bâtiment adverse à détruire" << std::endl << std::endl ; return ;}
+    if(Box::getInstance().getCurrentJoueur().getAdversaire().getBatimentsPerType(card).empty()){std::cout << "#. Pas de bâtiment adverse à détruire" << std::endl << std::endl ; return ;}
     std::cout << "#. Choisissez un bâtiment adverse à détruire:" << std::endl << std::endl ;
-    std::vector<const Batiment*> bats = Box::getInstance().getCurrentJoueur()->getAdversaire()->getBatimentsPerType(card);
-    unsigned int choice = chooseFromPointerVector( bats );
+    std::vector<const Batiment*> bats = Box::getInstance().getCurrentJoueur().getAdversaire().getBatimentsPerType(card);
+    unsigned int choice = askJoueur( bats );
     std::cout << "#. Choix: " << bats[choice]->getNom() << std::endl << std::endl ;
-    Box::getInstance().getCurrentJoueur()->getAdversaire()->destroyBatiment(bats[choice]);
+    Box::getInstance().getCurrentJoueur().getAdversaire().destroyBatiment(*bats[choice]);
 
 }
 

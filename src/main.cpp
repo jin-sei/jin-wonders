@@ -88,7 +88,7 @@ int tests(){
     my_box1.getJoueur(0)->addBatiment(&my_batiment5);
     my_box1.getJoueur(0)->addBatiment(&my_batiment6);
 
-    displayFromPointerVector( my_box1.getJoueur(0)->getBatiments() );
+    displayPtVector( my_box1.getJoueur(0)->getBatiments() );
 
     displayRessources( my_box1.getJoueur(0)->fetchRessource({ressource::Argile, ressource::Bois})) ;
     std::cout << my_box1.getJoueur(0)->possessBatiment("Montagne") << std::endl ;
@@ -113,7 +113,7 @@ int tests(){
     //my_box1.getJoueur(1)->addBatiment(&mock_bat_6);
 
     std::cout << "batiment de p2 : " << std::endl ; 
-    displayFromPointerVector( my_box1.getJoueur(1)->getBatiments() );
+    displayPtVector( my_box1.getJoueur(1)->getBatiments() );
 
     const Perk* perk_1 = new Perk_CoinPerCard(2, type_batiment::Premiere);
     Commerce commerce_1 = Commerce("Commerce I", type_batiment::Commerce, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Argile, ressource::Pierre, ressource::Bois}, "", perk_1);
@@ -171,15 +171,15 @@ int tests(){
 
     std::cout << "-----------------------------------before taking jeton" << std::endl ; 
     std::cout << "------------------joueur" << std::endl ; 
-    displayFromPointerVector( my_box1.getJoueur(0)->getJetons() ) ;
+    displayPtVector( my_box1.getJoueur(0)->getJetons() ) ;
     std::cout << "------------------plateau" << std::endl ; 
-    displayFromPointerVector( my_box1.getPlateau()->getJetons() ) ;
+    displayPtVector( my_box1.getPlateau()->getJetons() ) ;
     //my_box1.getJoueur(0)->addJeton( my_box1.getPlateau()->takeJeton(my_box1.getPlateau()->getJetons()[0]->getId()));
     std::cout << "----------------------------------after taking jeton" << std::endl ; 
     std::cout << "-------------------joueur" << std::endl ; 
-    displayFromPointerVector( my_box1.getJoueur(0)->getJetons() ) ;
+    displayPtVector( my_box1.getJoueur(0)->getJetons() ) ;
     std::cout << "------------------plateau" << std::endl ; 
-    displayFromPointerVector( my_box1.getPlateau()->getJetons() ) ;
+    displayPtVector( my_box1.getPlateau()->getJetons() ) ;
 
 
     const Batiment science_bat_1 = Batiment("Scientifique 1", type_batiment::Scientifique, phase_jeu::AGE_I, {}, 0, 0, 0, {ressource::Roue} );
@@ -217,7 +217,7 @@ int tests(){
     } );
     my_box1.getJoueur(1)->achetableJoueur(&wannabuy);
 
-    //std::cout << *chooseFromPointerVector( my_box1.getPlateau()->getJetons() ) << std::endl ;
+    //std::cout << *askJoueur( my_box1.getPlateau()->getJetons() ) << std::endl ;
 
     //std::cout << askJoueur({"Lancer une partie", "Quitter le jeu", "Credits"}) << std::endl ;
 
@@ -246,7 +246,7 @@ int tests(){
         std::cout << std::endl << std::endl ; 
         */
     /*
-        choice = chooseFromPointerVector( my_box1.getPlateau()->getLayout()->getAvailableCards() );
+        choice = askJoueur( my_box1.getPlateau()->getLayout()->getAvailableCards() );
         //std::cout << my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[0] << " : " << my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[1] << std::endl ; 
         my_box1.getPlateau()->getLayout()->pickSlot( my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[0], my_box1.getPlateau()->getLayout()->vectorToLayout(choice)[1] );
 
@@ -279,9 +279,9 @@ int main(){
         my_box.newAge(); // on passe de END à START pour setup le jeu
         // on passe à l'âge I et le jeu commence
 
-    } catch(const GameException& e) {
+    } catch(const std::exception& e) {
 
-        std::cerr << e.getInfo() << std::endl; 
+        std::cerr << e.what() << std::endl; 
 
     }
 
@@ -291,10 +291,8 @@ int main(){
 // NILS TO DO:
 
 // CURRENT:
-// utiliser des passages par références 
 // utiliser opérateur << pour ajouter des cartes à un joueur ?
-// implémenter template iterator et utiliser
-// unifier askPointerVector et askJouer => askJoueur and revamp all
+// implémenter template iterator et utiliser ? (dans Layout)
 
 
 // NEXT :
@@ -305,24 +303,8 @@ int main(){
 
 
 // OTHER TASKS: 
-// passages par réferences
-//      utiliser le design pattern iterator pour retourner des références
-//      unify askJoueur et askPointerVector (possible ?)
 
 
 // SIDE QUESTS: 
 // écrire une documentation et expliquer les choix de développement
 // enhanced console display (Layout, Plateau, Players, Décompte des points)
-
-/*
-class iterator : public std::vector<Carte*>::iterator { // utiliser une template
-			friend class Box ;
-            friend class Joueur ; 
-            friend class Layout ;  
-			iterator(std::vector<Carte*>::iterator it): std::vector<Carte*>::iterator(it){}
-			public: 
-				// redéfinition de l'opérateur *
-				Carte& operator*() const { return *std::vector<Carte*>::iterator::operator*() ;}
-				iterator operator++(){ std::vector<Carte*>::iterator::operator++() ; return *this;  }
-		};
-*/

@@ -10,6 +10,7 @@
 #include <random>
 #include <cstdlib> // For abs()
 #include <limits>
+#include <exception>
 
 
 enum class type_batiment {Militaire, Scientifique, Manufacture, Premiere, Civil, Commerce, Guilde, Merveille};
@@ -30,12 +31,21 @@ std::string tostringAge(phase_jeu p);
 
 phase_jeu& operator++(phase_jeu& phase);
 
+class GameException : public std::exception {
+	public:
+		GameException(const std::string& i) :info(i) {}
+        const char* what() const noexcept { return info.c_str(); }  
+		std::string getInfo() const { return info; }
+	private:
+		std::string info;
+};
+
 void displayRessources(std::list<ressource> r);
 unsigned int askJoueur(std::vector<std::string> r);
 void waitForInteraction() ;
 
 template <typename T>
-void displayFromPointerVector(std::vector<const T*> c){
+void displayPtVector(std::vector<const T*> c){
     for(auto iter = c.begin() ; iter != c.end() ; ++iter){
         std::cout << **iter << std::endl  ;
     }
@@ -43,7 +53,7 @@ void displayFromPointerVector(std::vector<const T*> c){
 }
 
 template <typename T>
-unsigned int chooseFromPointerVector(std::vector<const T*> c){
+unsigned int askJoueur(std::vector<const T*> c){
     for( size_t i = 0 ; i < c.size() ; i++ ){
         std::cout << i << ". " ; 
         std::cout << *c[i] << std::endl ; 
@@ -66,14 +76,6 @@ unsigned int chooseFromPointerVector(std::vector<const T*> c){
     std::cout << std::endl;
     return choice ;
 }
-
-class GameException {
-	public:
-		GameException(const std::string& i) :info(i) {}
-		std::string getInfo() const { return info; }
-	private:
-		std::string info;
-};
 
 // FORWARD DECLARATION
 class Joueur ; 
@@ -240,12 +242,12 @@ class Jeton {
                 throw GameException("ERREUR: Deux jetons identitiques instanciés");
             }
         }
-        
+
         const jeton_progres getId() const { return id; }
 
     private:
         const jeton_progres id ;
-        static std::vector<const Jeton*> instances ; 
+        static std::vector<const Jeton*> instances ;
 };
 
 std::ostream& operator<<(std::ostream& f, const Jeton& c);
@@ -263,7 +265,7 @@ class Joueur {
         unsigned int getId() const { return id ;}
         std::string getNom() const { return nom ; }
 
-        Joueur* getAdversaire() const { return adversaire ; }
+        Joueur& getAdversaire() const { return *adversaire ; }
         void setAdversaire(Joueur* j){ adversaire = j ;}
 
         const std::vector<const Batiment*>& getBatiments() const { return batiments; }
@@ -272,14 +274,14 @@ class Joueur {
         std::vector<const Merveille*> getInactiveMerveille() const ;
         std::vector<const Merveille*> getActiveMerveille() const ;
 
-        void addCarte(const Carte* c); // gère le downcasting pour ajouter dans la bonne catégorie
-        void construireCarte(const Carte* c);
+        void addCarte(const Carte& c); // gère le downcasting pour ajouter dans la bonne catégorie
+        void construireCarte(const Carte& c);
 
-        void addBatiment(const Batiment* c){batiments.push_back(c);}
-        void addMerveille(const Merveille* m){merveilles.push_back(m);}
-        void addJeton(const Jeton* j){jetons.push_back(j);}
-        void addGuilde(const Guilde* c){guildes.push_back(c);}
-        void destroyBatiment(const Batiment* c) ;
+        void addBatiment(const Batiment& c){batiments.push_back(&c);}
+        void addMerveille(const Merveille& m){merveilles.push_back(&m);}
+        void addJeton(const Jeton& j){jetons.push_back(&j);}
+        void addGuilde(const Guilde& c){guildes.push_back(&c);}
+        void destroyBatiment(const Batiment& c) ;
 
         unsigned int getTresor() const { return tresor ; }
         void setTresor(unsigned int t){tresor = t ;}
@@ -291,11 +293,11 @@ class Joueur {
 
         // achat
         std::list<ressource> achetableRessource(const std::list<ressource> cost) const;
-        unsigned int achetableJoueur(const Carte* c) const ;
+        unsigned int achetableJoueur(const Carte& c) const ;
         std::vector<const Merveille*> buildableMerveilles() const ; 
-        void activateMerveille(const Merveille* c);
+        void activateMerveille(const Merveille& c); 
         void deleteLastMerveille() ;
-        bool obtainable(const Carte* c) const ;
+        bool obtainable(const Carte& c) const ;
 
         // fetch military, fetch science
         std::list<ressource> fetchRessource(std::list<ressource> r) const ;
@@ -452,7 +454,7 @@ class Layout {
         
         void switchAge(phase_jeu p);
 
-        const Carte* pickSlot(int i, int j);
+        const Carte& pickSlot(int i, int j);
         // update le layout, retourne la Carte choisie et update cards
         // seulement pour les slots 1 
 
@@ -516,8 +518,8 @@ class Box {
         void setupAll(); // on prépare la partie
 
         // UTILS
-        Joueur* getCurrentJoueur() const { return current ;}
-        void switchCurrent() { current = current->getAdversaire(); }
+        Joueur& getCurrentJoueur() const { return *current ;}
+        void switchCurrent() { current = &current->getAdversaire(); }
         void endgame() { phase = phase_jeu::AGE_III ; newAge() ;}
 
         // SINGLETON
@@ -572,9 +574,9 @@ class Plateau {
         Layout* getLayout() const { return layout; }
         int getPionMilitaire() const { return pion_militaire; }
         const std::vector<const Jeton*>& getJetons() const { return jetons; }
-        void addJeton(const Jeton* j) { jetons.push_back(j); }
+        void addJeton(const Jeton& j) { jetons.push_back(&j); }
 
-        const Jeton* takeJeton(unsigned int index);
+        const Jeton& takeJeton(unsigned int index);
         // renvoie le pointeur vers l'object jeton et le supprime du Plateau
 
         void displayPlateau() const ;

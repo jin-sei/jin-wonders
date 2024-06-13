@@ -91,20 +91,20 @@ void Batiment::affichage() const {
 
 void Batiment::onBuild() const {
     //std::cout << "CALLING ONBUILD BATIMENT" << std::endl ;
-    Box::getInstance().getCurrentJoueur()->addTresor( this->getRewardArgent() );
+    Box::getInstance().getCurrentJoueur().addTresor( this->getRewardArgent() );
 
     if( getType() == type_batiment::Militaire ){
 
         // on avance le pion militaire
-        Box::getInstance().getPlateau()->movePion( Box::getInstance().getCurrentJoueur()->getId(), getProduction().size() );
+        Box::getInstance().getPlateau()->movePion( Box::getInstance().getCurrentJoueur().getId(), getProduction().size() );
 
     } else if( getType() == type_batiment::Scientifique ){
 
-        if(Box::getInstance().getCurrentJoueur()->allowJetonPick()){ // nouveau jeton possible
+        if(Box::getInstance().getCurrentJoueur().allowJetonPick()){ // nouveau jeton possible
 
-                const Jeton* j = Box::getInstance().getPlateau()->takeJeton( chooseFromPointerVector(Box::getInstance().getPlateau()->getJetons()) );
-                Box::getInstance().getCurrentJoueur()->addJeton( j ) ;
-                if( j->getId() == jeton_progres::Agriculture ){Box::getInstance().getCurrentJoueur()->addTresor(4);}
+                const Jeton& j = Box::getInstance().getPlateau()->takeJeton( askJoueur(Box::getInstance().getPlateau()->getJetons()) );
+                Box::getInstance().getCurrentJoueur().addJeton( j ) ;
+                if( j.getId() == jeton_progres::Agriculture ){Box::getInstance().getCurrentJoueur().addTresor(4);}
 
             }
     }
@@ -129,7 +129,7 @@ Commerce::~Commerce() { if(perk!=nullptr){delete perk ;} }
 
 void Commerce::onBuild() const {
     //std::cout << "CALLING ONBUILD COMMERCE" << std::endl ;
-    Box::getInstance().getCurrentJoueur()->addTresor( this->getRewardArgent() );
+    Box::getInstance().getCurrentJoueur().addTresor( this->getRewardArgent() );
     if(perk!=nullptr){
         perk->onCall(); 
     }
@@ -153,10 +153,10 @@ Guilde::Guilde(
 
 unsigned int Guilde::ptVictoireFinJeu(const Joueur* j) const {
 
-    if( usurier ){ return std::max(j->getTresor()/3, j->getAdversaire()->getTresor()/3) ;}
+    if( usurier ){ return std::max(j->getTresor()/3, j->getAdversaire().getTresor()/3) ;}
 
     unsigned int p[2] = {0, 0} ;
-    const Joueur* jp[2] = {j, j->getAdversaire()};
+    const Joueur* jp[2] = {j, &j->getAdversaire()};
 
     for(size_t i = 0 ; i < 1 ; i++){
         for( auto iter = affectation.begin() ; iter != affectation.end() ; ++iter ){
@@ -171,7 +171,7 @@ unsigned int Guilde::ptVictoireFinJeu(const Joueur* j) const {
 void Guilde::rewardArgent() const {
 
     unsigned int p[2] = {0, 0} ;
-    Joueur* jp[2] = {Box::getInstance().getCurrentJoueur(), Box::getInstance().getCurrentJoueur()->getAdversaire()};
+    Joueur* jp[2] = {&Box::getInstance().getCurrentJoueur(), &Box::getInstance().getCurrentJoueur().getAdversaire()};
 
     for(size_t i = 0 ; i < 1 ; i++){
         for( auto iter = affectation.begin() ; iter != affectation.end() ; ++iter ){
@@ -179,7 +179,7 @@ void Guilde::rewardArgent() const {
         }
     }
 
-    Box::getInstance().getCurrentJoueur()->addTresor( std::max(p[0], p[1]) );
+    Box::getInstance().getCurrentJoueur().addTresor( std::max(p[0], p[1]) );
 }
 
 void Guilde::onBuild() const {

@@ -66,7 +66,7 @@ unsigned int Plateau::pointsVictoire() const {
     return 0 ; 
 }
 
-const Jeton* Plateau::takeJeton(unsigned int index){
+const Jeton& Plateau::takeJeton(unsigned int index){
 
     if(index > jetons.size()-1){ throw GameException("ERREUR: Index pour récupérer le jeton invalide"); }
 
@@ -78,7 +78,7 @@ const Jeton* Plateau::takeJeton(unsigned int index){
     if(it == jetons.end()){ throw GameException("ERREUR: Ce jeton n'est pas sur le plateau"); }
     */
 
-    const Jeton* j = jetons[index] ; jetons.erase(jetons.begin()+index);
+    const Jeton& j = *jetons[index] ; jetons.erase(jetons.begin()+index);
     
     return j; 
 

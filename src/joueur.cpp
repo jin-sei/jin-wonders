@@ -127,20 +127,19 @@ std::vector<const Merveille*> Joueur::buildableMerveilles() const {
     std::vector<const Merveille*> temp = getInactiveMerveille();
     std::vector<const Merveille*> result ;
     for(auto iter = temp.begin() ; iter!=temp.end() ; ++iter){
-        //std::cout << "YOOOOO" << achetableJoueur(*iter) << std::endl; 
-        if(obtainable(*iter)){
+        if(obtainable(**iter)){
             result.push_back(*iter);
         }
     }
     return result ; 
 }
 
-void Joueur::activateMerveille(const Merveille* c) {
+void Joueur::activateMerveille(const Merveille& c) {
     if(this->getNumberActiveMerveilles() + this->adversaire->getNumberActiveMerveilles() >= 7){
         throw GameException("ERREUR: Impossible d'activer une nouvelle Merveille (7 actives)");
     }
     for(int i = 0 ; i<=3 ; i++){
-        if( merveilles[i]->getNom() == c->getNom() ){
+        if( merveilles[i]->getNom() == c.getNom() ){
             merveille_active[i] = true ; 
             return ;
         }
@@ -180,12 +179,12 @@ std::list<ressource> Joueur::achetableRessource(const std::list<ressource> cost)
     return missing ;
 }
 
-unsigned int Joueur::achetableJoueur(const Carte* c) const {
+unsigned int Joueur::achetableJoueur(const Carte& c) const {
     // retourne le nombre de pièces qu'il faudra dépenser pour acheter la Carte
     // on ne compte pas le cout en argent de la carte ici, ni le chaînage
     
     // check ressources possédées
-    std::list<ressource> missing = achetableRessource( c->getCoutRessource() );
+    std::list<ressource> missing = achetableRessource( c.getCoutRessource() );
     if( missing.empty() ){ return 0 ; }// c->getCoutArgent(); }
 
     //std::cout << "MISSING RESSOURCES: " ; displayRessources( missing ) ; std::cout << std::endl;
@@ -239,11 +238,11 @@ unsigned int Joueur::achetableJoueur(const Carte* c) const {
     // check ressources offertes : // Jetons Architecture et Maçonnerie
 
     if( 
-        (c->getType() == type_batiment::Civil) && possessJeton(jeton_progres::Maconnerie)
+        (c.getType() == type_batiment::Civil) && possessJeton(jeton_progres::Maconnerie)
         ||
-        (c->getType() == type_batiment::Merveille) && possessJeton(jeton_progres::Architecture)
+        (c.getType() == type_batiment::Merveille) && possessJeton(jeton_progres::Architecture)
     ){ 
-        if(missing.size() <= 2){ return c->getCoutArgent(); } else {
+        if(missing.size() <= 2){ return c.getCoutArgent(); } else {
 
             // more than 2 ressources were missing
             // determine ressources with the highest trade price to eliminate them
@@ -275,18 +274,18 @@ unsigned int Joueur::achetableJoueur(const Carte* c) const {
 
 }
 
-bool Joueur::obtainable(const Carte* c) const {
+bool Joueur::obtainable(const Carte& c) const {
 
-    if( c->getType() != type_batiment::Guilde ){
+    if( c.getType() != type_batiment::Guilde ){
 
-        const Batiment* b = dynamic_cast<const Batiment*>(c) ;
+        const Batiment* b = dynamic_cast<const Batiment*>(&c) ;
         if(!b){ throw GameException("ERREUR: dynamic cast failed to downcast to Batiment");}
 
         else {
             if( possessBatiment( b->getChainage() ) ){ return true ; }
         }
     } 
-    return ((achetableJoueur(c) + c->getCoutArgent()) <= tresor) ; 
+    return ((achetableJoueur(c) + c.getCoutArgent()) <= tresor) ; 
 }
 
 
@@ -310,7 +309,7 @@ unsigned int Joueur::getTradePrice(ressource r) const {
         throw GameException("ERREUR : le prix de Trade ne s'obtient que pour les ressources de production");
     }
     if( this->getFixedTrade(r) == 0){
-        return this->getAdversaire()->fetchRessource({r}).size() + 2 ;
+        return this->getAdversaire().fetchRessource({r}).size() + 2 ;
     } else {
         return this->getFixedTrade(r);
     }
@@ -359,17 +358,17 @@ unsigned int Joueur::getNumberPairs() const {
     return science.size() - getNumberUniqueSymbols(); 
 }
 
-void Joueur::addCarte(const Carte* c) {
-    if(c->getType() == type_batiment::Guilde){
-        const Guilde* g = dynamic_cast<const Guilde*>(c);
-        if(!g){ addGuilde(g) ; return ;} 
+void Joueur::addCarte(const Carte& c) {
+    if(c.getType() == type_batiment::Guilde){
+        const Guilde* g = dynamic_cast<const Guilde*>(&c);
+        if(!g){ addGuilde(*g) ; return ;} 
         else {
             throw GameException("ERREUR: failed dynamic cast downcasting to Guilde");
         }
     } else {
-        const Batiment* b = dynamic_cast<const Batiment*>(c);
+        const Batiment* b = dynamic_cast<const Batiment*>(&c);
         if(b != nullptr){ 
-            addBatiment(b) ; 
+            addBatiment(*b) ; 
             //if(b->getType() == type_batiment::Militaire){ box->getPlateau()->movePion(Box::getInstance().getCurrentJoueur()->getId(), b->getProduction().size()); }
             return ;
         } 
@@ -379,13 +378,13 @@ void Joueur::addCarte(const Carte* c) {
     }
 }
 
-void Joueur::construireCarte(const Carte* c){ 
+void Joueur::construireCarte(const Carte& c){ 
     // gère l'appliquation des effets et l'ajout à la cité
     // ne gère pas le coût, la possibilité d'obtention
     this->addCarte(c);
-    c->onBuild();
+    c.onBuild();
 
-    switch(c->getType()){
+    switch(c.getType()){
 
         case type_batiment::Militaire :
             // l'avancement du Pion est dans onBuild
@@ -419,11 +418,11 @@ void Joueur::displayJoueur() const {
     for(int i = 0 ; i < merveilles.size() ; i++){
         if(merveilles[i] != nullptr && merveille_active[i]) {std::cout << merveilles[i]->getNom() << std::endl ;} 
     }
-    displayFromPointerVector( jetons ); 
+    displayPtVector( jetons ); 
 }
 
-void Joueur::destroyBatiment(const Batiment* c) {
-    auto iter = std::find(batiments.begin(), batiments.end(), c);
+void Joueur::destroyBatiment(const Batiment& c) {
+    auto iter = std::find(batiments.begin(), batiments.end(), &c);
     if(iter != batiments.end()){
         batiments.erase(iter);
     } else {
