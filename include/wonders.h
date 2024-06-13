@@ -41,7 +41,6 @@ class GameException : public std::exception {
 };
 
 void displayRessources(std::list<ressource> r);
-unsigned int askJoueur(std::vector<std::string> r);
 void waitForInteraction() ;
 
 template <typename T>
@@ -50,6 +49,30 @@ void displayPtVector(std::vector<const T*> c){
         std::cout << **iter << std::endl  ;
     }
     return;
+}
+
+template <typename T>
+unsigned int askJoueur(std::vector<T> r){
+    for( size_t i = 0 ; i < r.size() ; i++ ){
+        std::cout << i << ". " << r[i] << std::endl;
+    }
+    std::cout << std::endl ; 
+
+    unsigned int choice = r.size() ;
+
+    std::cout << "0-" << r.size()-1 << " > " ;
+    std::cin >> choice ;  
+
+    while(choice >= r.size() || std::cin.fail() ){
+
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear input
+        
+        std::cout << "0-" << r.size()-1 << " > " ;
+        std::cin >> choice ;  
+    }
+    std::cout << std::endl;
+    return choice ; 
 }
 
 template <typename T>

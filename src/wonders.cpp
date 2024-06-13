@@ -121,29 +121,6 @@ void displayRessources(std::list<ressource> r){
     std::cout << std::endl ; 
 }
 
-unsigned int askJoueur(std::vector<std::string> r){
-    for( size_t i = 0 ; i < r.size() ; i++ ){
-        std::cout << i << ". " << r[i] << std::endl;
-    }
-    std::cout << std::endl ; 
-
-    unsigned int choice = r.size() ;
-
-    std::cout << "0-" << r.size()-1 << " > " ;
-    std::cin >> choice ;  
-
-    while(choice >= r.size() || std::cin.fail() ){
-
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear input
-        
-        std::cout << "0-" << r.size()-1 << " > " ;
-        std::cin >> choice ;  
-    }
-    std::cout << std::endl;
-    return choice ; 
-}
-
 void waitForInteraction() {
     
     std::cout << "#. Press enter to continue > " ;

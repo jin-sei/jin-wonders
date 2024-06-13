@@ -103,7 +103,7 @@ void Box::newAge(){
         }
 
         std::cout << std::endl << "Relancer une partie ?" << std::endl ; 
-        unsigned int choice = askJoueur({"Oui", "Non"});
+        unsigned int choice = askJoueur(std::vector({"Oui", "Non"}));
         if(!choice){ newAge(); } else { std::cout << "Aurevoir!" << std::endl ; exit(0); }
 
 
@@ -135,7 +135,7 @@ void Box::gameLoop(){
             std::cout << getJoueur( plateau->joueurDominant() )->getNom() ;
         }
         std::cout << " choisis le joueur qui prendra la main: " << std::endl << std::endl ;
-        current = getJoueur(askJoueur({joueur0->getNom(), joueur1->getNom()}));
+        current = getJoueur(askJoueur(std::vector({joueur0->getNom(), joueur1->getNom()})));
 
     }
 
@@ -293,7 +293,7 @@ void Box::choixMerveilles(){
     std::shuffle(temp.begin(), temp.end(), gen);
 
     std::cout << "#. Désigner le joueur qui commence:" << std::endl << std::endl ; 
-    choice = askJoueur({joueur0->getNom(), joueur1->getNom()});
+    choice = askJoueur(std::vector({joueur0->getNom(), joueur1->getNom()}));
     current = getJoueur(choice) ;
 
     for(int i = 0 ; i <= 5 ; i++){
