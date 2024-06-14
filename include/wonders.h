@@ -539,11 +539,14 @@ class Layout {
         };
 };
 
-class Box { 
+class Box {
     // responsable de toutes les Cartes, Jetons, Merveilles
     // SHOULD BE SINGLETON
 
     public:
+
+        Box();
+        ~Box();
 
         // GETTERS
         Plateau* getPlateau() const { return plateau ;}
@@ -563,9 +566,11 @@ class Box {
         Joueur& getCurrentJoueur() const { return *current ;}
         void switchCurrent() { current = &current->getAdversaire(); }
         void endgame() { phase = phase_jeu::AGE_III ; newAge() ;}
+    
+    protected:
 
         // SINGLETON
-        static Box& getInstance();
+        static const Box& getInstance();
 
 
     private:
@@ -592,22 +597,25 @@ class Box {
         std::vector<const Jeton*> unused_jetons ;
 
         // SINGLETON 
-        Box();
-        ~Box();
         Box(const Box& b) = delete; 
-        Box& operator=(const Box&) = delete; 
+        Box& operator=(const Box&) = delete;
 
+        static bool constructed;  
+
+        /*
         struct Handler {
             Box* box = nullptr ;
             ~Handler() { delete box ; };
         };
 
         static Handler shell ;
+        */
 };
 
-class Plateau {
+class Plateau { // le plateau est responsable du layout qu'il gère
+
     public:
-        // le plateau est responsable du layout qu'il gère
+
         friend Box; 
 
         Plateau();

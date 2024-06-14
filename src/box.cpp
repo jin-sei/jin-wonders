@@ -1,15 +1,22 @@
 #include "../include/wonders.h"
 
-Box::Handler Box::shell=Box::Handler();
+//Box::Handler Box::shell=Box::Handler();
+bool Box::constructed = false;  // One instance to rule them all, One instance to find them, One instance to bring them all, and in the darkness bind them
 std::vector<const Jeton*> Jeton::instances = {} ; 
-// One instance to rule them all, one instance to find them, One instance to bring them all, and in the darkness bind them;
 
-Box& Box::getInstance(){
+/*
+const Box& Box::getInstance(){
     if( shell.box == nullptr ){ shell.box = new Box ; }
     return *shell.box ; 
 }
+*/
 
 Box::Box(){
+
+    if(constructed){
+        throw GameException("ERREUR: Already constructed");
+    }
+    constructed = true; 
 
     plateau = new Plateau();
 
@@ -32,6 +39,8 @@ Box::Box(){
 }
 
 Box::~Box(){
+
+    constructed = false ; 
 
     delete plateau ; 
     delete joueur0 ; 

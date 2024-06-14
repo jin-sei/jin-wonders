@@ -1,13 +1,5 @@
 #include "wonders.h"
 
-/*
-bool Perk::isPolyRes() {
-    if(Perk_PolyRessource* p = dynamic_cast<Perk_PolyRessource*>(this)){
-        return true ; 
-    } else { return false ;}
-}
-*/
-
 void Perk_CoinPerCard::gainCoinPerCard(Joueur& j) const {
     j.addTresor( j.getNumberBatiment(this->card)*coin );
 }
@@ -38,7 +30,7 @@ void Perk_Classic::saccage(Joueur& j) const {
 
 void Perk_Classic::freeConstructionFromDefausse(Joueur& j) const { // mausolée
     // requires player interaction
-    
+
     if(box.getDefausse().empty()){std::cout << "#. Pas de carte défaussée à construire" << std::endl << std::endl ; return ;}
 
     std::cout << "#. Choisissez une carte de la défausse à construire:" << std::endl << std::endl ;
@@ -90,13 +82,3 @@ void Perk_Destruction::destruction(Joueur& j) const {
 void Perk_Destruction::onCall(Joueur& j) const {
     destruction(j);
 }
-
-/*
-std::list<ressource> Perk_PolyRessource::getPolyRessources() const {
-    return res ;
-}
-
-void Perk_PolyRessource::onCall(Joueur* j) const {
-    
-}
-*/

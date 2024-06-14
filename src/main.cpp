@@ -17,7 +17,7 @@ int main(){
 
     try {
 
-        Box& my_box = Box::getInstance(); 
+        Box my_box = Box(); 
         my_box.newAge(); // on passe de END à START pour setup le jeu
         // on passe à l'âge I et le jeu commence
 
@@ -33,7 +33,6 @@ int main(){
 // NILS TO DO:
 
 // CURRENT:
-// fix singleton pour qu'il ne soit pas accessible globalement
 
 
 // NEXT :

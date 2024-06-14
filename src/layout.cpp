@@ -212,7 +212,6 @@ const Carte& Layout::removeCard(unsigned int x, unsigned int y){
         throw GameException("ERREUR: La Carte demandée dans Layout n'est pas accessible");
     }
     age[x][y] = 4 ; 
-    std::cout << coordsToIndex(x, y) << std::endl ; 
     const Carte& save = *cards[ coordsToIndex(x, y) ];
     cards[ coordsToIndex(x, y) ] = nullptr ;
     updateLayout();
