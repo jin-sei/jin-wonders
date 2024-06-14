@@ -184,29 +184,29 @@ void Box::gameLoop(){
         plateau->displayPlateau();
         current->displayJoueur(); std::cout << std::endl ; 
 
-        std::cout  << "#. Tour de " << current->getNom() << ": " << std::endl << std::endl ;  
-        choice_card = askJoueur( plateau->getLayout()->getAvailableCards() );
+        std::cout  << "#. Tour de " << current->getNom() << ": " << std::endl << std::endl ;
+        choice_card = askJoueur( plateau->getLayout()->getVisibleCards(true) );
         
-        const Carte* c = plateau->getLayout()->getAvailableCards()[choice_card];
-        if( current->obtainable(*c) ){ choices.push_back("Construire la Carte"); }
+        const Carte& c = *plateau->getLayout()->getVisibleCards(true)[choice_card];
+        if( current->obtainable(c) ){ choices.push_back("Construire la Carte"); }
         if (current->buildableMerveilles().size()!=0 && (current->getNumberActiveMerveilles()+current->getAdversaire().getNumberActiveMerveilles() < 7)){ choices.push_back("Construire une Merveille"); }
-        std::cout << "#. Carte choisie: " << c->getNom() << std::endl << std::endl; 
+        std::cout << "#. Carte choisie: " << c.getNom() << std::endl << std::endl; 
         choice_action = askJoueur(choices);
 
         if( choices[choice_action] == "Défausser" ){
 
             // DÉFAUSSER
 
-            defausse.push_back( &plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] ) );
+            defausse.push_back( &plateau->getLayout()->removeCard( plateau->getLayout()->availableToAll(choice_card) ));
             current->addTresor( 2+current->getNumberBatiment(type_batiment::Commerce) );
 
         } else if ( choices[choice_action] == "Construire la Carte" ){ // CONSTRUIRE LA CARTE
 
-            plateau->getLayout()->pickSlot( plateau->getLayout()->vectorToLayout(choice_card)[0], plateau->getLayout()->vectorToLayout(choice_card)[1] );
+            plateau->getLayout()->removeCard( plateau->getLayout()->availableToAll(choice_card) );
 
-            if( c->getType() != type_batiment::Guilde ){
+            if( c.getType() != type_batiment::Guilde ){
 
-                const Batiment* b = dynamic_cast<const Batiment*>(c);
+                const Batiment* b = dynamic_cast<const Batiment*>(&c);
                 if(!b){ throw GameException("ERREUR: dynamic cast failed to downcast to Batiment");}
                 
                 else { 
@@ -215,16 +215,16 @@ void Box::gameLoop(){
                         if(current->possessJeton(jeton_progres::Urbanisme)){ current->addTresor(4); }
                     } else {
                         // le bâtiment est obtenu en payant
-                        current->subTresor( current->achetableJoueur(*c)+c->getCoutArgent() );
+                        current->subTresor( current->achetableJoueur(c)+c.getCoutArgent() );
                         if(current->getAdversaire().possessJeton(jeton_progres::Economie)){ 
-                            current->getAdversaire().addTresor(current->achetableJoueur(*c));
+                            current->getAdversaire().addTresor(current->achetableJoueur(c));
                         }
                     }
                 }
 
             }
 
-            construireCarte(*current, *c);
+            construireCarte(*current, c);
 
         } else if( choices[choice_action] == "Construire une Merveille" ){ // CONSTRUIRE UNE MERVEILLE
 

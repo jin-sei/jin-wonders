@@ -13,3 +13,5 @@
 *.log
 *.tmp
 *.swp
+
+/src/tests.txt

@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <utility> // pair
 #include <algorithm>
 #include <random>
 #include <cstdlib> // For abs()
@@ -463,31 +464,46 @@ class Layout {
 
     public:
 
-        void inputCards(std::vector<const Carte*> deck);
+        
+
+        // UTILS
         void displayLayout() const ;
-        //void displayCards();
-        std::vector<int> getAvailableSlots() const ;
-        std::vector<const Carte*> getAvailableCards() const ;
-        std::vector<int> vectorToLayout(int x) const {
-            return {getAvailableSlots()[x*2], getAvailableSlots()[x*2+1]};
+        bool isEmpty() const ; // all elements are picked
+        unsigned int getLayoutSize() const; // counts non 0 and non 4 slots in age 2D vector
+        unsigned int getVectorSize() const; // counts non nullptr elements in cards vector
+        const std::vector<const Carte*>& getCards() const { return cards ;}
+
+        // GESTION GLOBALE
+        void switchAge(phase_jeu p);
+        void reinit();
+        void inputCards(std::vector<const Carte*> deck);
+
+        // NEW ARCHITECTURE FOR LAYOUT (guaranteed not to be a mess by yours truly)
+
+        // check integrity of the structures
+        void checkMatching() const { 
+            if( this->getLayoutSize() != this->getVectorSize() ){ 
+                throw GameException("ERREUR : unmatched matrix ("+std::to_string(this->getLayoutSize())+") and vector ("+std::to_string(this->getVectorSize())+")" ); 
+            }
         }
 
-        bool isEmpty() const ;
-        unsigned int getLayoutSize() const;
-        unsigned int getVectorSize() const;
-        const std::vector<const Carte*>& getCards() const { return cards ;}
-        
-        void switchAge(phase_jeu p);
+        // turn 2D Vector age into 1D
+        std::vector<int> unroll() const ;
+        unsigned int coordsToIndex(unsigned int x, unsigned int y) const ;
+        std::pair<unsigned int, unsigned int> indexToCoords(unsigned int i) const ;
+        unsigned int availableToAll(unsigned int i) const ; // the i-th available card is located at cards[availableToAll(i)]
 
-        const Carte& pickSlot(int i, int j);
-        // update le layout, retourne la Carte choisie et update cards
-        // seulement pour les slots 1 
+        // returns a vector of visible cards (or only available if bool==true)
+        std::vector<const Carte*> getVisibleCards(bool available_only) const;
 
-        unsigned int getBatimentFromLayout(int i, int j) const ;
-        // retourne l'int de la position de la Carte dans cards à partir de i et j
-        // pour toutes les cartes du layout 
+        // removes the Card from the Layout (must be available)
+        const Carte& removeCard(unsigned int x, unsigned int y); // coordonates from the 2D Vector
+        const Carte& removeCard(unsigned int i); // index in Available Cards
 
-        void reinit();
+        // read Card from the Layout (must be visible)
+        const Carte& seeCard(unsigned int x, unsigned int y) const; // coordonates from the 2D Vector
+        const Carte& seeCard(unsigned int i) const; // index in Visible Cards
+
 
     private:
 
