@@ -89,26 +89,9 @@ void Batiment::affichage() const {
     std::cout << std::endl ; 
 }
 
-void Batiment::onBuild() const {
+void Batiment::onBuild(Joueur& j) const {
     //std::cout << "CALLING ONBUILD BATIMENT" << std::endl ;
-    Box::getInstance().getCurrentJoueur().addTresor( this->getRewardArgent() );
-
-    if( getType() == type_batiment::Militaire ){
-
-        // on avance le pion militaire
-        Box::getInstance().getPlateau()->movePion( Box::getInstance().getCurrentJoueur().getId(), getProduction().size() );
-
-    } else if( getType() == type_batiment::Scientifique ){
-
-        if(Box::getInstance().getCurrentJoueur().allowJetonPick()){ // nouveau jeton possible
-
-                const Jeton& j = Box::getInstance().getPlateau()->takeJeton( askJoueur(Box::getInstance().getPlateau()->getJetons()) );
-                Box::getInstance().getCurrentJoueur().addJeton( j ) ;
-                if( j.getId() == jeton_progres::Agriculture ){Box::getInstance().getCurrentJoueur().addTresor(4);}
-
-            }
-    }
-
+    j.addTresor( this->getRewardArgent() );
     return ; 
 }
 
@@ -127,19 +110,13 @@ Commerce::Commerce(
 
 Commerce::~Commerce() { if(perk!=nullptr){delete perk ;} }
 
-void Commerce::onBuild() const {
+void Commerce::onBuild(Joueur& j) const {
     //std::cout << "CALLING ONBUILD COMMERCE" << std::endl ;
-    Box::getInstance().getCurrentJoueur().addTresor( this->getRewardArgent() );
+    j.addTresor( this->getRewardArgent() );
     if(perk!=nullptr){
-        perk->onCall(); 
+        perk->onCall(j); 
     }
 }
-
-/*
-void Merveille::onBuild(Joueur* j) const {
-
-}
-*/
 
 Guilde::Guilde(
     std::string nom, type_batiment type, phase_jeu age,
@@ -168,10 +145,10 @@ unsigned int Guilde::ptVictoireFinJeu(const Joueur* j) const {
 
 }
 
-void Guilde::rewardArgent() const {
+void Guilde::rewardArgent(Joueur& j) const {
 
     unsigned int p[2] = {0, 0} ;
-    Joueur* jp[2] = {&Box::getInstance().getCurrentJoueur(), &Box::getInstance().getCurrentJoueur().getAdversaire()};
+    Joueur* jp[2] = {&j, &j.getAdversaire()};
 
     for(size_t i = 0 ; i < 1 ; i++){
         for( auto iter = affectation.begin() ; iter != affectation.end() ; ++iter ){
@@ -179,10 +156,10 @@ void Guilde::rewardArgent() const {
         }
     }
 
-    Box::getInstance().getCurrentJoueur().addTresor( std::max(p[0], p[1]) );
+    j.addTresor( std::max(p[0], p[1]) );
 }
 
-void Guilde::onBuild() const {
+void Guilde::onBuild(Joueur& j) const {
     //std::cout << "CALLING ONBUILD GUILDE" << std::endl ;
-    if(!usurier) rewardArgent();
+    if(!usurier) rewardArgent(j);
 }

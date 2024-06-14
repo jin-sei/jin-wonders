@@ -31,7 +31,7 @@ void Box::allCardsCreation(){
                 3, // Points de victoire
                 {ressource::Bouclier}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
-                new Perk_Destruction(type_batiment::Manufacture), // perk
+                new Perk_Destruction(*this, type_batiment::Manufacture), // perk
                 false // indique si la carte est rejouée
         ));
 
@@ -87,7 +87,7 @@ void Box::allCardsCreation(){
                 4, // Points de victoire
                 {}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
-                new Perk_Classic(1), // perk
+                new Perk_Classic(*this, 1), // perk
                 false // indique si la carte est rejouée
         ));
 
@@ -101,7 +101,7 @@ void Box::allCardsCreation(){
                 2, // Points de victoire
                 {}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
-                new Perk_Classic(2), // perk
+                new Perk_Classic(*this, 2), // perk
                 false // indique si la carte est rejouée
         ));
 
@@ -157,7 +157,7 @@ void Box::allCardsCreation(){
                 3, // Points de victoire
                 {ressource::Bouclier}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
-                new Perk_Destruction(type_batiment::Premiere), // perk
+                new Perk_Destruction(*this, type_batiment::Premiere), // perk
                 false // indique si la carte est rejouée
         ));
 
@@ -185,7 +185,7 @@ void Box::allCardsCreation(){
                 3, // Points de victoire
                 {}, // Liste des ressource produites par le bâtiment
                 "", // Bâtiment chaîné (si applicable)
-                new Perk_Classic(0), // perk
+                new Perk_Classic(*this, 0), // perk
                 true // indique si la carte est rejouée
         ));
 
@@ -211,7 +211,7 @@ void Box::allCardsCreation(){
         0, // points de victoire
         {}, // production
         "", // chaînage
-        new Perk_FixedTrade({ressource::Argile}, 1) // perk
+        new Perk_FixedTrade(*this, {ressource::Argile}, 1) // perk
     ));
 
     all_batiments.push_back( new Commerce(
@@ -224,7 +224,7 @@ void Box::allCardsCreation(){
         0, // points de victoire
         {}, // production
         "", // chaînage
-        new Perk_FixedTrade({ressource::Pierre}, 1) // perk
+        new Perk_FixedTrade(*this, {ressource::Pierre}, 1) // perk
     ));
 
     all_batiments.push_back( new Commerce(
@@ -237,7 +237,7 @@ void Box::allCardsCreation(){
         0, // points de victoire
         {}, // production
         "", // chaînage
-        new Perk_FixedTrade({ressource::Bois}, 1) // perk
+        new Perk_FixedTrade(*this, {ressource::Bois}, 1) // perk
     ));
 
     all_batiments.push_back( new Commerce(
@@ -522,7 +522,7 @@ void Box::allCardsCreation(){
         0, // points de victoire
         {}, // production
         "", // chaînage
-        new Perk_FixedTrade({ressource::Papyrus, ressource::Verre}, 1) // perk
+        new Perk_FixedTrade(*this, {ressource::Papyrus, ressource::Verre}, 1) // perk
     ));
 
     all_batiments.push_back( new Batiment(
@@ -763,7 +763,7 @@ void Box::allCardsCreation(){
         3, // points de victoire
         {}, // production
         "", // chaînage
-        new Perk_CoinPerCard(3, type_batiment::Manufacture) // perk
+        new Perk_CoinPerCard(*this, 3, type_batiment::Manufacture) // perk
     ));
 
     all_batiments.push_back( new Commerce(
@@ -776,7 +776,7 @@ void Box::allCardsCreation(){
         3, // points de victoire
         {}, // production
         "", // chaînage
-        new Perk_CoinPerCard(2, type_batiment::Premiere) // perk
+        new Perk_CoinPerCard(*this, 2, type_batiment::Premiere) // perk
     ));
 
     all_batiments.push_back( new Commerce(
@@ -789,7 +789,7 @@ void Box::allCardsCreation(){
         3, // points de victoire
         {}, // production
         "", // chaînage
-        new Perk_CoinPerCard(1, type_batiment::Militaire) // perk
+        new Perk_CoinPerCard(*this, 1, type_batiment::Militaire) // perk
     ));
 
     all_batiments.push_back( new Commerce(
@@ -802,7 +802,7 @@ void Box::allCardsCreation(){
         3, // points de victoire
         {}, // production
         "Taverne", // chaînage
-        new Perk_CoinPerCard(1, type_batiment::Commerce) // perk
+        new Perk_CoinPerCard(*this, 1, type_batiment::Commerce) // perk
     ));
 
     all_batiments.push_back( new Commerce(
@@ -815,7 +815,7 @@ void Box::allCardsCreation(){
         3, // points de victoire
         {}, // production
         "Brasserie", // chaînage
-        new Perk_CoinPerCard(2, type_batiment::Merveille) // perk
+        new Perk_CoinPerCard(*this, 2, type_batiment::Merveille) // perk
     ));
 
     all_batiments.push_back( new Batiment(

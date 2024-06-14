@@ -369,32 +369,12 @@ void Joueur::addCarte(const Carte& c) {
         const Batiment* b = dynamic_cast<const Batiment*>(&c);
         if(b != nullptr){ 
             addBatiment(*b) ; 
-            //if(b->getType() == type_batiment::Militaire){ box->getPlateau()->movePion(Box::getInstance().getCurrentJoueur()->getId(), b->getProduction().size()); }
             return ;
         } 
         else {
         throw GameException("ERREUR: failed dynamic cast downcasting to Batiment");
         }
     }
-}
-
-void Joueur::construireCarte(const Carte& c){ 
-    // gère l'appliquation des effets et l'ajout à la cité
-    // ne gère pas le coût, la possibilité d'obtention
-    this->addCarte(c);
-    c.onBuild();
-
-    switch(c.getType()){
-
-        case type_batiment::Militaire :
-            // l'avancement du Pion est dans onBuild
-            if(Box::getInstance().getPlateau()->victoireMilitaire()){Box::getInstance().endgame();}
-
-        case type_batiment::Scientifique :
-            // la gestion d'un nouveau Jeton est dans onBuild
-            if( victoireScientifique() ){Box::getInstance().endgame();}
-    }
-
 }
 
 void Joueur::displayJoueur() const {
@@ -419,6 +399,10 @@ void Joueur::displayJoueur() const {
         if(merveilles[i] != nullptr && merveille_active[i]) {std::cout << merveilles[i]->getNom() << std::endl ;} 
     }
     displayPtVector( jetons ); 
+}
+
+void Joueur::operator<<(const Carte& c){
+    this->addCarte(c);
 }
 
 void Joueur::destroyBatiment(const Batiment& c) {

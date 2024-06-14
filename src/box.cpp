@@ -2,6 +2,7 @@
 
 Box::Handler Box::shell=Box::Handler();
 std::vector<const Jeton*> Jeton::instances = {} ; 
+// One instance to rule them all, one instance to find them, One instance to bring them all, and in the darkness bind them;
 
 Box& Box::getInstance(){
     if( shell.box == nullptr ){ shell.box = new Box ; }
@@ -50,16 +51,50 @@ Box::~Box(){
 
 }
 
-/*
-void Box::displayAllCards(){
+void Box::construireCarte(Joueur& j, const Carte& c){ // MOVING TO BOX
+    // gère l'appliquation des effets et l'ajout à la cité
+    // ne gère pas le coût, la possibilité d'obtention
+    j << c ;
+    c.onBuild(j);
 
-    for( auto iter = all_batiments.begin() ; iter != all_batiments.end() ; ++iter){
-        
-        std::cout << **iter << std::endl ;
+    switch(c.getType()){
 
+        case type_batiment::Militaire :
+            // avancement du Pion
+        {
+            const Batiment* b = dynamic_cast<const Batiment*>(&c);
+            if(b==nullptr){ throw GameException("ERREUR: downcasting to Batiment militaire failed"); } 
+
+            plateau->movePion( getCurrentJoueur().getId(), b->getProduction().size() );
+
+            if( abs(plateau->pion_militaire) >= 3 && abs(plateau->pion_militaire) <= 5 ){
+
+                getJoueur( plateau->pion_militaire < 0 )->subTresor( plateau->saccage[0 + 2*static_cast<int>(plateau->pion_militaire < 0)] );
+                plateau->saccage[0 + 2*static_cast<int>(plateau->pion_militaire < 0)] = 0 ; 
+
+            } else if( abs(plateau->pion_militaire) >= 6 && abs(plateau->pion_militaire) <= 8 ){
+                
+                getJoueur( plateau->pion_militaire < 0 )->subTresor(plateau->saccage[1 + 2*static_cast<int>(plateau->pion_militaire < 0)]);
+                plateau->saccage[1 + 2*static_cast<int>(plateau->pion_militaire < 0)] = 0 ;
+            }
+
+            if(getPlateau()->victoireMilitaire()){ endgame();}
+        }
+
+        case type_batiment::Scientifique :
+            // gestion d'un nouveau Jeton
+            if(j.allowJetonPick()){ // nouveau jeton possible
+
+                const Jeton& jet = plateau->takeJeton( askJoueur(plateau->getJetons()) );
+                j.addJeton( jet ) ;
+                if( jet.getId() == jeton_progres::Agriculture ){j.addTresor(4);}
+
+            }
+
+            if( j.victoireScientifique() ){ endgame();}
     }
+
 }
-*/
 
 void Box::newAge(){
 
@@ -189,7 +224,7 @@ void Box::gameLoop(){
 
             }
 
-            current->construireCarte(*c);
+            construireCarte(*current, *c);
 
         } else if( choices[choice_action] == "Construire une Merveille" ){ // CONSTRUIRE UNE MERVEILLE
 
@@ -199,7 +234,7 @@ void Box::gameLoop(){
             current->subTresor( current->achetableJoueur(*m)+m->getCoutArgent() );
             current->activateMerveille(*m);
 
-            if(m->getPerk() != nullptr){ m->getPerk()->onCall(); } // apply perks
+            if(m->getPerk() != nullptr){ m->getPerk()->onCall(*current); } // apply perks
 
             current->addTresor( m->getRewardArgent() ); // gain money
 

@@ -29,17 +29,6 @@ void Plateau::movePion(bool id, unsigned int avance){
 
         pion_militaire += a;
 
-        if( abs(pion_militaire) >= 3 && abs(pion_militaire) <= 5 ){
-
-            Box::getInstance().getJoueur( pion_militaire < 0 )->subTresor( saccage[0 + 2*static_cast<int>(pion_militaire < 0)] );
-            saccage[0 + 2*static_cast<int>(pion_militaire < 0)] = 0 ; 
-
-        } else if( abs(pion_militaire) >= 6 && abs(pion_militaire) <= 8 ){
-            
-            Box::getInstance().getJoueur( pion_militaire < 0 )->subTresor(saccage[1 + 2*static_cast<int>(pion_militaire < 0)]);
-            saccage[1 + 2*static_cast<int>(pion_militaire < 0)] = 0 ;
-        }
-
         return;
 
     }

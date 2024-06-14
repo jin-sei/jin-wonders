@@ -291,15 +291,17 @@ int main(){
 // NILS TO DO:
 
 // CURRENT:
-// utiliser opérateur << pour ajouter des cartes à un joueur ?
-// implémenter template iterator et utiliser ? (dans Layout)
+// fix singleton pour qu'il ne soit pas accessible globalement
 
 
 // NEXT :
+// IA Player : add Subject of the ask and Repondant so we know when to ask Player or AI
+// create a read only interface that allows to communicate with the game (using askJoueur)
 
 
 // MAIN QUESTS:
-// IA Player : nce askJouer and askPointerVector are unified, add Subject of the ask and Repondant so we know when to ask Player or AI
+// revamp Layout class
+
 
 
 // OTHER TASKS: 
