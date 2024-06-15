@@ -291,10 +291,8 @@ class Guilde : public Carte {
 
 
 class Jeton {
-    // classe inutile pour le moment mais on pourra faire une méthode static
-    // pour vérifier que chaque jeton n'est instancié qu'une seule fois
     public:
-        Jeton(jeton_progres id):id(id){
+        Jeton(jeton_progres id):id(id){ // vérifier que chaque Jeton n'est instancié qu'une seule fois
 
             auto it = std::find_if(instances.begin(), instances.end(), [id](const Jeton* j){
                 return j->getId() == id;  
@@ -304,6 +302,15 @@ class Jeton {
                 return ;
             } else {
                 throw GameException("ERREUR: Deux jetons identitiques instanciés");
+            }
+        }
+
+        ~Jeton(){
+            auto it = std::find_if(instances.begin(), instances.end(), [this](const Jeton* j){
+                return j->getId() == this->id;  
+            });
+            if(it != instances.end()){
+                instances.erase(it);
             }
         }
 
@@ -547,7 +554,7 @@ class Layout {
         void updateLayout();
 
         std::vector<const Carte*> cards ;
-        std::vector<std::vector<int>> age = ageI ; 
+        std::vector<std::vector<int>> age = ageI ;
 
         const std::vector<std::vector<int>> ageI { // AGE I
             {2, 2, 0, 0, 0, 0},
@@ -607,7 +614,7 @@ class Box {
     protected:
 
         // SINGLETON
-        static const Box& getInstance();
+        //static const Box& getInstance();
 
 
     private:
