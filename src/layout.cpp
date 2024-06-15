@@ -2,6 +2,7 @@
 
 
 void Layout::displayLayout() const {
+    /*
     size_t rows = age.size() ; 
     size_t columns = age[0].size();
 
@@ -12,6 +13,33 @@ void Layout::displayLayout() const {
             std::cout << " | " ;
         }
         std::cout << std::endl ;
+    }
+    */
+
+   size_t rows = age.size() ;
+    size_t columns = age[0].size();
+    int s = rows ;
+
+    for(int i = 0 ; i < rows ; i++){
+        std::cout << std::string(2 * s, ' ');
+        bool show = false;
+        for(int j= 0 ; j < columns ; j++){
+            if( age[i][j] != 0 && age[i][j] != 4){
+                std::cout << " | " << age[i][j] ;
+                show = true;
+            } else {
+                if (show){
+                    std::cout << " | ";
+                }
+                std::cout << "    " ;
+                show = false;
+            }
+        }
+        if (show){
+            std::cout << " | ";
+        }
+        std::cout << std::endl ;
+        s--;
     }
 }
 
