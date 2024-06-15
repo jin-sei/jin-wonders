@@ -34,7 +34,7 @@ void Perk_Classic::freeConstructionFromDefausse(Joueur& j) const { // mausolée
     if(box.getDefausse().empty()){std::cout << "#. Pas de carte défaussée à construire" << std::endl << std::endl ; return ;}
 
     std::cout << "#. Choisissez une carte de la défausse à construire:" << std::endl << std::endl ;
-    const Carte& c = *box.getDefausse()[ askJoueur( box.getDefausse() ) ];
+    const Carte& c = *box.getDefausse()[ j.dialogue( box.getDefausse() ) ];
     std::cout << "#. Carte choisie: " << c.getNom() << std::endl << std::endl;
     
     box.construireCarte(j, c);
@@ -45,7 +45,7 @@ void Perk_Classic::pickJeton(Joueur& j) const {
 
     std::cout << "#. Choisissez un jeton:" << std::endl << std::endl ; 
     std::vector<const Jeton*> dispo(box.getUnusedJetons().begin(), box.getUnusedJetons().begin()+3);
-    unsigned int choice = askJoueur( dispo );
+    unsigned int choice = j.dialogue( dispo );
 
     const Jeton& jet = *dispo[choice] ; 
     std::cout << std::endl << "#. Jeton choisi: " << jet << std::endl << std::endl ;
@@ -73,7 +73,7 @@ void Perk_Destruction::destruction(Joueur& j) const {
     if(j.getAdversaire().getBatimentsPerType(card).empty()){std::cout << "#. Pas de bâtiment adverse à détruire" << std::endl << std::endl ; return ;}
     std::cout << "#. Choisissez un bâtiment adverse à détruire:" << std::endl << std::endl ;
     std::vector<const Batiment*> bats = j.getAdversaire().getBatimentsPerType(card);
-    unsigned int choice = askJoueur( bats );
+    unsigned int choice = j.dialogue( bats );
     std::cout << "#. Choix: " << bats[choice]->getNom() << std::endl << std::endl ;
     j.getAdversaire().destroyBatiment(*bats[choice]);
 

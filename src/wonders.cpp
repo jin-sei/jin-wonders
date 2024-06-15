@@ -123,10 +123,12 @@ void displayRessources(std::list<ressource> r){
 
 void waitForInteraction() {
     
+    /*
     std::cout << "#. Press enter to continue > " ;
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear input
     std::cin.get();
-    return ; 
+    return ;
+    */
     
 }

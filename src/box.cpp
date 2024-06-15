@@ -21,15 +21,21 @@ Box::Box(){
     plateau = new Plateau();
 
     std::string nom; 
-    std::cout << "Joueur-0 : Nom > " ; 
-    std::cin >> nom ; 
-    joueur0 = new Joueur(0, nom) ; 
-    std::cout << "Joueur-1 : Nom > " ; 
+    bool artificial ; 
+    std::cout << "#. Joueur-0 : Nom > " ; 
     std::cin >> nom ;
-    std::cout << std::endl ; 
-    joueur1 = new Joueur(1, nom) ; 
+    std::cout << "#. Joueur IA :" ; std::cout << std::endl ; 
+    artificial = askJoueur(std::vector<std::string>({"Oui", "Non"}));
+    if(artificial) {joueur0 = new Joueur(0, nom) ;} else { joueur0 = new IA(0, nom);} 
 
-    joueur0->setAdversaire(joueur1); 
+
+    std::cout << "#. Joueur-1 : Nom > " ; 
+    std::cin >> nom ; 
+    std::cout << "#. Joueur IA :" ; std::cout << std::endl ; 
+    artificial = askJoueur(std::vector<std::string>({"Oui", "Non"}));
+    if(artificial) {joueur1 = new Joueur(1, nom) ;} else { joueur1 = new IA(1, nom);}
+
+    joueur0->setAdversaire(joueur1);
     joueur1->setAdversaire(joueur0);
     current = joueur0 ; 
     
@@ -94,7 +100,7 @@ void Box::construireCarte(Joueur& j, const Carte& c){ // MOVING TO BOX
             // gestion d'un nouveau Jeton
             if(j.allowJetonPick()){ // nouveau jeton possible
 
-                const Jeton& jet = plateau->takeJeton( askJoueur(plateau->getJetons()) );
+                const Jeton& jet = plateau->takeJeton( current->dialogue(plateau->getJetons()) );
                 j.addJeton( jet ) ;
                 if( jet.getId() == jeton_progres::Agriculture ){j.addTresor(4);}
 
@@ -147,7 +153,7 @@ void Box::newAge(){
         }
 
         std::cout << std::endl << "Relancer une partie ?" << std::endl ; 
-        unsigned int choice = askJoueur(std::vector({"Oui", "Non"}));
+        unsigned int choice = askJoueur(std::vector<std::string>({"Oui", "Non"}));
         if(!choice){ newAge(); } else { std::cout << "Aurevoir!" << std::endl ; exit(0); }
 
 
@@ -179,7 +185,7 @@ void Box::gameLoop(){
             std::cout << getJoueur( plateau->joueurDominant() )->getNom() ;
         }
         std::cout << " choisis le joueur qui prendra la main: " << std::endl << std::endl ;
-        current = getJoueur(askJoueur(std::vector({joueur0->getNom(), joueur1->getNom()})));
+        current = getJoueur(current->dialogue(std::vector({joueur0->getNom(), joueur1->getNom()})));
 
     }
 
@@ -194,13 +200,13 @@ void Box::gameLoop(){
         current->displayJoueur(); std::cout << std::endl ; 
 
         std::cout  << "#. Tour de " << current->getNom() << ": " << std::endl << std::endl ;
-        choice_card = askJoueur( plateau->getLayout()->getVisibleCards(true) );
+        choice_card = current->dialogue( plateau->getLayout()->getVisibleCards(true) );
         
         const Carte& c = *plateau->getLayout()->getVisibleCards(true)[choice_card];
         if( current->obtainable(c) ){ choices.push_back("Construire la Carte"); }
         if (current->buildableMerveilles().size()!=0 && (current->getNumberActiveMerveilles()+current->getAdversaire().getNumberActiveMerveilles() < 7)){ choices.push_back("Construire une Merveille"); }
         std::cout << "#. Carte choisie: " << c.getNom() << std::endl << std::endl; 
-        choice_action = askJoueur(choices);
+        choice_action = current->dialogue(choices);
 
         if( choices[choice_action] == "Défausser" ){
 
@@ -237,7 +243,7 @@ void Box::gameLoop(){
 
         } else if( choices[choice_action] == "Construire une Merveille" ){ // CONSTRUIRE UNE MERVEILLE
 
-            const Merveille* m = current->buildableMerveilles()[ askJoueur( current->buildableMerveilles() ) ];
+            const Merveille* m = current->buildableMerveilles()[ current->dialogue( current->buildableMerveilles() ) ];
             std::cout << "#. Merveille choisie: " << m->getNom() << std::endl << std::endl ;
 
             current->subTresor( current->achetableJoueur(*m)+m->getCoutArgent() );
@@ -349,7 +355,7 @@ void Box::choixMerveilles(){
         }
 
         std::cout << "#. Joueur " << current->getId() << " (" << current->getNom() << "):" << std::endl << std::endl ;
-        choice = askJoueur(selection) ;
+        choice = current->dialogue(selection) ;
         current->addMerveille( *selection[ choice ] ) ;
         selection.erase(selection.begin() + choice) ; 
 

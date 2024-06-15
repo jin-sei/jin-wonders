@@ -361,7 +361,7 @@ unsigned int Joueur::getNumberPairs() const {
 void Joueur::addCarte(const Carte& c) {
     if(c.getType() == type_batiment::Guilde){
         const Guilde* g = dynamic_cast<const Guilde*>(&c);
-        if(!g){ addGuilde(*g) ; return ;} 
+        if(g != nullptr){ addGuilde(*g) ; return ;} 
         else {
             throw GameException("ERREUR: failed dynamic cast downcasting to Guilde");
         }
@@ -430,4 +430,29 @@ void Joueur::reinit(){
     merveilles.clear();
     reinitTradePrice();
     tresor = 0 ; 
+}
+
+unsigned int IA::dialogue(std::vector<const Carte*> c) const {
+    //usleep(500000);
+    return askAI(c) ;
+}
+
+unsigned int IA::dialogue(std::vector<const Batiment*> b) const {
+    //usleep(500000);
+    return askAI(b) ;
+}
+
+unsigned int IA::dialogue(std::vector<const Merveille*> m) const {
+    //usleep(500000);
+    return askAI(m) ;
+}
+
+unsigned int IA::dialogue(std::vector<const Jeton*> j) const { 
+    //usleep(500000);
+    return askAI(j) ;
+}
+
+unsigned int IA::dialogue(std::vector<std::string> s) const {
+    //usleep(500000);
+    return askAI(s) ;
 }

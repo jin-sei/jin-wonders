@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <random>
 #include <cstdlib> // For abs()
+//#include <unistd.h> // usleep()
 #include <limits>
 #include <exception>
 
@@ -97,6 +98,47 @@ unsigned int askJoueur(std::vector<const T*> c){
         std::cin >> choice ;
 
     }
+    std::cout << std::endl;
+    return choice ;
+}
+
+template <typename T>
+unsigned int askAI(std::vector<T> r){
+    for( size_t i = 0 ; i < r.size() ; i++ ){
+        std::cout << i << ". " << r[i] << std::endl;
+    }
+    std::cout << std::endl ; 
+
+    unsigned int choice = r.size() ;
+
+    std::cout << "0-" << r.size()-1 << " > " ;
+
+    // random choice
+    std::random_device rd; std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(0, r.size()-1);
+    choice = distrib(gen);
+    std::cout << choice ; 
+
+    std::cout << std::endl;
+    return choice ; 
+}
+
+template <typename T>
+unsigned int askAI(std::vector<const T*> c){
+    for( size_t i = 0 ; i < c.size() ; i++ ){
+        std::cout << i << ". " ; 
+        std::cout << *c[i] << std::endl ; 
+    }
+
+    unsigned int choice = c.size();
+
+    std::cout << "0-" << c.size()-1 << " > " ;
+    // random choice
+    std::random_device rd; std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(0, c.size()-1);
+    choice = distrib(gen);
+    std::cout << choice ;
+
     std::cout << std::endl;
     return choice ;
 }
@@ -287,14 +329,14 @@ class Joueur {
         unsigned int getId() const { return id ;}
         std::string getNom() const { return nom ; }
 
-        Joueur& getAdversaire() const { return *adversaire ; }
+        Joueur& getAdversaire() const { return *adversaire ;}
         void setAdversaire(Joueur* j){ adversaire = j ;}
 
-        const std::vector<const Batiment*>& getBatiments() const { return batiments; }
-        const std::vector<const Jeton*>& getJetons() const { return jetons; }
-        std::vector<const Batiment*> getBatimentsPerType(type_batiment t) const ;
-        std::vector<const Merveille*> getInactiveMerveille() const ;
-        std::vector<const Merveille*> getActiveMerveille() const ;
+        const std::vector<const Batiment*>& getBatiments() const { return batiments;}
+        const std::vector<const Jeton*>& getJetons() const { return jetons;}
+        std::vector<const Batiment*> getBatimentsPerType(type_batiment t) const;
+        std::vector<const Merveille*> getInactiveMerveille() const;
+        std::vector<const Merveille*> getActiveMerveille() const;
 
         void addCarte(const Carte& c); // gère le downcasting pour ajouter dans la bonne catégorie
 
@@ -315,7 +357,7 @@ class Joueur {
         // achat
         std::list<ressource> achetableRessource(const std::list<ressource> cost) const;
         unsigned int achetableJoueur(const Carte& c) const ;
-        std::vector<const Merveille*> buildableMerveilles() const ; 
+        std::vector<const Merveille*> buildableMerveilles() const ;
         void activateMerveille(const Merveille& c); 
         void deleteLastMerveille() ;
         bool obtainable(const Carte& c) const ;
@@ -345,8 +387,14 @@ class Joueur {
         // utils
         void displayJoueur() const ;
         void reinit();
-
         void operator<<(const Carte& c);
+
+        // dialogue
+        virtual unsigned int dialogue(std::vector<const Carte*> c)const {return askJoueur(c);}
+        virtual unsigned int dialogue(std::vector<const Batiment*> b)const {return askJoueur(b);}
+        virtual unsigned int dialogue(std::vector<const Merveille*> m)const {return askJoueur(m);}
+        virtual unsigned int dialogue(std::vector<const Jeton*> j)const {return askJoueur(j);}
+        virtual unsigned int dialogue(std::vector<std::string> s)const {return askJoueur(s);}
 
     private:
 
@@ -364,17 +412,28 @@ class Joueur {
 
         bool id ; // 0 or 1
         std::string nom ; 
+};
+
+class IA : public Joueur {
+    public: 
+
+        IA(bool id, std::string nom) : Joueur(id, nom){}
+
+        // dialogue
+        virtual unsigned int dialogue(std::vector<const Carte*> c) const override ;
+        virtual unsigned int dialogue(std::vector<const Batiment*> b) const override  ;
+        virtual unsigned int dialogue(std::vector<const Merveille*> m) const override  ;
+        virtual unsigned int dialogue(std::vector<const Jeton*> j) const override  ;
+        virtual unsigned int dialogue(std::vector<std::string> s) const override  ;
 
 };
+
 class Perk { // ABSTRACT
 
     public: // PERK: ON CALL
     
         virtual void onCall(Joueur& j) const = 0 ; // PURE VIRTUAL
         // on prend en paramètre le joueur qui a construit la carte
-
-        //~Perk(){} // vtable error paranoia ???
-        //bool isPolyRes(); 
 
     private:
 
@@ -384,7 +443,6 @@ class Perk_CoinPerCard : public Perk {
 
     public: 
         Perk_CoinPerCard(Box& box, unsigned int coin, type_batiment card):coin(coin), card(card), box(box){}
-        //~Perk_CoinPerCard(){};
 
         void onCall(Joueur& j) const override ;
 
@@ -437,23 +495,6 @@ class Perk_Classic : public Perk { // PERKS W/O SETTINGS
         Box& box;
 };
 
-/* 
-
-// La Perk PolyRessource est abandonnée
-// On considère à la place que si un bâtiment de Commerce ou une Merveille produit des ressources,
-// il s'agit d'une poly ressource
-
-class Perk_PolyRessource : public Perk {
-    public:
-        Perk_PolyRessource(std::list<ressource> res):res(res){}
-
-        std::list<ressource> getPolyRessources() const ;
-        void onCall(Joueur* j) const override ; 
-    private:
-        std::list<ressource> res;
-};
-*/
-
 class Layout {
 
 // 0 : inexistante
@@ -463,8 +504,6 @@ class Layout {
 // 4 : inexistante (mais anciennement occupée)
 
     public:
-
-        
 
         // UTILS
         void displayLayout() const ;
@@ -477,8 +516,6 @@ class Layout {
         void switchAge(phase_jeu p);
         void reinit();
         void inputCards(std::vector<const Carte*> deck);
-
-        // NEW ARCHITECTURE FOR LAYOUT (guaranteed not to be a mess by yours truly)
 
         // check integrity of the structures
         void checkMatching() const { 
@@ -600,9 +637,9 @@ class Box {
         Box(const Box& b) = delete; 
         Box& operator=(const Box&) = delete;
 
-        static bool constructed;  
+        static bool constructed;
 
-        /*
+        /* // GLOBAL SINGLETON FF
         struct Handler {
             Box* box = nullptr ;
             ~Handler() { delete box ; };
