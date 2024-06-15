@@ -36,17 +36,13 @@ int main(){
 
 
 // NEXT :
-// IA Player : add Subject of the ask and Repondant so we know when to ask Player or AI
-// create a read only interface that allows to communicate with the game (using askJoueur)
 
 
 // MAIN QUESTS:
-
 
 
 // OTHER TASKS: 
 
 
 // SIDE QUESTS: 
-// écrire une documentation et expliquer les choix de développement
 // enhanced console display (Layout, Plateau, Players, Décompte des points)

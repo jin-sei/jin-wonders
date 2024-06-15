@@ -1081,21 +1081,4 @@ void Box::allCardsCreation(){
             {}, // affectation
             true
     ));
-
-    // MOCK CARDS TO TEST THE GAME : TO BE REMOVED
-    /*
-    phase_jeu p = phase_jeu::AGE_I ;
-
-    for(size_t i = 0 ; i < 66 ; i++){
-
-        if( i < 23 ){ p = phase_jeu::AGE_I ; }
-        else if ( i < 46 ){ p = phase_jeu::AGE_II ;  }
-        else if ( i < 66 ){ p = phase_jeu::AGE_III ; }
-
-        //const Batiment* new_bat = new new Batiment(...)
-        all_batiments.push_back(  new new Batiment("Bâtiment Civil "+std::to_string(i+1), type_batiment::Civil, p) ));
-
-    }
-    */
-
 }
